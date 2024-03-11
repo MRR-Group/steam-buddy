@@ -3,6 +3,7 @@
 cd /app
 
 composer update
+composer install
 
 php artisan key:generate
 php artisan cache:clear
