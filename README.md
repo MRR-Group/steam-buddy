@@ -12,7 +12,7 @@ Aby uruchomić projekt, postępuj zgodnie z poniższymi krokami:
 1. Zainstaluj Docker na swoim systemie.
 2. Sklonuj repozytorium git
     ```bash
-    git clone https://github.com/AmonDeShir/CN-Project
+    git clone https://github.com/MRR-Group/steam-buddy.git
     ```
 3. Otwórz terminal i przejdź do katalogu, w którym znajduje się plik docker-compose.yml.
 4. Zbuduj obrazy Dockera
