@@ -1,5 +1,11 @@
-## Instrukcja uruchomienia projektu (środowisko developerskie)
+# Steam Buddy
+![image](https://github.com/MRR-Group/steam-buddy/assets/13831258/f1d06251-a04a-44e2-9cca-f38bd99b7ead)
 
+## Design 
+1. [Projekt](https://www.figma.com/file/DkGX5QuYV7KDkgSXoGyJJp/project?type=design&node-id=0-1&mode=design&t=x22JRDL5LnHpUACr-0)
+2. [Makieta](https://www.figma.com/proto/DkGX5QuYV7KDkgSXoGyJJp/project?type=design&node-id=31-165&t=x22JRDL5LnHpUACr-0&scaling=scale-down&page-id=0%3A1&starting-point-node-id=31%3A165)
+
+## Instrukcja uruchomienia projektu (środowisko developerskie)
 ### Kroki do uruchomienia projektu
 Aby uruchomić projekt, postępuj zgodnie z poniższymi krokami:
 
