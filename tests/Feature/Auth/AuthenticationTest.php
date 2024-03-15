@@ -2,56 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
-{
-    use RefreshDatabase;
+test("login screen can be rendered", function (): void {
+    $response = $this->get("/login");
 
-    public function testLoginScreenCanBeRendered(): void
-    {
-        $response = $this->get("/login");
+    $response->assertStatus(200);
+});
 
-        $response->assertStatus(200);
-    }
+test("users can authenticate using the login screen", function (): void {
+    $user = User::factory()->create();
 
-    public function testUsersCanAuthenticateUsingTheLoginScreen(): void
-    {
-        $user = User::factory()->create();
+    $response = $this->post("/login", [
+        "email" => $user->email,
+        "password" => "password",
+    ]);
 
-        $response = $this->post("/login", [
-            "email" => $user->email,
-            "password" => "password",
-        ]);
+    $this->assertAuthenticated();
+    $response->assertRedirect(route("dashboard", absolute: false));
+});
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-    }
+test("users can not authenticate with invalid password", function (): void {
+    $user = User::factory()->create();
 
-    public function testUsersCanNotAuthenticateWithInvalidPassword(): void
-    {
-        $user = User::factory()->create();
+    $this->post("/login", [
+        "email" => $user->email,
+        "password" => "wrong-password",
+    ]);
 
-        $this->post("/login", [
-            "email" => $user->email,
-            "password" => "wrong-password",
-        ]);
+    $this->assertGuest();
+});
 
-        $this->assertGuest();
-    }
+test("users can logout", function (): void {
+    $user = User::factory()->create();
 
-    public function testUsersCanLogout(): void
-    {
-        $user = User::factory()->create();
+    $response = $this->actingAs($user)->post("/logout");
 
-        $response = $this->actingAs($user)->post("/logout");
-
-        $this->assertGuest();
-        $response->assertRedirect("/");
-    }
-}
+    $this->assertGuest();
+    $response->assertRedirect("/");
+});

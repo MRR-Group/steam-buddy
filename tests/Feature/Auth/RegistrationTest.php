@@ -2,33 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Auth;
+test("registration screen can be rendered", function (): void {
+    $response = $this->get("/register");
 
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+    $response->assertStatus(200);
+});
 
-class RegistrationTest extends TestCase
-{
-    use RefreshDatabase;
+test("new users can register", function (): void {
+    $response = $this->post("/register", [
+        "name" => "Test User",
+        "email" => "test@example.com",
+        "password" => "password",
+        "password_confirmation" => "password",
+    ]);
 
-    public function testRegistrationScreenCanBeRendered(): void
-    {
-        $response = $this->get("/register");
-
-        $response->assertStatus(200);
-    }
-
-    public function testNewUsersCanRegister(): void
-    {
-        $response = $this->post("/register", [
-            "name" => "Test User",
-            "email" => "test@example.com",
-            "password" => "password",
-            "password_confirmation" => "password",
-        ]);
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-    }
-}
+    $this->assertAuthenticated();
+    $response->assertRedirect(route("dashboard", absolute: false));
+});

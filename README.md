@@ -87,8 +87,8 @@ Usługa web korzysta z obrazu `nginx:1.25.3-alpine` i obsługuje serwer WWW. Por
 ### Postgres (database)
 Usługa database używa obrazu `postgres:16.1-alpine3.19` i jest używana jako baza danych projektu. Konfiguracja bazy danych jest wczytywana ze zmiennych środowiskowych (plik .env). Dodatkowo baza danych zapisuje swoje dane na osobnych woluminie `db_data`. Usługa posiada również healthcheck pozwalający sprawdzić, czy baza danych jest już gotowa do pracy.
 
-### System kolejek Redis (redis)
-Ta usługa wykorzystuje obraz `redis:7.2.3-alpine` i jest odpowiedzialna za przygotowanie systemu kolejek. Konfiguracja Redis jest wczytywana ze zmiennych środowiskowych. Dane Redis są przechowywane na woluminie `redis_data`. Dostępny jest również healthcheck pozwalający sprawdzić, czy Redis jest już gotowy do pracy.
+### Redis (redis)
+Ta usługa wykorzystuje obraz `redis:7.2.3-alpine` i jest odpowiedzialna za przygotowanie bazy dla cache'u i systemu kolejek. Konfiguracja Redis jest wczytywana ze zmiennych środowiskowych. Dane Redis są przechowywane na woluminie `redis_data`. Dostępny jest również healthcheck pozwalający sprawdzić, czy Redis jest już gotowy do pracy.
 
 ### NodeJS (node)
 Ta usługa korzysta z własnego obrazu opartego na obrazie `node:20-alpine` i jest odpowiedzialna za przygotowanie środowiska Node.js do pracy nad frontendem. Pliki projektu są montowane do wewnętrznego katalogu `/app` kontenera. Obraz podczas startu uruchamia plik `./docker/node/entrypoint.sh`, który jest odpowiedzialny za instalację wszystkich potrzebnych bibliotek JS (między innymi Vite) oraz uruchomienie domyślnego entrypoint'a obrazu `node:20-alpine`.

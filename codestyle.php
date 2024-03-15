@@ -6,7 +6,7 @@ use Blumilk\Codestyle\Config;
 use Blumilk\Codestyle\Configuration\Defaults\LaravelPaths;
 
 $config = new Config(
-    paths: new LaravelPaths(LaravelPaths::LARAVEL_8_PATHS),
+    paths: new LaravelPaths(LaravelPaths::LARAVEL_10_PATHS),
 );
 
 return $config->config();
