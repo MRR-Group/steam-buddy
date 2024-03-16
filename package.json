@@ -7,7 +7,7 @@
     "lint": "eslint resources/js --ext .js,.jsx",
     "lintf": "eslint resources/js --ext .js,.jsx --fix",
     "format": "prettier 'resources/{js,jsx}/**/*.{js,jsx}' --write",
-    "pre-commit": "npm run format && lint-staged && pretty-quick --staged"
+    "fast-lint": "npm run format && lint-staged && pretty-quick --staged"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix"
@@ -28,7 +28,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^9.0.11",
     "laravel-vite-plugin": "^1.0",
     "lint-staged": "^15.2.2",
     "postcss": "^8.4.31",
