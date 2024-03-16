@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
     web:
         image: nginx:1.25.3-alpine
@@ -18,6 +17,7 @@ services:
     php:
         container_name: sb-php
         working_dir: /app
+        user: $DOCKER_USER
         volumes:
             - .:/app
         build:
@@ -70,6 +70,7 @@ services:
             dockerfile: ./docker/development/node/Dockerfile
         container_name: sb-node
         working_dir: /app
+        user: $DOCKER_USER
         tty: true
         ports:
             - $NODE_PORT:$NODE_PORT
