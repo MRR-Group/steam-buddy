@@ -1,4 +1,4 @@
-docker compose exec -it php composer csf
-docker compose exec node npm run pre-commit
-
-docker compose exec -it php php artisan test
+docker compose exec -T php composer csf
+docker compose exec -T node npm run format
+docker compose exec -T node npm run lintf
+docker compose exec -T php php artisan test
