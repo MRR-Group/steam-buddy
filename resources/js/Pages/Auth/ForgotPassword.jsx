@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { GuestLayout } from '@/Layouts/GuestLayout';
-import { InputError } from '@/Components/InputError';
-import { PrimaryButton } from '@/Components/PrimaryButton';
-import { TextInput } from '@/Components/TextInput';
+import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
+import { InputError } from '@/Components/InputError/InputError';
+import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
+import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
 export const ForgotPassword = ({ status }) => {

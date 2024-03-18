@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { InputError } from '@/Components/InputError';
-import { InputLabel } from '@/Components/InputLabel';
-import { PrimaryButton } from '@/Components/PrimaryButton';
-import { TextInput } from '@/Components/TextInput';
+import { InputError } from '@/Components/InputError/InputError';
+import { InputLabel } from '@/Components/InputLabel/InputLabel';
+import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
+import { TextInput } from '@/Components/TextInput/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 

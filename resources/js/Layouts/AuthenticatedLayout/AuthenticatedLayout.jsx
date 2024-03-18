@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { ApplicationLogo } from '@/Components/ApplicationLogo';
-import { Dropdown } from '@/Components/Dropdown';
-import { NavLink } from '@/Components/NavLink';
-import { ResponsiveNavLink } from '@/Components/ResponsiveNavLink';
+import { ApplicationLogo } from '@/Components/ApplicationLogo/ApplicationLogo';
+import { Dropdown } from '@/Components/Dropdown/Dropdown';
+import { NavLink } from '@/Components/NavLink/NavLink';
+import { ResponsiveNavLink } from '@/Components/ResponsiveNavLink/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
-export const Authenticated = ({ user, header, children }) => {
+export const AuthenticatedLayout = ({ user, header, children }) => {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
@@ -167,7 +167,7 @@ export const Authenticated = ({ user, header, children }) => {
   );
 };
 
-Authenticated.propTypes = {
+AuthenticatedLayout.propTypes = {
   children: PropTypes.node,
   header: PropTypes.node,
   user: PropTypes.shape({

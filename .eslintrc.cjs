@@ -38,7 +38,11 @@ module.exports = {
   ],
   plugins: ['react', 'promise', 'import', 'prettier'],
   rules: {
-    quotes: ['error', 'single'],
+    quotes: [
+      'error',
+      'single',
+      { avoidEscape: true, allowTemplateLiterals: true },
+    ],
     indent: ['error', 2],
     'comma-dangle': ['error', 'always-multiline'],
     'eol-last': ['error', 'always'],
@@ -64,4 +68,12 @@ module.exports = {
     'no-console': 1,
     'import/no-default-export': 2,
   },
+  overrides: [
+    {
+      files: ['**/*.test.js', '**/*.test.jsx'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout';
+import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export const Dashboard = ({ auth }) => {

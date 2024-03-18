@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import GuestLayout from '@/Layouts/GuestLayout';
-import PrimaryButton from '@/Components/PrimaryButton';
+import GuestLayout from '@/Layouts/GuestLayout/GuestLayout';
+import PrimaryButton from '@/Components/PrimaryButton/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export const VerifyEmail = ({ status }) => {
