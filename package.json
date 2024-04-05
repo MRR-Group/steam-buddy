@@ -9,8 +9,7 @@
     "format": "prettier 'resources/{js,jsx}/**/*.{js,jsx}' --write",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "test:ui": "vitest --ui",
-    "prepare": "husky"
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
     "@headlessui/react": "^1.4.2",
