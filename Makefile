@@ -29,8 +29,8 @@ test:
 	@docker compose exec node npm test
 
 fix:
-	@docker compose exec -t php -c 'composer csf'
-	@docker compose exec -t npm run lintf
+	@docker compose exec -t php composer csf
+	@docker compose exec -t node npm run lintf
 
 
 .PHONY: init check-env-file run dev stop node php test fix

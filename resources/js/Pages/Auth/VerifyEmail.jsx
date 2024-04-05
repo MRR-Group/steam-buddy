@@ -3,7 +3,7 @@ import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-const VerifyEmail = ({ status }) => {
+export const VerifyEmail = ({ status }) => {
   const { post, processing } = useForm({});
 
   const submit = (e) => {
@@ -52,5 +52,3 @@ const VerifyEmail = ({ status }) => {
 VerifyEmail.propTypes = {
   status: PropTypes.string,
 };
-
-export default ResetPassword;

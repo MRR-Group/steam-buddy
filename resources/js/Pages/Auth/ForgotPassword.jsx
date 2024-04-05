@@ -5,7 +5,7 @@ import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-const ForgotPassword = ({ status }) => {
+export const ForgotPassword = ({ status }) => {
   const { data, setData, post, processing, errors } = useForm({
     email: '',
   });
@@ -56,5 +56,3 @@ const ForgotPassword = ({ status }) => {
 ForgotPassword.propTypes = {
   status: PropTypes.node,
 };
-
-export default ForgotPassword;

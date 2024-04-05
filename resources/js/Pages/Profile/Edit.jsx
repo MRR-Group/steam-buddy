@@ -5,7 +5,7 @@ import { UpdatePasswordForm } from './Partials/UpdatePasswordForm';
 import { UpdateProfileInformationForm } from './Partials/UpdateProfileInformationForm';
 import { Head } from '@inertiajs/react';
 
-const Edit = ({ auth, mustVerifyEmail, status }) => {
+export const Edit = ({ auth, mustVerifyEmail, status }) => {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -45,5 +45,3 @@ Edit.propTypes = {
   mustVerifyEmail: PropTypes.bool,
   status: PropTypes.string,
 };
-
-export default Edit;
