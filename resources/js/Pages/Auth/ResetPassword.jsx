@@ -7,7 +7,7 @@ import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export const ResetPassword = ({ token, email }) => {
+const ResetPassword = ({ token, email }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     token: token,
     email: email,
@@ -98,3 +98,5 @@ ResetPassword.propTypes = {
   email: PropTypes.string,
   token: PropTypes.string,
 };
+
+export default ResetPassword;

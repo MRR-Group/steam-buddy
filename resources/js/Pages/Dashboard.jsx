@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export const Dashboard = ({ auth }) => {
+const Dashboard = ({ auth }) => {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -30,3 +30,5 @@ Dashboard.propTypes = {
     user: PropTypes.any,
   }),
 };
+
+export default Dashboard;

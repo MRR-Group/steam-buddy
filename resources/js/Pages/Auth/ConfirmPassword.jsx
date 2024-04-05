@@ -6,7 +6,7 @@ import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export const ConfirmPassword = () => {
+const ConfirmPassword = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
     password: '',
   });
@@ -58,3 +58,5 @@ export const ConfirmPassword = () => {
     </GuestLayout>
   );
 };
+
+export default ConfirmPassword;

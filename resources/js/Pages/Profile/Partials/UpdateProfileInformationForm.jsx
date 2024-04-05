@@ -6,7 +6,7 @@ import { TextInput } from '@/Components/TextInput/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
-export const UpdateProfileInformation = ({
+export const UpdateProfileInformationForm = ({
   mustVerifyEmail,
   status,
   className = '',
@@ -110,7 +110,7 @@ export const UpdateProfileInformation = ({
   );
 };
 
-UpdateProfileInformation.propTypes = {
+UpdateProfileInformationForm.propTypes = {
   className: PropTypes.string,
   mustVerifyEmail: PropTypes.bool,
   status: PropTypes.string,

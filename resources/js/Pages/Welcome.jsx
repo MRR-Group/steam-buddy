@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link, Head } from '@inertiajs/react';
 
-export const Welcome = ({ auth, laravelVersion, phpVersion }) => {
+const Welcome = ({ auth, laravelVersion, phpVersion }) => {
   const handleImageError = () => {
     document.getElementById('screenshot-container')?.classList.add('!hidden');
     document.getElementById('docs-card')?.classList.add('!row-span-1');
@@ -345,3 +345,5 @@ Welcome.propTypes = {
   laravelVersion: PropTypes.string,
   phpVersion: PropTypes.string,
 };
+
+export default Welcome;

@@ -8,7 +8,7 @@ import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export const Login = ({ status, canResetPassword }) => {
+const Login = ({ status, canResetPassword }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
@@ -103,3 +103,5 @@ Login.propTypes = {
   canResetPassword: PropTypes.bool,
   status: PropTypes.node,
 };
+
+export default Login;

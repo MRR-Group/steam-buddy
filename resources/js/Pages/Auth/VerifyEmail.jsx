@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import GuestLayout from '@/Layouts/GuestLayout/GuestLayout';
-import PrimaryButton from '@/Components/PrimaryButton/PrimaryButton';
+import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
+import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export const VerifyEmail = ({ status }) => {
+const VerifyEmail = ({ status }) => {
   const { post, processing } = useForm({});
 
   const submit = (e) => {
@@ -52,3 +52,5 @@ export const VerifyEmail = ({ status }) => {
 VerifyEmail.propTypes = {
   status: PropTypes.string,
 };
+
+export default ResetPassword;
