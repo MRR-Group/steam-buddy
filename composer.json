@@ -54,6 +54,7 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
+        "test": "",
         "csf": "./vendor/bin/php-cs-fixer fix --diff --config codestyle.php",
         "cs": "./vendor/bin/php-cs-fixer fix --dry-run --diff --config codestyle.php"
     },
