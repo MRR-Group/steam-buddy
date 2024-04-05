@@ -29,7 +29,7 @@ test:
 	@docker compose exec node npm test
 
 fix:
-	@docker compose exec -t bash -c 'composer csf'
+	@docker compose exec -t php -c 'composer csf'
 	@docker compose exec -t npm run lintf
 
 
