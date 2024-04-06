@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
-import { Checkbox } from '@/Components/Checkbox/Checkbox';
 import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { InputError } from '@/Components/InputError/InputError';
-import { InputLabel } from '@/Components/InputLabel/InputLabel';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
+import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
 
-export const Login = ({ status, canResetPassword }) => {
+export const Login = ({ status }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
@@ -31,64 +30,56 @@ export const Login = ({ status, canResetPassword }) => {
         <div className="mb-4 font-medium text-sm text-green-600">{status}</div>
       )}
 
-      <form onSubmit={submit}>
-        <div>
-          <InputLabel htmlFor="email" value="Email" />
+      <form
+        onSubmit={submit}
+        className="max-w-80 w-full"
+        style={{ padding: 'calc(50% - 10rem) 0' }}
+      >
+        <div className="text-center text-text text-3xl pb-6">Log in</div>
 
+        <div className="pb-6">
           <TextInput
-            id="email"
             type="email"
             name="email"
+            label="Email"
             value={data.email}
-            className="mt-1 block w-full"
             autoComplete="username"
             isFocused={true}
             onChange={(e) => setData('email', e.target.value)}
           />
 
           <InputError message={errors.email} className="mt-2" />
+
+          <TextInputOption
+            left="You don't have an account?"
+            linkText={`Click${'\u00A0'}here`}
+            right={`to${'\u00A0'}register`}
+            href={route('register')}
+          />
         </div>
 
-        <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
-
+        <div className="pb-6">
           <TextInput
-            id="password"
             type="password"
             name="password"
+            label="Password"
             value={data.password}
-            className="mt-1 block w-full"
             autoComplete="current-password"
             onChange={(e) => setData('password', e.target.value)}
           />
 
           <InputError message={errors.password} className="mt-2" />
+
+          <TextInputOption
+            left="You don't remember?"
+            linkText={`Click${'\u00A0'}here`}
+            right={`to${'\u00A0'}reset it.`}
+            href={route('password.request')}
+          />
         </div>
 
-        <div className="block mt-4">
-          <label className="flex items-center">
-            <Checkbox
-              name="remember"
-              checked={data.remember}
-              onChange={(e) => setData('remember', e.target.checked)}
-            />
-            <span className="ms-2 text-sm text-gray-600">Remember me</span>
-          </label>
-        </div>
-
-        <div className="flex items-center justify-end mt-4">
-          {canResetPassword && (
-            <Link
-              href={route('password.request')}
-              className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Forgot your password?
-            </Link>
-          )}
-
-          <PrimaryButton className="ms-4" disabled={processing}>
-            Log in
-          </PrimaryButton>
+        <div className="flex justify-center w-full">
+          <PrimaryButton disabled={processing}>Log in</PrimaryButton>
         </div>
       </form>
     </GuestLayout>
@@ -96,6 +87,5 @@ export const Login = ({ status, canResetPassword }) => {
 };
 
 Login.propTypes = {
-  canResetPassword: PropTypes.bool,
   status: PropTypes.node,
 };

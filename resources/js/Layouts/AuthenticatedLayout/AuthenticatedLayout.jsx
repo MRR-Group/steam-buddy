@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { ApplicationLogo } from '@/Components/ApplicationLogo/ApplicationLogo';
 import { Dropdown } from '@/Components/Dropdown/Dropdown';
 import { NavLink } from '@/Components/NavLink/NavLink';
 import { ResponsiveNavLink } from '@/Components/ResponsiveNavLink/ResponsiveNavLink';
@@ -17,9 +16,7 @@ export const AuthenticatedLayout = ({ user, header, children }) => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="shrink-0 flex items-center">
-                <Link href="/">
-                  <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                </Link>
+                <Link href="/"></Link>
               </div>
 
               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
