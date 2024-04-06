@@ -3,7 +3,6 @@ import { expect, vitest } from 'vitest';
 
 import React from 'react';
 import { TextInput } from './TextInput';
-import { InputLabel } from '../InputLabel/InputLabel';
 
 describe('TextInput', () => {
   it('should render input', () => {
@@ -44,19 +43,17 @@ describe('TextInput', () => {
       </div>,
     );
 
-    expect(screen.getByDisplayValue('test1')).not.toHaveClass('m-5');
-    expect(screen.getByDisplayValue('test2')).toHaveClass('m-5');
+    expect(screen.getByDisplayValue('test1').parentNode).not.toHaveClass('m-5');
+    expect(screen.getByDisplayValue('test2').parentNode).toHaveClass('m-5');
   });
 
   it('should accept input props', () => {
-    render(
-      <div>
-        <InputLabel htmlFor="input" value="label" />
-        <TextInput id="input" name="input" defaultValue="test" />
-      </div>,
-    );
+    render(<TextInput autoComplete="auto-test" defaultValue="test" />);
 
-    expect(screen.getByDisplayValue('test')).toHaveAttribute('name', 'input');
+    expect(screen.getByDisplayValue('test')).toHaveAttribute(
+      'autoComplete',
+      'auto-test',
+    );
   });
 
   it(`should be focused when the isFocused prop is active`, async () => {
@@ -103,5 +100,24 @@ describe('TextInput', () => {
     rerender(<TextInput defaultValue="test" isFocused={isFocused} ref={ref} />);
 
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it(`should render label`, () => {
+    render(<TextInput name="input" label="Input" defaultValue="value" />);
+
+    expect(screen.getByDisplayValue('value')).toHaveAttribute('id', 'input');
+    expect(screen.getByText('Input')).toHaveAttribute('for', 'input');
+  });
+
+  it(`should make label bigger if value is empty`, () => {
+    render(<TextInput name="input" label="Input" value="" />);
+
+    expect(screen.getByText('Input')).toHaveClass('top-3 text-xl');
+  });
+
+  it(`should make label smaller if input contains value`, () => {
+    render(<TextInput name="input" label="Input" value="text" />);
+
+    expect(screen.getByText('Input')).toHaveClass('top-0 text-sm');
   });
 });
