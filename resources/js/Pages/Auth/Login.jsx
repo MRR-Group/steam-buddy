@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { Checkbox } from '@/Components/Checkbox/Checkbox';
 import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { InputError } from '@/Components/InputError/InputError';
@@ -7,6 +6,7 @@ import { InputLabel } from '@/Components/InputLabel/InputLabel';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
 
 export const Login = ({ status, canResetPassword }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -15,11 +15,7 @@ export const Login = ({ status, canResetPassword }) => {
     remember: false,
   });
 
-  useEffect(() => {
-    return () => {
-      reset('password');
-    };
-  }, [reset]);
+  useCleanup(() => () => reset('password'), []);
 
   const submit = (e) => {
     e.preventDefault();

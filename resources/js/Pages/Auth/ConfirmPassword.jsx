@@ -1,21 +1,17 @@
-import { useEffect } from 'react';
 import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { InputError } from '@/Components/InputError/InputError';
 import { InputLabel } from '@/Components/InputLabel/InputLabel';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
 
 export const ConfirmPassword = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
     password: '',
   });
 
-  useEffect(() => {
-    return () => {
-      reset('password');
-    };
-  }, [reset]);
+  useCleanup(() => reset('password'));
 
   const submit = (e) => {
     e.preventDefault();

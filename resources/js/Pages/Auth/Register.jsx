@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { InputError } from '@/Components/InputError/InputError';
 import { InputLabel } from '@/Components/InputLabel/InputLabel';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
 
 export const Register = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,11 +14,7 @@ export const Register = () => {
     password_confirmation: '',
   });
 
-  useEffect(() => {
-    return () => {
-      reset('password', 'password_confirmation');
-    };
-  }, [reset]);
+  useCleanup(() => reset('password', 'password_confirmation'));
 
   const submit = (e) => {
     e.preventDefault();
