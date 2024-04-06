@@ -2,7 +2,7 @@ import PropTyps from 'prop-types';
 
 export const InputError = ({ message, className = '', ...props }) => {
   return message ? (
-    <p {...props} className={'text-sm text-red-600 ' + className}>
+    <p {...props} className={`text-sm text-error font-bold ${className}`}>
       {message}
     </p>
   ) : null;
