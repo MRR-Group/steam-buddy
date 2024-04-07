@@ -14,7 +14,7 @@ export const UpdateProfileInformationForm = ({
 
   const { data, setData, patch, errors, processing, recentlySuccessful } =
     useForm({
-      name: user.name,
+      name: user.name ?? '',
       email: user.email,
     });
 

@@ -10,8 +10,8 @@ export const AuthenticatedLayout = ({ user, header, children }) => {
     useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white border-b border-gray-100">
+    <div className="min-h-screen bg-secondary-800">
+      <nav className="bg-white border-b border-bg-secondary-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -79,7 +79,7 @@ export const AuthenticatedLayout = ({ user, header, children }) => {
                     (previousState) => !previousState,
                   )
                 }
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-secondary-800 focus:outline-none focus:bg-secondary-800 focus:text-gray-500 transition duration-150 ease-in-out"
               >
                 <svg
                   className="size-6"
