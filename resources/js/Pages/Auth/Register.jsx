@@ -1,14 +1,13 @@
 import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { InputError } from '@/Components/InputError/InputError';
-import { InputLabel } from '@/Components/InputLabel/InputLabel';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
+import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
 
 export const Register = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
-    name: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -26,31 +25,18 @@ export const Register = () => {
     <GuestLayout>
       <Head title="Register" />
 
-      <form onSubmit={submit}>
-        <div>
-          <InputLabel htmlFor="name" value="Name" />
+      <form
+        onSubmit={submit}
+        className="max-w-80 w-full"
+        style={{ padding: 'calc(50% - 10rem) 0' }}
+      >
+        <div className="text-center text-text text-3xl pb-6">Register</div>
 
+        <div className="pb-6">
           <TextInput
-            id="name"
-            name="name"
-            value={data.name}
-            className="mt-1 block w-full"
-            autoComplete="name"
-            isFocused={true}
-            onChange={(e) => setData('name', e.target.value)}
-            required
-          />
-
-          <InputError message={errors.name} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
-          <InputLabel htmlFor="email" value="Email" />
-
-          <TextInput
-            id="email"
             type="email"
             name="email"
+            label="Email"
             value={data.email}
             className="mt-1 block w-full"
             autoComplete="username"
@@ -59,15 +45,20 @@ export const Register = () => {
           />
 
           <InputError message={errors.email} className="mt-2" />
+
+          <TextInputOption
+            left="Do you have an account?"
+            linkText={`Click${'\u00A0'}here`}
+            right={`to${'\u00A0'}log in.`}
+            href={route('login')}
+          />
         </div>
 
-        <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
-
+        <div className="pb-10">
           <TextInput
-            id="password"
             type="password"
             name="password"
+            label="Password"
             value={data.password}
             className="mt-1 block w-full"
             autoComplete="new-password"
@@ -78,16 +69,11 @@ export const Register = () => {
           <InputError message={errors.password} className="mt-2" />
         </div>
 
-        <div className="mt-4">
-          <InputLabel
-            htmlFor="password_confirmation"
-            value="Confirm Password"
-          />
-
+        <div className="pb-10">
           <TextInput
-            id="password_confirmation"
             type="password"
             name="password_confirmation"
+            label="Confirm Password"
             value={data.password_confirmation}
             className="mt-1 block w-full"
             autoComplete="new-password"
@@ -98,17 +84,8 @@ export const Register = () => {
           <InputError message={errors.password_confirmation} className="mt-2" />
         </div>
 
-        <div className="flex items-center justify-end mt-4">
-          <Link
-            href={route('login')}
-            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Already registered?
-          </Link>
-
-          <PrimaryButton className="ms-4" disabled={processing}>
-            Register
-          </PrimaryButton>
+        <div className="flex justify-center w-full">
+          <PrimaryButton disabled={processing}>Register</PrimaryButton>
         </div>
       </form>
     </GuestLayout>

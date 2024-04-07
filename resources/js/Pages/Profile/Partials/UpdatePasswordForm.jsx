@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { InputError } from '@/Components/InputError/InputError';
-import { InputLabel } from '@/Components/InputLabel/InputLabel';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { useForm } from '@inertiajs/react';
@@ -43,17 +42,16 @@ export const UpdatePasswordForm = ({ className = '' }) => {
       <header>
         <h2 className="text-lg font-medium text-gray-900">Update Password</h2>
 
-        <p className="mt-1 text-sm text-gray-600">
+        <p className="mt-1 text-sm text-text">
           Ensure your account is using a long, random password to stay secure.
         </p>
       </header>
 
       <form onSubmit={updatePassword} className="mt-6 space-y-6">
         <div>
-          <InputLabel htmlFor="current_password" value="Current Password" />
-
           <TextInput
-            id="current_password"
+            name="current_password"
+            label="Current Password"
             ref={currentPasswordInput}
             value={data.current_password}
             onChange={(e) => setData('current_password', e.target.value)}
@@ -66,10 +64,9 @@ export const UpdatePasswordForm = ({ className = '' }) => {
         </div>
 
         <div>
-          <InputLabel htmlFor="password" value="New Password" />
-
           <TextInput
-            id="password"
+            name="password"
+            label="Password"
             ref={passwordInput}
             value={data.password}
             onChange={(e) => setData('password', e.target.value)}
@@ -82,13 +79,9 @@ export const UpdatePasswordForm = ({ className = '' }) => {
         </div>
 
         <div>
-          <InputLabel
-            htmlFor="password_confirmation"
-            value="Confirm Password"
-          />
-
           <TextInput
-            id="password_confirmation"
+            name="password_confirmation"
+            label="Confirm Password"
             value={data.password_confirmation}
             onChange={(e) => setData('password_confirmation', e.target.value)}
             type="password"
@@ -109,7 +102,7 @@ export const UpdatePasswordForm = ({ className = '' }) => {
             leave="transition ease-in-out"
             leaveTo="opacity-0"
           >
-            <p className="text-sm text-gray-600">Saved.</p>
+            <p className="text-sm text-text">Saved.</p>
           </Transition>
         </div>
       </form>

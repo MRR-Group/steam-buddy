@@ -4,6 +4,7 @@ import { InputError } from '@/Components/InputError/InputError';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
 
 export const ForgotPassword = ({ status }) => {
   const { data, setData, post, processing, errors } = useForm({
@@ -17,36 +18,41 @@ export const ForgotPassword = ({ status }) => {
   };
 
   return (
-    <GuestLayout>
+    <GuestLayout status={status}>
       <Head title="Forgot Password" />
 
-      <div className="mb-4 text-sm text-gray-600">
-        Forgot your password? No problem. Just let us know your email address
-        and we will email you a password reset link that will allow you to
-        choose a new one.
-      </div>
+      <form
+        onSubmit={submit}
+        className="max-w-80 w-full"
+        style={{ padding: 'calc(50% - 10rem) 0' }}
+      >
+        <div className="text-center text-text text-3xl pb-10">
+          Reset password
+        </div>
 
-      {status && (
-        <div className="mb-4 font-medium text-sm text-green-600">{status}</div>
-      )}
+        <div className="pb-10">
+          <TextInput
+            type="email"
+            name="email"
+            label="Email"
+            autoComplete="username"
+            value={data.email}
+            isFocused={true}
+            onChange={(e) => setData('email', e.target.value)}
+          />
 
-      <form onSubmit={submit}>
-        <TextInput
-          id="email"
-          type="email"
-          name="email"
-          value={data.email}
-          className="mt-1 block w-full"
-          isFocused={true}
-          onChange={(e) => setData('email', e.target.value)}
-        />
+          <InputError message={errors.email} className="mt-2" />
 
-        <InputError message={errors.email} className="mt-2" />
+          <TextInputOption
+            left="Do you remember your password?"
+            linkText={`Click${'\u00A0'}here`}
+            right={`to${'\u00A0'}log in.`}
+            href={route('login')}
+          />
+        </div>
 
-        <div className="flex items-center justify-end mt-4">
-          <PrimaryButton className="ms-4" disabled={processing}>
-            Email Password Reset Link
-          </PrimaryButton>
+        <div className="flex justify-center w-full">
+          <PrimaryButton disabled={processing}>Send</PrimaryButton>
         </div>
       </form>
     </GuestLayout>
