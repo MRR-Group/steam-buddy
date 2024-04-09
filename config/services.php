@@ -15,6 +15,14 @@ return [
     |
     */
 
+    "steam" => [
+        "client_id" => null,
+        "client_secret" => env("STEAM_CLIENT_SECRET"),
+        "redirect" => env("STEAM_REDIRECT_URI"),
+        "force_https" => env("STEAM_FORCE_HTTPS", true),
+        "allowed_hosts" => env("STEAM_ALLOWED_HOST", null) === null ? [] : [env("STEAM_ALLOWED_HOST")],
+    ],
+
     "postmark" => [
         "token" => env("POSTMARK_TOKEN"),
     ],

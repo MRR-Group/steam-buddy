@@ -15,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $email
  * @property string $description
  * @property string $image
+ * @property string $steam_id
  * @property string $password
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
@@ -44,6 +45,14 @@ class User extends Authenticatable implements MustVerifyEmail
         "password",
         "remember_token",
     ];
+
+    public function load_steam_data(string $steam_id, string $nickname, string $avatar): void
+    {
+        $this->steam_id = $steam_id;
+        $this->name = $nickname;
+        $this->image = $avatar;
+        $this->save();
+    }
 
     /**
      * Get the attributes that should be cast.
