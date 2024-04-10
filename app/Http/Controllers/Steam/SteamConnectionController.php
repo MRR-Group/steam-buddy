@@ -21,18 +21,18 @@ class SteamConnectionController extends Controller
         return Inertia::render("Steam/Connect", ["status" => session("status")]);
     }
 
-    public function redirect(Socialite $socialite): RedirectResponse
+    public function redirect(): RedirectResponse
     {
-        return $socialite->driver("steam")->redirect();
+        return Socialite::driver("steam")->redirect();
     }
 
-    public function callback(Request $request, Socialite $socialite): RedirectResponse
+    public function callback(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = $request->user();
 
         try {
-            $data = $socialite->driver("steam")->user();
+            $data = Socialite::driver("steam")->user();
         } catch (Exception $e) {
             return Redirect::route("steam.connect")->with("status", "Cannot connect your Steam account to our service, please try again later.");
         }
