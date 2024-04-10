@@ -21,10 +21,10 @@ jobs:
         run: cp .env.example .env
       - 
         name: Build docker
-        run: docker -f ./docker-compose.actions.yml build
+        run: docker compose -f ./docker-compose.actions.yml build
       - 
         name: Start docker
-        run: docker -f ./docker-compose.actions.yml up -d
+        run: docker compose -f ./docker-compose.actions.yml up -d
       -
         name: Run backend tests
         run: docker compose exec php composer test
