@@ -1,0 +1,33 @@
+name: Docker Image Publish
+
+on:
+  pull_request:
+  push: { branches: master }
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v2
+      - 
+        name: Create .env
+        run: cp .env.example .env
+      - 
+        name: Prepare docker
+        run: docker compose build
+      - 
+        name: Run docker
+        run: docker compose up -d
+      -
+        name: Run backend tests
+        run: docker compose exec php composer test
+      -
+        name: Run frontend tests
+        run: docker compose exec node run test
