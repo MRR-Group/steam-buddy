@@ -15,7 +15,9 @@ use Illuminate\Notifications\Notifiable;
  * @property string $email
  * @property string $description
  * @property string $image
+ * @property string $steam_id
  * @property string $password
+ * @property Carbon $last_fetched
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -45,6 +47,14 @@ class User extends Authenticatable implements MustVerifyEmail
         "remember_token",
     ];
 
+    public function load_steam_data(string $steam_id, string $nickname, string $avatar): void
+    {
+        $this->steam_id = $steam_id;
+        $this->name = $nickname;
+        $this->image = $avatar;
+        $this->save();
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -53,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
+            "last_fetched" => "datetime",
             "email_verified_at" => "datetime",
             "password" => "hashed",
         ];

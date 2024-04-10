@@ -40,7 +40,7 @@ export const VerifyEmail = ({ status }) => {
           </PrimaryButton>
 
           <TextInputOption
-            left="Don't you want to do it right now?"
+            left="You don't want to do it right now?"
             linkText={`Click${'\u00A0'}here`}
             right={`to${'\u00A0'}Log${'\u00A0'}out.`}
             href={route('logout')}
