@@ -11,8 +11,6 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Steam\SteamConnectionController;
-use App\Http\Controllers\Steam\SteamDataFetcherController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("guest")->group(function (): void {
@@ -60,11 +58,4 @@ Route::middleware("auth")->group(function (): void {
 
     Route::post("logout", [AuthenticatedSessionController::class, "destroy"])
         ->name("logout");
-});
-
-Route::middleware(["auth", "verified"])->group(function (): void {
-    Route::get("/steam/connect", [SteamConnectionController::class, "show"])->name("steam.connect");
-    Route::get("/steam/redirect", [SteamConnectionController::class, "redirect"])->name("steam.redirect");
-    Route::get("/steam/callback", [SteamConnectionController::class, "callback"])->name("steam.callback");
-    Route::get("/steam/fetch", [SteamDataFetcherController::class, "show"])->name("steam.fetch");
 });

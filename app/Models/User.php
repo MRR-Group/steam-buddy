@@ -17,6 +17,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $image
  * @property string $steam_id
  * @property string $password
+ * @property Carbon $last_fetched
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -62,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
+            "last_fetched" => "datetime",
             "email_verified_at" => "datetime",
             "password" => "hashed",
         ];
