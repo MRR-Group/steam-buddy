@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+    php:
+        container_name: sb-php
+        working_dir: /app
+        user: $DOCKER_USER
+        volumes:
+            - app_files:/app
+        image: steam-buddy_php
+        build:
+            context: .
+            dockerfile: ./docker/production/php/Dockerfile
+        networks:
+            - app-net
+        depends_on:
+            database:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+
+    node:
+        image: steam-buddy_node
+        build:
+            context: .
+            dockerfile: ./docker/production/node/Dockerfile
+        container_name: sb-node
+        working_dir: /app
+        user: $DOCKER_USER
+        tty: true
+        ports:
+            - $NODE_PORT:$NODE_PORT
+        volumes:
+            - app_files:/app
+        networks:
+            - app-net
+
+networks:
+    app-net:
+        driver: bridge
+
+volumes:
+    app_files:
+    db_data:
+    redis_data:
