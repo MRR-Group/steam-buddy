@@ -14,23 +14,23 @@ describe("Steam connection screen", function (): void {
             $response->assertStatus(200);
         });
 
-        it("should redirect to login if user isn't logged", function(): void {
+        it("should redirect to login if user isn't logged", function (): void {
             $response = $this->get("/steam/connect");
-            
+
             expect($response->isRedirect("http://localhost/login"))->toBeTrue();
         });
 
-        it("should redirect to confirm if user email isn't confirmed", function(): void {
+        it("should redirect to confirm if user email isn't confirmed", function (): void {
             $user = User::factory()->unverified()->create();
             $response = $this->actingAs($user)->get("/steam/connect");
-            
+
             expect($response->isRedirect("http://localhost/verify-email"))->toBeTrue();
         });
 
-        it("should redirect to library if user is connected to steam", function(): void {
+        it("should redirect to library if user is connected to steam", function (): void {
             $user = User::factory()->create();
             $response = $this->actingAs($user)->get("/steam/connect");
-            
+
             expect($response->isRedirect("http://localhost/library"))->toBeTrue();
         });
     });
@@ -51,23 +51,23 @@ describe("Steam connection screen", function (): void {
             expect($response->isRedirect("https://redirected.to/steam/oath"))->toBeTrue();
         });
 
-        it("should redirect to login if user isn't logged", function(): void {
+        it("should redirect to login if user isn't logged", function (): void {
             $response = $this->get("/steam/redirect");
-            
+
             expect($response->isRedirect("http://localhost/login"))->toBeTrue();
         });
 
-        it("should redirect to confirm if user email isn't confirmed", function(): void {
+        it("should redirect to confirm if user email isn't confirmed", function (): void {
             $user = User::factory()->unverified()->create();
             $response = $this->actingAs($user)->get("/steam/redirect");
-            
+
             expect($response->isRedirect("http://localhost/verify-email"))->toBeTrue();
         });
 
-        it("should redirect to library if user is connected to steam", function(): void {
+        it("should redirect to library if user is connected to steam", function (): void {
             $user = User::factory()->create();
             $response = $this->actingAs($user)->get("/steam/redirect");
-            
+
             expect($response->isRedirect("http://localhost/library"))->toBeTrue();
         });
     });
@@ -77,7 +77,7 @@ describe("Steam connection screen", function (): void {
             $user = User::factory()->unconnected()->create();
 
             Socialite::shouldReceive("driver")->once()->with("steam")->andReturn(new class() {
-                public function user()
+                public function user(): void
                 {
                     throw new Exception("test");
                 }
@@ -95,7 +95,7 @@ describe("Steam connection screen", function (): void {
             Socialite::shouldReceive("driver")->once()->with("steam")->andReturn(new class() {
                 public function user()
                 {
-                    return new class() { 
+                    return new class() {
                         public $id = "test_id";
                         public $nickname = "test_nick";
                         public $avatar = "test_avatar";
@@ -113,23 +113,23 @@ describe("Steam connection screen", function (): void {
             $response->assertSessionHas("status", "Your steam account has been successfully connected to our service.");
         });
 
-        it("should redirect to login if user isn't logged", function(): void {
+        it("should redirect to login if user isn't logged", function (): void {
             $response = $this->get("/steam/callback");
-            
+
             expect($response->isRedirect("http://localhost/login"))->toBeTrue();
         });
 
-        it("should redirect to confirm if user email isn't confirmed", function(): void {
+        it("should redirect to confirm if user email isn't confirmed", function (): void {
             $user = User::factory()->unverified()->create();
             $response = $this->actingAs($user)->get("/steam/callback");
-            
+
             expect($response->isRedirect("http://localhost/verify-email"))->toBeTrue();
         });
 
-        it("should redirect to library if user is connected to steam", function(): void {
+        it("should redirect to library if user is connected to steam", function (): void {
             $user = User::factory()->create();
             $response = $this->actingAs($user)->get("/steam/callback");
-            
+
             expect($response->isRedirect("http://localhost/library"))->toBeTrue();
         });
     });
