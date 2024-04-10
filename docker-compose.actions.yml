@@ -12,11 +12,6 @@ services:
             dockerfile: ./docker/production/php/Dockerfile
         networks:
             - app-net
-        depends_on:
-            database:
-                condition: service_healthy
-            redis:
-                condition: service_healthy
 
     node:
         image: steam-buddy_node
