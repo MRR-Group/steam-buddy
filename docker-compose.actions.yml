@@ -19,3 +19,4 @@ services:
         working_dir: /app
         user: $DOCKER_USER
         tty: true
+        
