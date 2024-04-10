@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Steam;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\Steam\SteamService;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -21,12 +21,12 @@ class SteamConnectionController extends Controller
         return Inertia::render("Steam/Connect", ["status" => session("status")]);
     }
 
-    public function redirect()
+    public function redirect(): RedirectResponse
     {
         return Socialite::driver("steam")->redirect();
     }
 
-    public function callback(Request $request, SteamService $steam)
+    public function callback(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = $request->user();
