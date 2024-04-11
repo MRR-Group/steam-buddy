@@ -17,14 +17,8 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       - 
-        name: Create .env
-        run: cp .env.example .env
-      - 
-        name: Build docker
-        run: docker compose -f ./docker-compose.actions.yml build
-      - 
         name: Start docker
-        run: docker compose -f ./docker-compose.actions.yml up -d
+        run: make actions
       -
         name: Run backend tests
         run: docker compose exec php composer test

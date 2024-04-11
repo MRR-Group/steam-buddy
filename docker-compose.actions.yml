@@ -1,22 +1,13 @@
 version: '3.8'
 services:
-    php:
-        container_name: sb-php
-        working_dir: /app
-        user: $DOCKER_USER
-        image: steam-buddy_php
-        tty: true
-        build:
-            context: .
-            dockerfile: ./docker/production/php/Dockerfile
-
-    node:
-        image: steam-buddy_node
-        build:
-            context: .
-            dockerfile: ./docker/production/node/Dockerfile
-        container_name: sb-node
+    action:
+        container_name: sb-action
         working_dir: /app
         user: $DOCKER_USER
         tty: true
-        
+        build:
+            context: .
+            dockerfile: ./docker/actions/Dockerfile
+        volumes:
+            - .:/app
+            - ./docker/actions/database.sqlite:/app/database.sqlite

@@ -20,6 +20,7 @@ services:
         user: $DOCKER_USER
         volumes:
             - app_files:/app
+            - ./.env:/app/.env
         image: steam-buddy_php
         build:
             context: .
@@ -63,22 +64,6 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
-
-    node:
-        image: steam-buddy_node
-        build:
-            context: .
-            dockerfile: ./docker/production/node/Dockerfile
-        container_name: sb-node
-        working_dir: /app
-        user: $DOCKER_USER
-        tty: true
-        ports:
-            - $NODE_PORT:$NODE_PORT
-        volumes:
-            - app_files:/app
-        networks:
-            - app-net
 
 networks:
     app-net:
