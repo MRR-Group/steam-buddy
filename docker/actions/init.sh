@@ -1,7 +1,6 @@
 #!/bin/bash
 
 cp /app/.env.actions /app/.env
-echo " " > /app/database.sqlite 
 
 composer install
 
