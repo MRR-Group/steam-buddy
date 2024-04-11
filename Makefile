@@ -7,9 +7,13 @@ check-env-file:
 	  exit 1;\
 	fi; \
 
-run:
-	@docker compose up -d
-	@docker compose exec node npm run build
+actions:
+	@docker compose -f ./docker-compose.actions.yml up -d
+	@docker compose -f ./docker-compose.actions.yml exec -it action bash /app/docker/actions/init.sh
+
+prod:
+	@docker compose -f ./docker-compose.prod.yml up -d
+	@docker compose -f ./docker-compose.prod.yml exec -it php bash
 
 dev:
 	@docker compose up -d
