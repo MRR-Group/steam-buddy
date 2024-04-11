@@ -26,7 +26,7 @@ jobs:
         run: docker save -o image.tar steam-buddy_php:latest
       - 
         name: Pack release files into zip
-        run: zip -r steam-buddy.zip docker-compose.prod.yml docker/production/install.sh
+        run: zip -r steam-buddy.zip docker-compose.prod.yml docker/production/install.sh Makefile
       - 
         name: Upload image artifact
         uses: actions/upload-artifact@v2
