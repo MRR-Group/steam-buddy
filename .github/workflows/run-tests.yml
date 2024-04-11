@@ -21,7 +21,7 @@ jobs:
         run: make actions
       -
         name: Run backend tests
-        run: docker compose exec php composer test
+        run: docker compose exec action composer test
       -
         name: Run frontend tests
-        run: docker compose exec node run test
+        run: docker compose exec action run test
