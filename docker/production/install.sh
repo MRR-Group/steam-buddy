@@ -13,3 +13,5 @@ echo "$latest_release downloaded"
 echo "loading images to docker"
 docker load < ./image.tar
 echo "done"
+
+mkdir -p storage
