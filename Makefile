@@ -35,10 +35,16 @@ actions:
 
 prod:
 	@docker compose -f ./docker-compose.prod.yml up -d
+	@docker compose -f ./docker-compose.prod.yml exec -it action bash /app/docker/production/php/init.sh
 	@docker compose -f ./docker-compose.prod.yml exec -it php bash
 
-download:
+prod-down:
+	@docker compose -f ./docker-compose.prod.yml down
+
+prod-download:
+	@rm -f Makefile ./image.tar ./steam-buddy.zip ./docker-compose.prod.yml
+	@rm -rf ./docker
 	@chmod +x ./docker/production/install.sh
 	@./docker/production/install.sh
 
-.PHONY: init check-env-file run dev stop node php test fix
+.PHONY: init check-env-file run dev stop node php test fix actions prod-down prod-download prod-update
