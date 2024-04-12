@@ -43,8 +43,10 @@ prod-down:
 
 prod-download:
 	@rm -f Makefile ./image.tar ./steam-buddy.zip ./docker-compose.prod.yml
+	@cp ./docker/production/install.sh ./install.sh
 	@rm -rf ./docker
-	@chmod +x ./docker/production/install.sh
-	@./docker/production/install.sh
+	@chmod +x ./install.sh
+	@./install.sh
+	@rm -f ./install.sh
 
 .PHONY: init check-env-file run dev stop node php test fix actions prod-down prod-download prod-update
