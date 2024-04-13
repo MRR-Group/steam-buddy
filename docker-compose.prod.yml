@@ -6,7 +6,7 @@ services:
         working_dir: /app
         volumes:
             - ./docker/production/nginx/config.conf:/etc/nginx/conf.d/default.conf
-            - app_files:/app
+            - .:/app
         networks:
             - app-net
         ports:
@@ -19,8 +19,7 @@ services:
         working_dir: /app
         user: $DOCKER_USER
         volumes:
-            - app_files:/app
-            - ./storage:/app/storage
+            - .:/app
             - ./.env:/app/.env
         image: steam-buddy_php
         build:
@@ -71,6 +70,5 @@ networks:
         driver: bridge
 
 volumes:
-    app_files:
     db_data:
     redis_data:
