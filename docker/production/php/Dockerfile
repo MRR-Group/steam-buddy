@@ -4,6 +4,7 @@ RUN apk update
 RUN apk --no-cache add bash git
 
 COPY . /app
+COPY ./.env.example /app/.env
 WORKDIR /app
 RUN npm install
 RUN npm run build

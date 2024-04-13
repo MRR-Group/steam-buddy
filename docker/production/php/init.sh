@@ -5,5 +5,3 @@ composer install
 cp /build /app/public
 
 php artisan migrate
-php artisan cloudflare:reload
-
