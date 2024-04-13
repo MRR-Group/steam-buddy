@@ -9,3 +9,5 @@ mkdir -p  /app/storage/framework/cache
 mkdir -p  /app/storage/framework/testing
 
 mkdir -p  /app/storage/logs
+
+php artisan cloudflare:reload
