@@ -41,13 +41,4 @@ prod:
 prod-down:
 	@docker compose -f ./docker-compose.prod.yml down
 
-prod-download:
-	@rm -f /steam-buddy.zip ./image.tar
-	@chmod +x ./install.sh
-	@./docker/production/download.sh
-	@rm -f ./docker-compose.prod.yml
-	@rm -rf ./docker
-	@unzip ./steam-buddy.zip
-	@docker load < ./image.tar
-
 .PHONY: init check-env-file run dev stop node php test fix actions prod-down prod-download prod-update

@@ -2,7 +2,7 @@ name: Docker Image Publish
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "production" ]
 
 env:
   REGISTRY: ghcr.io
@@ -25,20 +25,11 @@ jobs:
         name: Save Docker images to tar
         run: docker save -o image.tar steam-buddy_php:latest
       - 
-        name: Pack release files into zip
-        run: zip -r steam-buddy.zip docker-compose.prod.yml docker/production Makefile
-      - 
         name: Upload image artifact
         uses: actions/upload-artifact@v2
         with:
           name: image.tar
           path: image.tar
-      -
-        name: Upload release artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: steam-buddy.zip
-          path: steam-buddy.zip
 
   release:
     needs: [build]
@@ -71,13 +62,3 @@ jobs:
           asset_path: image.tar/image.tar
           asset_name: image.tar
           asset_content_type: application/tar
-      - 
-        name: Upload release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: steam-buddy.zip/steam-buddy.zip
-          asset_name: steam-buddy.zip
-          asset_content_type: application/zip
