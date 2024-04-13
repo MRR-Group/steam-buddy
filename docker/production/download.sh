@@ -9,12 +9,3 @@ echo "found $latest_release"
 echo "downloading $latest_release"
 gh release download "$latest_release"  --repo $repo_url
 echo "$latest_release downloaded"
-
-echo "Unzip steam-buddy.zip"
-unzip ./steam-buddy.zip
-
-echo "loading images to docker"
-docker load < ./image.tar
-echo "done"
-
-mkdir -p storage
