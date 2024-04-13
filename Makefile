@@ -7,10 +7,6 @@ check-env-file:
 	  exit 1;\
 	fi; \
 
-run:
-	@docker compose up -d
-	@docker compose exec node npm run build
-
 dev:
 	@docker compose up -d
 	@docker compose exec node npm run dev
@@ -33,4 +29,16 @@ fix:
 	@docker compose exec -t node npm run lintf
 
 
-.PHONY: init check-env-file run dev stop node php test fix
+actions:
+	@docker compose -f ./docker-compose.actions.yml up -d
+	@docker compose -f ./docker-compose.actions.yml exec -it action bash /app/docker/actions/init.sh
+
+prod:
+	@docker compose -f ./docker-compose.prod.yml up -d
+	@docker compose -f ./docker-compose.prod.yml exec -it php bash /app/docker/production/php/init.sh
+	@docker compose -f ./docker-compose.prod.yml exec -it php bash
+
+prod-down:
+	@docker compose -f ./docker-compose.prod.yml down
+
+.PHONY: init check-env-file run dev stop node php test fix actions prod-down prod-download prod-update

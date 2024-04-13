@@ -2,17 +2,17 @@ import PropTypes from 'prop-types';
 import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export const Dashboard = ({ auth }) => {
+export const Library = ({ auth }) => {
   return (
     <AuthenticatedLayout
       user={auth.user}
       header={
         <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          Dashboard
+          Library
         </h2>
       }
     >
-      <Head title="Dashboard" />
+      <Head title="Library" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -25,7 +25,7 @@ export const Dashboard = ({ auth }) => {
   );
 };
 
-Dashboard.propTypes = {
+Library.propTypes = {
   auth: PropTypes.shape({
     user: PropTypes.any,
   }),

@@ -10,11 +10,9 @@ return new class() extends Migration {
     public function up(): void
     {
         Schema::table("users", function (Blueprint $table): void {
-            Schema::table("users", function (Blueprint $table): void {
-                $table->string("image")->nullable();
-                $table->string("description")->nullable();
-                $table->string("steam_id")->nullable();
-            });
+            $table->string("image")->nullable();
+            $table->string("description")->nullable();
+            $table->string("steam_id")->nullable();
         });
     }
 

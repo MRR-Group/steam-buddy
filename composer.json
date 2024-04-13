@@ -10,8 +10,10 @@
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9",
         "predis/predis": "^2.0",
+        "socialiteproviders/steam": "^4.2",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
@@ -54,7 +56,7 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "test": "",
+        "test": "@php artisan test",
         "csf": "./vendor/bin/php-cs-fixer fix --diff --config codestyle.php",
         "cs": "./vendor/bin/php-cs-fixer fix --dry-run --diff --config codestyle.php"
     },
