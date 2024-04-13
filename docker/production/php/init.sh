@@ -1,13 +1,9 @@
 chown -R www-data:www-data /app/storage
-mkdir -p  /app/storage
-mkdir -p  /app/storage/public
 
-mkdir -p  /app/storage/framework
-mkdir -p  /app/storage/framework/sessions
-mkdir -p  /app/storage/framework/views
-mkdir -p  /app/storage/framework/cache
-mkdir -p  /app/storage/framework/testing
+composer install
 
-mkdir -p  /app/storage/logs
+cp /build /app/public
 
+php artisan migrate
 php artisan cloudflare:reload
+

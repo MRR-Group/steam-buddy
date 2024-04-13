@@ -20,13 +20,7 @@ RUN apk --no-cache add bash zip git libzip-dev libpng-dev libpq-dev
 RUN docker-php-ext-install zip gd pdo pdo_pgsql
 RUN docker-php-ext-configure zip
 
-COPY . /app
-RUN rm -rf /app/public
-COPY --from=frontend /app/public /app/public
-
+COPY --from=frontend /app/public /build
 WORKDIR /app
-
-RUN composer install
-RUN chown -R www-data:www-data /app/storage
 
 ENTRYPOINT ["php-fpm"]
