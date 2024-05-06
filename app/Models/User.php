@@ -23,7 +23,7 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
