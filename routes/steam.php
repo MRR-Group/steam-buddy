@@ -14,4 +14,6 @@ Route::middleware(["auth", "verified", "steam.unconnected"])->group(function ():
 
 Route::middleware(["auth", "verified", "steam.connected"])->group(function (): void {
     Route::get("/steam/fetch", [SteamDataFetcherController::class, "show"])->name("steam.fetch");
+    Route::post("/steam/fetch", [SteamDataFetcherController::class, "fetch"]);
+    Route::get("/steam/fetch/progress", [SteamDataFetcherController::class, "progress"])->name("steam.fetch.progress");
 });
