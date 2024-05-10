@@ -3,11 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Validation\Validator;
 
 class InvalidSteamApiResponseException extends Exception
 {
-    public function __construct(private String $url, private Validator $validator, private array $response)
+    public function __construct(private String $url, private array $validation_error, private array $response)
     {
         parent::__construct("Data received from steam doesn't match validator rules!", 500);
     }
@@ -22,7 +21,7 @@ class InvalidSteamApiResponseException extends Exception
         return [
             "url" => $this->url,
             "response" => $this->response,
-            "errors" => $this->validator->messages(),
+            "errors" => $this->validation_error,
         ];
     }
 }

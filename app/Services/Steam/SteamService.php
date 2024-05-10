@@ -116,14 +116,14 @@ class SteamService
 
     protected function add_tags(GameDetail $game): void
     {
-        $game_tags = array_keys($this->api->get_game_tags($game->steam_id));
+        $game_tags = $this->api->get_game_tags($game->steam_id);
 
         $tags = Tag::get_by_names($game_tags);
         $game->tags()->attach($tags);
         $game->save();
     }
 
-    protected function is_game_multiplayer(int $game_id)
+    protected function is_game_multiplayer(int $game_id): bool
     {
         $tags = $this->get_game_tags($game_id);
 
@@ -139,7 +139,7 @@ class SteamService
     protected function get_game_tags(int $game_id)
     {
         if (!GameDetail::exist($game_id)) {
-            $tags = array_keys($this->api->get_game_tags($game_id));
+            $tags = $this->api->get_game_tags($game_id);
 
             return Tag::get_by_names($tags);
         }

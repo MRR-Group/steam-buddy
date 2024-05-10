@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\SteamApi;
 
-use Illuminate\Http\Client\Response;
+use App\Exceptions\InvalidSteamApiResponseException;
+use App\Exceptions\InvalidSteamTokenException;
+use App\Exceptions\NoJSONInSteamApiResponseException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class SteamApiService
@@ -19,9 +22,14 @@ class SteamApiService
     public function get_games(string $steam_id): array
     {
         $url = self::URL . "IPlayerService/GetOwnedGames/v0001/?key=" . $this->token . "&steamid=" . $steam_id . "&format=json&include_played_free_games&include_appinfo=1";
-        $response = Http::get($url);
+        $validation = [
+            'response' => 'present|array',
+            'response.games' => 'present|array',
+            'response.games.*.appid' => 'present|numeric',
+            'response.games.*.playtime_forever' => 'present|numeric',
+        ];
 
-        $json = $this->load_json_or_throw_error($response);
+        $json = $this->fetch_json_or_throw_error($url, $validation);
 
         return $json["response"]["games"];
     }
@@ -29,9 +37,14 @@ class SteamApiService
     public function get_user_achievements_for_game(string $steam_id, int $game_id)
     {
         $url = self::URL . "ISteamUserStats/GetPlayerAchievements/v0001/?appid=" . $game_id . "&key=" . $this->token . "&steamid=" . $steam_id . "&format=json";
-        $response = Http::get($url);
+        $validation = [
+            'playerstats' => 'present|array',
+            'playerstats.achievements' => 'nullable|array',
+            'playerstats.achievements.*.unlocktime' => 'present|numeric',
+            'playerstats.achievements.*.apiname' => 'present|string',
+        ];
 
-        $json = $this->load_json_or_throw_error($response);
+        $json = $this->fetch_json_or_throw_error($url, $validation);
         $data = $json["playerstats"];
 
         if (!array_key_exists("achievements", $data)) {
@@ -44,34 +57,55 @@ class SteamApiService
     public function get_game_achievements(int $game_id)
     {
         $url = self::URL . "ISteamUserStats/GetSchemaForGame/v0002/?appid=" . $game_id . "&key=" . $this->token . "&l=english&format=json";
-        $response = Http::get($url);
+        $validation = [
+            'game' => 'present|array',
+            'game.availableGameStats' => 'nullable|array',
+            'game.availableGameStats.achievements' => 'nullable|array',
+            'game.availableGameStats.achievements.*.name' => 'present|string',
+            'game.availableGameStats.achievements.*.description' => 'nullable|string',
+            'game.availableGameStats.achievements.*.displayName' => 'present|string',
+            'game.availableGameStats.achievements.*.icon' => 'present|string',
+        ];
 
-        $json = $this->load_json_or_throw_error($response);
+        $json = $this->fetch_json_or_throw_error($url, $validation);
 
-        // Game is set to private by publisher.
-        if (!array_key_exists("availableGameStats", $json["game"])) {
+        // Game can be hidden be publisher.
+        $is_game_available = Validator::make($json["game"], [
+            'availableGameStats' => 'present|array',
+            'availableGameStats.achievements' => 'present',
+        ]);
+
+        if ($is_game_available->fails()) {
             return [];
         }
 
-        $data = $json["game"]["availableGameStats"];
-
-        if (!array_key_exists("achievements", $data)) {
-            return [];
-        }
-
-        return $data["achievements"];
+        return $json["game"]["availableGameStats"]["achievements"];
     }
 
     public function get_game_data(int $game_id)
     {
         $url = "https://store.steampowered.com/api/appdetails?appids=" . $game_id;
-        $response = Http::get($url);
 
-        $json = $this->load_json_or_throw_error($response);
+        $validation = [
+            $game_id . '.data' => 'nullable|array',
+            $game_id . '.data.name' => 'required_if:'.$game_id.',data|string',
+            $game_id . '.data.detailed_description' => 'required_if:'.$game_id.',data|string',
+        ];
+        
+        $json = $this->fetch_json_or_throw_error($url, $validation);
 
-        // Game is no longer available
-        if (!array_key_exists("data", $json[$game_id])) {
-            return;
+        // I cannot manage the '$game_id => "present|array|"' validation rule to work, so i moved it here.
+        if (!array_key_exists($game_id, $json)) {
+            throw new InvalidSteamApiResponseException($url, array("The " . $game_id . " field must be present."), $json);
+        }
+
+        // Game can be hidden be publisher.
+        $is_game_available = Validator::make($json[$game_id], [
+            'data' => 'present',
+        ]);
+
+        if ($is_game_available->fails()) {
+            return null;
         }
 
         return $json[$game_id]["data"];
@@ -80,11 +114,11 @@ class SteamApiService
     public function get_game_tags(int $game_id)
     {
         $url = "https://steamspy.com/api.php?request=appdetails&appid=" . $game_id;
-        $response = Http::get($url);
+        $validation = ['tags' => 'present|array'];
 
-        $json = $this->load_json_or_throw_error($response);
+        $json = $this->fetch_json_or_throw_error($url, $validation);
 
-        return $json["tags"];
+        return array_keys($json["tags"]);
     }
 
     public function get_game_cover(int $game_id): string
@@ -102,18 +136,26 @@ class SteamApiService
         return "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/logo.png";
     }
 
-    protected function load_json_or_throw_error(Response $response): array
+    protected function fetch_json_or_throw_error(String $url, array $rules): array
     {
+        $response = Http::get($url);
+
         if ($response->status() === HttpFoundationResponse::HTTP_BAD_REQUEST) {
-            // throw invalid steam_token_error;
+            throw new InvalidSteamTokenException();
         }
 
         $json = $response->json();
 
         if ($json === null) {
-            // throw no json response error
+            throw new NoJSONInSteamApiResponseException($url, $response);
         }
 
-        return $json;
+        $validator = Validator::make($json, $rules);
+
+        if ($validator->fails()) {
+            throw new InvalidSteamApiResponseException($url, $validator->messages()->messages(), $response->json());
+        }
+
+        return $validator->valid();
     }
 }
