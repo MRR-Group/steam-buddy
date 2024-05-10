@@ -28,11 +28,12 @@ class SteamDataFetcherController extends Controller
         return Inertia::render("Steam/Fetch", [
             "name" => $user->name, 
             "batch" => $batch->id,
-            "status" => session("status")
+            "status" => session("status"),
         ]);
     }
 
-    public function progress(Request $request) {
+    public function progress(Request $request)
+    {
         $batch = Bus::findBatch($request->batch);
 
         return [

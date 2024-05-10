@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,11 +21,12 @@ class Game extends Model
 {
     use HasFactory;
 
-    public function with_data(): array {
+    public function with_data(): array
+    {
         /** @var GameDetail $data */
         $data = $this->data()->get()->first(); 
 
-        return [ 
+        return [
             "id" => $this->id,
             "steam_id" => $this->steam_id,
             "play_time" => $this->play_time,
@@ -33,12 +36,13 @@ class Game extends Model
         ];
     }
 
-    public function full(): array {
+    public function full(): array
+    {
         /** @var GameDetail $data */
         $data = $this->data()->get()->first(); 
         $achievements = [];
 
-        foreach($this->achievements()->get() as $achievement) {
+        foreach ($this->achievements()->get() as $achievement) {
             $achievement_data = $achievement->data()->get()->first();
 
             array_push($achievements, [
@@ -53,11 +57,11 @@ class Game extends Model
 
         $tags = [];
 
-        foreach($data->tags as $tag) {
+        foreach ($data->tags as $tag) {
             array_push($tags, $tag->name);
         }
 
-        return [ 
+        return [
             "id" => $this->id,
             "steam_id" => $this->steam_id,
             "play_time" => $this->play_time,
@@ -69,8 +73,9 @@ class Game extends Model
         ];
     }
 
-    public static function get_by_steam_id(int $steam_id): ?self {
-        return Game::where('steam_id', $steam_id)->first();
+    public static function get_by_steam_id(int $steam_id): ?self
+    {
+        return self::where("steam_id", $steam_id)->first();
     }
 
     public function data(): BelongsTo

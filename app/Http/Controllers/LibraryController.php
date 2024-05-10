@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -8,7 +10,8 @@ use Inertia\Inertia;
 
 class LibraryController extends Controller
 {
-    public function show(Request $request) {
+    public function show(Request $request)
+    {
         /** @var User $user */ 
         $user = $request->user();
         $games = [];

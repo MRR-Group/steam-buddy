@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,15 +27,18 @@ class GameDetail extends Model
         return $this->hasMany(Game::class);
     }
 
-    public function tags(): BelongsToMany {
+    public function tags(): BelongsToMany
+    {
         return $this->belongsToMany(Tag::class);
     }
 
-    public static function get_by_steam_id(int $steam_id): ?self {
-        return self::where('steam_id', $steam_id)->first();
+    public static function get_by_steam_id(int $steam_id): ?self
+    {
+        return self::where("steam_id", $steam_id)->first();
     }
 
-    public static function exist(int $steam_id): bool {
-        return self::get_by_steam_id($steam_id) != null;
+    public static function exist(int $steam_id): bool
+    {
+        return self::get_by_steam_id($steam_id) !== null;
     }
 }

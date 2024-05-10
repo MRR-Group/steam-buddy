@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Models\User;
@@ -13,23 +15,27 @@ use Illuminate\Queue\SerializesModels;
 
 class FetchSteamGame implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.
      */
     public function __construct(
-        private int $game_id, 
-        private int $playtime, 
-        private User $user
-    ){}
+        private int $game_id,
+        private int $playtime,
+        private User $user,
+    ) {}
 
     /**
      * Execute the job.
      */
     public function handle(SteamService $steam): void
     {
-        if ($this->batch()->cancelled()) { 
+        if ($this->batch()->cancelled()) {
             return;
         }
 

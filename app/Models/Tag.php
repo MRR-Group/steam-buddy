@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,29 +34,32 @@ class Tag extends Model
         "MOBA",
         "Asynchronous Multiplayer",
         "PvE",
-        "PvP"
-    ];
-    
-    protected $fillable = ['name'];
+        "PvP",
+    ];    
+    protected $fillable = ["name"];
 
     public function game(): BelongsToMany
     {
         return $this->belongsToMany(GameDetail::class);
     }
 
-    public function is_multiplayer() {
-        return in_array($this->name, self::$MULTIPLAYER_TAGS);
+    public function is_multiplayer()
+    {
+        return in_array($this->name, self::$MULTIPLAYER_TAGS, true);
     }
 
-    public static function get_by_name(string $name): ?self {
-        return self::where('name', $name)->first();
+    public static function get_by_name(string $name): ?self
+    {
+        return self::where("name", $name)->first();
     }
 
-    public static function get_by_names(array $names) {
-        return self::whereIn('name', $names)->get();
+    public static function get_by_names(array $names)
+    {
+        return self::whereIn("name", $names)->get();
     }
 
-    public static function exist(string $name) : bool {
-        return self::get_by_name($name) != null;
+    public static function exist(string $name): bool
+    {
+        return self::get_by_name($name) !== null;
     }
 }

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
@@ -27,7 +25,8 @@ class TagFactory extends Factory
         ];
     }
 
-    public function name(string $name): static {
+    public function name(string $name): static
+    {
         return $this->state(fn(array $attributes) => [
             "name" => $name,
         ]);

@@ -15,7 +15,7 @@ describe("CSVParser", function (): void {
         $parser = new CSVParser();
         $parser->parse("");
     })->throws(CSVParsingException::class);
-    
+
     it("should parse string to csv array", function (): void {
         $parser = new CSVParser();
         $result = $parser->parse("test1,test2\n0,1\nfalse,true");

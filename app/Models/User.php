@@ -56,6 +56,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->save();
     }
 
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -68,9 +73,5 @@ class User extends Authenticatable implements MustVerifyEmail
             "email_verified_at" => "datetime",
             "password" => "hashed",
         ];
-    }
-
-    public function games(): HasMany {
-        return $this->hasMany(Game::class);
     }
 }

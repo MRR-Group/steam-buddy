@@ -27,15 +27,15 @@ class SteamService
         $data = $this->api->get_games($user->steam_id);
         $jobs = [];
 
-        foreach ($data as $game) {             
-            array_push($jobs, new FetchSteamGame($game["appid"], $game["playtime_forever"], $user));
+        foreach ($data as $game) {
+            $jobs[] = new FetchSteamGame($game["appid"], $game["playtime_forever"], $user);
         }
 
         return Bus::batch($jobs)->dispatch();
     }
- 
+
     public function fetch_game(int $game_id, int $playtime, User $user): void
-    {                
+    {
         if (!$this->is_game_multiplayer($game_id)) {
             return;
         }
@@ -43,10 +43,10 @@ class SteamService
         $model = new Game();
         $model->steam_id = $game_id;
         $model->play_time = $playtime;
-        
+
         $data = $this->get_game_data($game_id);
 
-        if ($data == null) {
+        if ($data === null) {
             return;
         }
 
@@ -57,7 +57,8 @@ class SteamService
         $this->create_user_achievements($model, $user->steam_id);
     }
 
-    protected function get_game_data(int $game_id): ?GameDetail {
+    protected function get_game_data(int $game_id): ?GameDetail
+    {
         if (GameDetail::exist($game_id)) {
             return GameDetail::get_by_steam_id($game_id);
         }
@@ -65,10 +66,11 @@ class SteamService
         return $this->fetch_game_data($game_id);
     }
 
-    protected function fetch_game_data(int $game_id): ?GameDetail {
+    protected function fetch_game_data(int $game_id): ?GameDetail
+    {
         $details = $this->api->get_game_data($game_id);
 
-        if ($details == null) {
+        if ($details === null) {
             return null;
         }
 
@@ -85,7 +87,8 @@ class SteamService
         return $model;
     }
 
-    protected function update_achievements_data(int $game_id) {
+    protected function update_achievements_data(int $game_id): void
+    {
         $achievements = $this->api->get_game_achievements($game_id);
 
         foreach ($achievements as $achievement) {
@@ -93,7 +96,8 @@ class SteamService
         }
     }
 
-    protected function create_achievement_if_not_exist(int $game_id, array $json) {            
+    protected function create_achievement_if_not_exist(int $game_id, array $json): void
+    {
         if (AchievementDetail::exist($game_id, $json["name"])) {
             return;
         }
@@ -110,7 +114,8 @@ class SteamService
         $model->save();
     }
 
-    protected function add_tags(GameDetail $game) {
+    protected function add_tags(GameDetail $game): void
+    {
         $game_tags = array_keys($this->api->get_game_tags($game->steam_id));
 
         $tags = Tag::get_by_names($game_tags);
@@ -118,7 +123,8 @@ class SteamService
         $game->save();
     }
 
-    protected function is_game_multiplayer(int $game_id) {
+    protected function is_game_multiplayer(int $game_id)
+    {
         $tags = $this->get_game_tags($game_id);
 
         foreach ($tags as $tag) {
@@ -130,25 +136,27 @@ class SteamService
         return false;
     }
 
-    protected function get_game_tags(int $game_id) {
+    protected function get_game_tags(int $game_id)
+    {
         if (!GameDetail::exist($game_id)) {
             $tags = array_keys($this->api->get_game_tags($game_id));
 
             return Tag::get_by_names($tags);
         }
-        
+
         $detail = GameDetail::get_by_steam_id($game_id);
 
         return $detail->tags()->get();
     }
 
-    protected function create_user_achievements(Game $game, string $steam_id) {
+    protected function create_user_achievements(Game $game, string $steam_id): void
+    {
         $achievements = $this->api->get_user_achievements_for_game($steam_id, $game->steam_id);
-        
-        foreach($achievements as $json) {
+
+        foreach ($achievements as $json) {
             $unlocked_at = $json["unlocktime"];
             $model = new Achievement();
-            
+
             if ($unlocked_at <= 0) {
                 continue;
             }

@@ -33,7 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->appendToGroup("steam", [
             EnsureSteamIsConnected::class,
-            // EnsureProfileDataAreFetched::class, TO-DO uncomment this line when fetching functionality will be ready
+            EnsureProfileDataAreFetched::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

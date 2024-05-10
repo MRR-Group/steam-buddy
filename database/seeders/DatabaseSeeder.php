@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->unconnected()->create([
             "email" => "test@example.com",
-            'password' => Hash::make('test@example.com'),
-            'email_verified_at' => now(),
+            "password" => Hash::make("test@example.com"),
+            "email_verified_at" => now(),
             "last_fetch" => null,
         ]);
     }
