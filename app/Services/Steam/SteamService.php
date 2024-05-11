@@ -57,6 +57,32 @@ class SteamService
         $this->create_user_achievements($model, $user->steam_id);
     }
 
+    protected function is_game_multiplayer(int $game_id): bool
+    {
+        $tags = $this->get_game_tags($game_id);
+
+        foreach ($tags as $tag) {
+            if ($tag->is_multiplayer()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function get_game_tags(int $game_id)
+    {
+        if (!GameDetail::exist($game_id)) {
+            $tags = $this->api->get_game_tags($game_id);
+
+            return Tag::get_by_names($tags);
+        }
+
+        $detail = GameDetail::get_by_steam_id($game_id);
+
+        return $detail->tags()->get();
+    }
+
     protected function get_game_data(int $game_id): ?GameDetail
     {
         if (GameDetail::exist($game_id)) {
@@ -121,32 +147,6 @@ class SteamService
         $tags = Tag::get_by_names($game_tags);
         $game->tags()->attach($tags);
         $game->save();
-    }
-
-    protected function is_game_multiplayer(int $game_id): bool
-    {
-        $tags = $this->get_game_tags($game_id);
-
-        foreach ($tags as $tag) {
-            if ($tag->is_multiplayer()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected function get_game_tags(int $game_id)
-    {
-        if (!GameDetail::exist($game_id)) {
-            $tags = $this->api->get_game_tags($game_id);
-
-            return Tag::get_by_names($tags);
-        }
-
-        $detail = GameDetail::get_by_steam_id($game_id);
-
-        return $detail->tags()->get();
     }
 
     protected function create_user_achievements(Game $game, string $steam_id): void
