@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -22,8 +24,9 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- */
-class User extends Authenticatable implements MustVerifyEmail
+ *
+ * @property Collection<Game> $games;
+ */class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;

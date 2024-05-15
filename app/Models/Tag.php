@@ -7,12 +7,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property Collection<GameDetail> $games;
  */
 class Tag extends Model
 {
@@ -51,12 +55,12 @@ class Tag extends Model
 
     public static function get_by_name(string $name): ?self
     {
-        return self::where("name", $name)->first();
+        return self::query()->where("name", $name)->first();
     }
 
     public static function get_by_names(array $names)
     {
-        return self::whereIn("name", $names)->get();
+        return self::query()->whereIn("name", $names)->get();
     }
 
     public static function exist(string $name): bool

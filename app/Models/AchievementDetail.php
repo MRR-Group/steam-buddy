@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -17,6 +18,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $icon
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property AchievementDetail $data
+ * @property Game $game
+ * @property Collection<Achievement> $achievements
  */
 class AchievementDetail extends Model
 {

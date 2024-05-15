@@ -80,7 +80,7 @@ class SteamService
 
         $detail = GameDetail::get_by_steam_id($game_id);
 
-        return $detail->tags()->get();
+        return $detail->tags;
     }
 
     protected function get_game_data(int $game_id): ?GameDetail

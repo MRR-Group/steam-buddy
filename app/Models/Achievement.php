@@ -12,11 +12,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property string $steam_id
- * @property int $game_id;s
- * @property int $achievement_data_id;
+ * @property int $game_id
+ * @property int $achievement_data_id
  * @property Carbon $unlocked_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property AchievementDetail $data
+ * @property Game $game
  */
 class Achievement extends Model
 {
