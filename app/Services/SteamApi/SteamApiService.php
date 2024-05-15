@@ -23,10 +23,10 @@ class SteamApiService
     {
         $url = self::URL . "IPlayerService/GetOwnedGames/v0001/?key=" . $this->token . "&steamid=" . $steam_id . "&format=json&include_played_free_games&include_appinfo=1";
         $validation = [
-            'response' => 'present|array',
-            'response.games' => 'present|array',
-            'response.games.*.appid' => 'present|numeric',
-            'response.games.*.playtime_forever' => 'present|numeric',
+            "response" => "present|array",
+            "response.games" => "present|array",
+            "response.games.*.appid" => "present|numeric",
+            "response.games.*.playtime_forever" => "present|numeric",
         ];
 
         $json = $this->fetch_json_or_throw_error($url, $validation);
@@ -38,10 +38,10 @@ class SteamApiService
     {
         $url = self::URL . "ISteamUserStats/GetPlayerAchievements/v0001/?appid=" . $game_id . "&key=" . $this->token . "&steamid=" . $steam_id . "&format=json";
         $validation = [
-            'playerstats' => 'present|array',
-            'playerstats.achievements' => 'nullable|array',
-            'playerstats.achievements.*.unlocktime' => 'present|numeric',
-            'playerstats.achievements.*.apiname' => 'present|string',
+            "playerstats" => "present|array",
+            "playerstats.achievements" => "nullable|array",
+            "playerstats.achievements.*.unlocktime" => "present|numeric",
+            "playerstats.achievements.*.apiname" => "present|string",
         ];
 
         $json = $this->fetch_json_or_throw_error($url, $validation);
@@ -58,21 +58,21 @@ class SteamApiService
     {
         $url = self::URL . "ISteamUserStats/GetSchemaForGame/v0002/?appid=" . $game_id . "&key=" . $this->token . "&l=english&format=json";
         $validation = [
-            'game' => 'present|array',
-            'game.availableGameStats' => 'nullable|array',
-            'game.availableGameStats.achievements' => 'nullable|array',
-            'game.availableGameStats.achievements.*.name' => 'present|string',
-            'game.availableGameStats.achievements.*.description' => 'nullable|string',
-            'game.availableGameStats.achievements.*.displayName' => 'present|string',
-            'game.availableGameStats.achievements.*.icon' => 'present|string',
+            "game" => "present|array",
+            "game.availableGameStats" => "nullable|array",
+            "game.availableGameStats.achievements" => "nullable|array",
+            "game.availableGameStats.achievements.*.name" => "present|string",
+            "game.availableGameStats.achievements.*.description" => "nullable|string",
+            "game.availableGameStats.achievements.*.displayName" => "present|string",
+            "game.availableGameStats.achievements.*.icon" => "present|string",
         ];
 
         $json = $this->fetch_json_or_throw_error($url, $validation);
 
         // Game can be hidden be publisher.
         $is_game_available = Validator::make($json["game"], [
-            'availableGameStats' => 'present|array',
-            'availableGameStats.achievements' => 'present',
+            "availableGameStats" => "present|array",
+            "availableGameStats.achievements" => "present",
         ]);
 
         if ($is_game_available->fails()) {
@@ -87,25 +87,25 @@ class SteamApiService
         $url = "https://store.steampowered.com/api/appdetails?appids=" . $game_id;
 
         $validation = [
-            $game_id . '.data' => 'nullable|array',
-            $game_id . '.data.name' => 'required_if:'.$game_id.',data|string',
-            $game_id . '.data.detailed_description' => 'required_if:'.$game_id.',data|string',
+            $game_id . ".data" => "nullable|array",
+            $game_id . ".data.name" => "required_if:" . $game_id . ",data|string",
+            $game_id . ".data.detailed_description" => "required_if:" . $game_id . ",data|string",
         ];
-        
+
         $json = $this->fetch_json_or_throw_error($url, $validation);
 
         // I cannot manage the '$game_id => "present|array|"' validation rule to work, so i moved it here.
         if (!array_key_exists($game_id, $json)) {
-            throw new InvalidSteamApiResponseException($url, array("The " . $game_id . " field must be present."), $json);
+            throw new InvalidSteamApiResponseException($url, ["The " . $game_id . " field must be present."], $json);
         }
 
         // Game can be hidden be publisher.
         $is_game_available = Validator::make($json[$game_id], [
-            'data' => 'present',
+            "data" => "present",
         ]);
 
         if ($is_game_available->fails()) {
-            return null;
+            return;
         }
 
         return $json[$game_id]["data"];
@@ -114,7 +114,7 @@ class SteamApiService
     public function get_game_tags(int $game_id)
     {
         $url = "https://steamspy.com/api.php?request=appdetails&appid=" . $game_id;
-        $validation = ['tags' => 'present|array'];
+        $validation = ["tags" => "present|array"];
 
         $json = $this->fetch_json_or_throw_error($url, $validation);
 

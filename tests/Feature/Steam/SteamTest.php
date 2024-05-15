@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 function run_method(mixed $object, string $method_name, array $args)
 {
-    $class = new \ReflectionClass($object);
+    $class = new ReflectionClass($object);
     $method = $class->getMethod($method_name);
 
     return $method->invokeArgs($object, $args);
@@ -23,50 +23,50 @@ function run_method(mixed $object, string $method_name, array $args)
 function mock_steam_api(): SteamApiService
 {
     return new class("TOKEN") extends SteamApiService {
-        function get_games(string $steam_id): array
+        public function get_games(string $steam_id): array
         {
-            return array([
+            return [[
                 "appid" => 0,
                 "playtime_forever" => 1112470620,
-            ]);
+            ]];
         }
 
-        function get_game_data(int $game_id): array
+        public function get_game_data(int $game_id): array
         {
-            return  [
+            return [
                 "name" => "WarThunder",
                 "detailed_description" => "War Thunder is the most comprehensive free-to-play, cross-platform, MMO military game",
             ];
         }
 
-        function get_game_cover(int $game_id): string
+        public function get_game_cover(int $game_id): string
         {
             return "localhost/cover.png";
         }
 
-        function get_game_tags(int $game_id): array
+        public function get_game_tags(int $game_id): array
         {
             return ["MMO", "FPS"];
         }
 
-        function get_game_achievements(int $game_id): array
+        public function get_game_achievements(int $game_id): array
         {
-            return array([
+            return [[
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
-                "description" => "Use tank in the battle"
-            ]);
+                "description" => "Use tank in the battle",
+            ]];
         }
 
-        function get_user_achievements_for_game($steam_id, $game_id): array
+        public function get_user_achievements_for_game($steam_id, $game_id): array
         {
-            return array(
+            return [
                 [
                     "unlocktime" => Carbon::now()->getTimestamp(),
-                    "apiname" => "TANKMAN"
+                    "apiname" => "TANKMAN",
                 ],
-            );
+            ];
         }
     };
 }
@@ -75,18 +75,18 @@ describe("Steam", function (): void {
     describe("create_user_achievements", function (): void {
         it("should save fetched achievements in database", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {
-                function get_user_achievements_for_game($steam_id, $game_id): array
+                public function get_user_achievements_for_game($steam_id, $game_id): array
                 {
-                    return array(
+                    return [
                         [
                             "unlocktime" => Carbon::now()->getTimestamp(),
-                            "apiname" => "TANKMAN"
+                            "apiname" => "TANKMAN",
                         ],
                         [
                             "unlocktime" => Carbon::now()->getTimestamp(),
-                            "apiname" => "TANK_DESTROYER"
-                        ]
-                    );
+                            "apiname" => "TANK_DESTROYER",
+                        ],
+                    ];
                 }
             });
 
@@ -95,7 +95,7 @@ describe("Steam", function (): void {
             AchievementDetail::factory()->steam_id(0, "TANKMAN")->create();
             AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create();
 
-            run_method($service, "create_user_achievements", array($game, "USER_ID"));
+            run_method($service, "create_user_achievements", [$game, "USER_ID"]);
 
             expect(count(Achievement::all()))->toBe(2)
                 ->and(Achievement::query()->where(["steam_id" => "0/TANKMAN"])->count())->toBe(1)
@@ -104,18 +104,18 @@ describe("Steam", function (): void {
 
         it("should skip unachieved achievements", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {
-                function get_user_achievements_for_game($steam_id, $game_id): array
+                public function get_user_achievements_for_game($steam_id, $game_id): array
                 {
-                    return array(
+                    return [
                         [
                             "unlocktime" => 0,
-                            "apiname" => "TANKMAN"
+                            "apiname" => "TANKMAN",
                         ],
                         [
                             "unlocktime" => Carbon::now()->getTimestamp(),
-                            "apiname" => "TANK_DESTROYER"
-                        ]
-                    );
+                            "apiname" => "TANK_DESTROYER",
+                        ],
+                    ];
                 }
             });
 
@@ -124,7 +124,7 @@ describe("Steam", function (): void {
             AchievementDetail::factory()->steam_id(0, "TANKMAN")->create();
             AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create();
 
-            run_method($service, "create_user_achievements", array($game, "USER_ID"));
+            run_method($service, "create_user_achievements", [$game, "USER_ID"]);
 
             expect(count(Achievement::all()))->toBe(1)
                 ->and(Achievement::query()->where(["steam_id" => "0/TANKMAN"])->count())->toBe(0)
@@ -135,21 +135,21 @@ describe("Steam", function (): void {
     describe("add_tags", function (): void {
         it("should add tags to game", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {
-                function get_game_tags(int $game_id): array
+                public function get_game_tags(int $game_id): array
                 {
-                    return array(
-                        "MMO", "RPG"
-                    );
+                    return [
+                        "MMO", "RPG",
+                    ];
                 }
             });
 
             /** @var GameDetail $game */
             $game = GameDetail::factory()->steam_id(0)->create();
 
-           Tag::factory()->name("MMO")->create();
-           Tag::factory()->name("RPG")->create();
+            Tag::factory()->name("MMO")->create();
+            Tag::factory()->name("RPG")->create();
 
-            run_method($service, "add_tags", array($game));
+            run_method($service, "add_tags", [$game]);
 
             expect(array_map(fn($game) => $game["name"], $game->tags->toArray()))->toBe(["MMO", "RPG"]);
         });
@@ -160,12 +160,12 @@ describe("Steam", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {});
             GameDetail::factory()->steam_id(0)->create();
 
-            run_method($service, "create_achievement_if_not_exist", array(0, [
+            run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
-                "description" => "Use tank in the battle"
-            ]));
+                "description" => "Use tank in the battle",
+            ]]);
 
             expect(AchievementDetail::query()->where(["steam_id" => "0/TANKMAN"])->count())->toBe(1);
         });
@@ -174,11 +174,11 @@ describe("Steam", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {});
             GameDetail::factory()->steam_id(0)->create();
 
-            run_method($service, "create_achievement_if_not_exist", array(0, [
+            run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
-            ]));
+            ]]);
 
             expect(AchievementDetail::query()->first()->description)->toBe("");
         });
@@ -188,19 +188,19 @@ describe("Steam", function (): void {
             GameDetail::factory()->steam_id(0)->create();
             AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create();
 
-            run_method($service, "create_achievement_if_not_exist", array(0, [
+            run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
-                "description" => "Use tank in the battle"
-            ]));
+                "description" => "Use tank in the battle",
+            ]]);
 
-            run_method($service, "create_achievement_if_not_exist", array(0, [
+            run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANK_DESTROYER",
                 "displayName" => "Tank destroyer",
                 "icon" => "localhost/icon.png",
-                "description" => "Use tank destroyer in the battle"
-            ]));
+                "description" => "Use tank destroyer in the battle",
+            ]]);
 
             expect(AchievementDetail::query()->count())->toBe(2);
         });
@@ -209,27 +209,27 @@ describe("Steam", function (): void {
     describe("update_achievements_data", function (): void {
         it("should update achievement data", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {
-                function get_game_achievements(int $game_id): array
+                public function get_game_achievements(int $game_id): array
                 {
-                    return  array([
+                    return [[
                         "name" => "TANKMAN",
                         "displayName" => "Tankman",
                         "icon" => "localhost/icon.png",
-                        "description" => "Use tank in the battle"
+                        "description" => "Use tank in the battle",
                     ],
-                    [
-                        "name" => "TANK_DESTROYER",
-                        "displayName" => "Tank destroyer",
-                        "icon" => "localhost/icon.png",
-                        "description" => "Use tank destroyer in the battle"
-                    ]);
+                        [
+                            "name" => "TANK_DESTROYER",
+                            "displayName" => "Tank destroyer",
+                            "icon" => "localhost/icon.png",
+                            "description" => "Use tank destroyer in the battle",
+                        ]];
                 }
             });
 
             GameDetail::factory()->steam_id(0)->create();
             AchievementDetail::factory()->steam_id(0, "TANKMAN")->create();
 
-            run_method($service, "update_achievements_data", array(0));
+            run_method($service, "update_achievements_data", [0]);
 
             expect(AchievementDetail::query()->count())->toBe(2);
         });
@@ -242,7 +242,7 @@ describe("Steam", function (): void {
             Tag::factory()->name("MMO")->create();
             Tag::factory()->name("FPS")->create();
 
-            $game = run_method($service, "fetch_game_data", array(0));
+            $game = run_method($service, "fetch_game_data", [0]);
 
             expect($game->name)->toBe("WarThunder")
                 ->and($game->description)->toBe("War Thunder is the most comprehensive free-to-play, cross-platform, MMO military game")
@@ -252,13 +252,13 @@ describe("Steam", function (): void {
 
         it("should return null if game does not exist in steamDB or is private", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {
-                function get_game_data(int $game_id): null
+                public function get_game_data(int $game_id): null
                 {
                     return null;
                 }
             });
 
-            $game = run_method($service, "fetch_game_data", array(0));
+            $game = run_method($service, "fetch_game_data", [0]);
             expect($game)->toBeNull();
         });
     });
@@ -269,14 +269,14 @@ describe("Steam", function (): void {
 
             GameDetail::factory()->steam_id(0)->create();
 
-            $game = run_method($service, "fetch_game_data", array(0));
+            $game = run_method($service, "fetch_game_data", [0]);
             expect($game->steam_id)->toEqual(0);
         });
 
         it("should fetch GameDetail from steam if it does not exist in database", function (): void {
             $service = new SteamService(mock_steam_api());
 
-            $game = run_method($service, "fetch_game_data", array(0));
+            $game = run_method($service, "fetch_game_data", [0]);
 
             expect($game->name)->toBe("WarThunder")
                 ->and($game->steam_id)->toEqual(0);
@@ -293,7 +293,7 @@ describe("Steam", function (): void {
                 ->has(Tag::factory()->name("RPG"))
                 ->create();
 
-            $tags = run_method($service, "get_game_tags", array(0));
+            $tags = run_method($service, "get_game_tags", [0]);
             expect(array_map(fn($tag) => $tag["name"], $tags->toArray()))->toBe(["MMO", "RPG"]);
         });
 
@@ -303,25 +303,25 @@ describe("Steam", function (): void {
             Tag::factory()->name("MMO")->create();
             Tag::factory()->name("FPS")->create();
 
-            $tags = run_method($service, "get_game_tags", array(0));
+            $tags = run_method($service, "get_game_tags", [0]);
             expect(array_map(fn($tag) => $tag["name"], $tags->toArray()))->toBe(["MMO", "FPS"]);
         });
     });
 
     describe("is_game_multiplayer", function (): void {
-       it("should return true if game contain at least one multiplayer tag", function (): void {
-           $service = new SteamService(mock_steam_api());
-           Tag::factory()->name("FPS")->create();
-           Tag::factory()->name("MMO")->create();
+        it("should return true if game contain at least one multiplayer tag", function (): void {
+            $service = new SteamService(mock_steam_api());
+            Tag::factory()->name("FPS")->create();
+            Tag::factory()->name("MMO")->create();
 
-           expect(run_method($service, "is_game_multiplayer", array(0)))->toBeTrue();
-       });
+            expect(run_method($service, "is_game_multiplayer", [0]))->toBeTrue();
+        });
 
         it("should return true if game doesn't contain any multiplayer tag", function (): void {
             $service = new SteamService(mock_steam_api());
             Tag::factory()->name("FPS")->create();
 
-            expect(run_method($service, "is_game_multiplayer", array(0)))->toBeFalse();
+            expect(run_method($service, "is_game_multiplayer", [0]))->toBeFalse();
         });
     });
 

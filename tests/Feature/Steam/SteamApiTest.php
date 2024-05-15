@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Exceptions\InvalidSteamApiResponseException;
+use App\Exceptions\InvalidSteamTokenException;
+use App\Exceptions\NoJSONInSteamApiResponseException;
 use App\Services\SteamApi\SteamApiService;
 use Illuminate\Support\Facades\Http;
 
-
-function fake_steam_response(string $url, array $response = [], int $code = 200, string $service = 'https://api.steampowered.com/'): void
+function fake_steam_response(string $url, array $response = [], int $code = 200, string $service = "https://api.steampowered.com/"): void
 {
     Http::fake([($service . $url) => $response, $code]);
 }
@@ -16,41 +18,41 @@ describe("StemAPI", function (): void {
         it("should throw error if steam returns BAD REQUEST response", function (): void {
             $api = new SteamApiService("TOKEN");
 
-            $class = new \ReflectionClass($api);
+            $class = new ReflectionClass($api);
             $method = $class->getMethod("fetch_json_or_throw_error");
 
-            Http::fake(['localhost/test-url' => Http::response([], 400)]);
+            Http::fake(["localhost/test-url" => Http::response([], 400)]);
 
-            $method->invokeArgs($api, array("https://localhost/test-url", []));
-        })->throws(\App\Exceptions\InvalidSteamTokenException::class);
+            $method->invokeArgs($api, ["https://localhost/test-url", []]);
+        })->throws(InvalidSteamTokenException::class);
 
         it("should throw error if steam doesn't return json data", function (): void {
             $api = new SteamApiService("TOKEN");
 
-            $class = new \ReflectionClass($api);
+            $class = new ReflectionClass($api);
             $method = $class->getMethod("fetch_json_or_throw_error");
 
-            Http::fake(['localhost/test-url' => Http::response("NOT_A_JSON", 200)]);
+            Http::fake(["localhost/test-url" => Http::response("NOT_A_JSON", 200)]);
 
-            $method->invokeArgs($api, array("https://localhost/test-url", []));
-        })->throws(\App\Exceptions\NoJSONInSteamApiResponseException::class);
+            $method->invokeArgs($api, ["https://localhost/test-url", []]);
+        })->throws(NoJSONInSteamApiResponseException::class);
 
         it("should throw error if steam doesn't return does't pass validation", function (): void {
             $api = new SteamApiService("TOKEN");
 
-            $class = new \ReflectionClass($api);
+            $class = new ReflectionClass($api);
             $method = $class->getMethod("fetch_json_or_throw_error");
 
-            Http::fake(['localhost/test-url' => Http::response(["age"=>"no_a_number"], 200)]);
+            Http::fake(["localhost/test-url" => Http::response(["age" => "no_a_number"], 200)]);
 
-            $method->invokeArgs($api, array("https://localhost/test-url", ["age" => "present|numeric"]));
-        })->throws(\App\Exceptions\InvalidSteamApiResponseException::class);
+            $method->invokeArgs($api, ["https://localhost/test-url", ["age" => "present|numeric"]]);
+        })->throws(InvalidSteamApiResponseException::class);
     });
 
     describe("get_games", function (): void {
         it("should return user games", function (): void {
             $api = new SteamApiService("TOKEN");
-            $games =  array(
+            $games = [
                 [
                     "appid" => 0,
                     "playtime_forever" => 1112470620,
@@ -58,8 +60,8 @@ describe("StemAPI", function (): void {
                 [
                     "appid" => 1,
                     "playtime_forever" => 1112470620,
-                ]
-            );
+                ],
+            ];
 
             fake_steam_response("IPlayerService/GetOwnedGames/v0001/?key=TOKEN&steamid=USER&format=json&include_played_free_games&include_appinfo=1", [
                 "response" => [
@@ -74,17 +76,17 @@ describe("StemAPI", function (): void {
             $api = new SteamApiService("TOKEN");
 
             fake_steam_response("IPlayerService/GetOwnedGames/v0001/?key=TOKEN&steamid=USER&format=json&include_played_free_games&include_appinfo=1", [
-                "invalid" => ["data"]
+                "invalid" => ["data"],
             ]);
 
             $api->get_games("USER");
-        })->throws(\App\Exceptions\InvalidSteamApiResponseException::class);
+        })->throws(InvalidSteamApiResponseException::class);
     });
 
     describe("get_user_achievements_for_game", function (): void {
         it("should return user achievements for game with index 1", function (): void {
             $api = new SteamApiService("TOKEN");
-            $achievements = array(
+            $achievements = [
                 [
                     "unlocktime" => 1112470620,
                     "apiname" => "KILL_TEN_PLAYERS",
@@ -92,8 +94,8 @@ describe("StemAPI", function (): void {
                 [
                     "unlocktime" => 1112470620,
                     "apiname" => "TANKMAN",
-                ]
-            );
+                ],
+            ];
 
             fake_steam_response("ISteamUserStats/GetPlayerAchievements/v0001/?appid=1&key=TOKEN&steamid=USER&format=json", [
                 "playerstats" => [
@@ -118,30 +120,30 @@ describe("StemAPI", function (): void {
             $api = new SteamApiService("TOKEN");
 
             fake_steam_response("ISteamUserStats/GetPlayerAchievements/v0001/?appid=1&key=TOKEN&steamid=USER&format=json", [
-                "invalid" => ["data"]
+                "invalid" => ["data"],
             ]);
 
             $api->get_user_achievements_for_game("USER", 1);
-        })->throws(\App\Exceptions\InvalidSteamApiResponseException::class);
+        })->throws(InvalidSteamApiResponseException::class);
     });
 
     describe("get_game_achievements", function (): void {
         it("should return achievements for game with index 1", function (): void {
             $api = new SteamApiService("TOKEN");
-            $achievements = array(
+            $achievements = [
                 [
                     "name" => "KILL_TEN_PLAYERS",
                     "displayName" => "Killer",
                     "description" => "Kill ten players",
-                    "icon" => "localhost/killer.png"
+                    "icon" => "localhost/killer.png",
                 ],
                 [
                     "name" => "TANKMAN",
                     "displayName" => "Tankman",
                     "description" => "Use a tank",
-                    "icon" => "localhost/tankman.png"
+                    "icon" => "localhost/tankman.png",
                 ],
-            );
+            ];
 
             fake_steam_response("ISteamUserStats/GetSchemaForGame/v0002/?appid=1&key=TOKEN&l=english&format=json", [
                 "game" => [
@@ -180,24 +182,24 @@ describe("StemAPI", function (): void {
             $api = new SteamApiService("TOKEN");
 
             fake_steam_response("ISteamUserStats/GetSchemaForGame/v0002/?appid=1&key=TOKEN&l=english&format=json", [
-                "invalid" => ["data"]
+                "invalid" => ["data"],
             ]);
 
             $api->get_game_achievements( 1);
-        })->throws(\App\Exceptions\InvalidSteamApiResponseException::class);
+        })->throws(InvalidSteamApiResponseException::class);
     });
 
     describe("get_game_data", function (): void {
         it("should return data for game with index 10", function (): void {
             $api = new SteamApiService("TOKEN");
-            $data =[
+            $data = [
                 "name" => "Portal",
                 "detailed_description" => "Portal™ is a new single player game from Valve. Set in the mysterious",
             ];
 
             fake_steam_response("appdetails?appids=10", [
                 "10" => [
-                    "data" => $data
+                    "data" => $data,
                 ],
             ], 200, "https://store.steampowered.com/api/");
 
@@ -218,11 +220,11 @@ describe("StemAPI", function (): void {
             $api = new SteamApiService("TOKEN");
 
             fake_steam_response("appdetails?appids=1", [
-                "invalid" => ["data"]
+                "invalid" => ["data"],
             ], 200, "https://store.steampowered.com/api/");
 
             $api->get_game_data(1);
-        })->throws(\App\Exceptions\InvalidSteamApiResponseException::class);
+        })->throws(InvalidSteamApiResponseException::class);
     });
 
     describe("get_game_tags", function (): void {
@@ -231,25 +233,25 @@ describe("StemAPI", function (): void {
             $tags = [
                 "Puzzle" => 4183,
                 "Puzzle-Platformer" => 3153,
-                "First-Person" => 2516
+                "First-Person" => 2516,
             ];
 
             fake_steam_response("appdetails&appid=1", [
                 "tags" => $tags,
             ], 200, "https://steamspy.com/api.php?request=");
 
-            expect($api->get_game_tags(1))->toBe(array("Puzzle", "Puzzle-Platformer", "First-Person"));
+            expect($api->get_game_tags(1))->toBe(["Puzzle", "Puzzle-Platformer", "First-Person"]);
         });
 
         it("should validate data received from steam", function (): void {
             $api = new SteamApiService("TOKEN");
 
             fake_steam_response("appdetails&appid=1", [
-                "invalid" => ["data"]
+                "invalid" => ["data"],
             ], 200, "https://steamspy.com/api.php?request=");
 
             $api->get_game_tags(1);
-        })->throws(\App\Exceptions\InvalidSteamApiResponseException::class);
+        })->throws(InvalidSteamApiResponseException::class);
     });
 
     describe("get_game_cover", function (): void {

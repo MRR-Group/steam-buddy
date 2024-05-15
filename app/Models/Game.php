@@ -48,7 +48,7 @@ class Game extends Model
                 "id" => $achievement->id,
                 "steam_id" => $achievement->steam_id,
                 "unlocked_at" => $achievement->unlocked_at,
-                "name" =>  $achievement->data->name,
+                "name" => $achievement->data->name,
                 "description" => $this->data->description,
                 "icon" => $achievement->data->icon,
             ];

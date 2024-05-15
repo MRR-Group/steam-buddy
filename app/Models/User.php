@@ -26,7 +26,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $updated_at
  *
  * @property Collection<Game> $games;
- */class User extends Authenticatable implements MustVerifyEmail
+ */ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;

@@ -20,7 +20,7 @@ class AchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            "steam_id" => str(fake()->randomNumber()) . '/' . fake()->word(),
+            "steam_id" => str(fake()->randomNumber()) . "/" . fake()->word(),
             "unlocked_at" => now(),
             "updated_at" => now(),
             "created_at" => now(),
@@ -30,7 +30,7 @@ class AchievementFactory extends Factory
     public function steam_id(int $game_id, string $achievement_name): static
     {
         return $this->state(fn(array $attributes) => [
-            "steam_id" => str($game_id) . '/' . $achievement_name,
+            "steam_id" => str($game_id) . "/" . $achievement_name,
         ]);
     }
 }
