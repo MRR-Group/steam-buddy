@@ -24,21 +24,22 @@ class Tag extends Model
         "4 Player Local",
         "Co-op Campaign",
         "Co-op",
-        "Multiplayer", 
-        "Massively Multiplayer", 
-        "Online Co-Op", 
-        "Online PvP", 
-        "LAN Co-Op", 
-        "Multi-Player", 
+        "Multiplayer",
+        "Massively Multiplayer",
+        "Online Co-Op",
+        "Online PvP",
+        "LAN Co-Op",
+        "Multi-Player",
         "MMORPG",
+        "MMO",
         "MOBA",
         "Asynchronous Multiplayer",
         "PvE",
         "PvP",
-    ];    
+    ];
     protected $fillable = ["name"];
 
-    public function game(): BelongsToMany
+    public function games(): BelongsToMany
     {
         return $this->belongsToMany(GameDetail::class);
     }

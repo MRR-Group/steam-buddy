@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
- * @property int $steam_id
- * @property int $game_id;
+ * @property string $steam_id
+ * @property int $game_id;s
  * @property int $achievement_data_id;
  * @property Carbon $unlocked_at
  * @property Carbon $created_at

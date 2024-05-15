@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $id
  * @property int $steam_id
- * @property int $game_data_id;
+ * @property int $game_detail_id;
  * @property int $play_time
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -24,7 +25,7 @@ class Game extends Model
     public function with_data(): array
     {
         /** @var GameDetail $data */
-        $data = $this->data()->get()->first(); 
+        $data = $this->data()->get()->first();
 
         return [
             "id" => $this->id,
@@ -39,26 +40,26 @@ class Game extends Model
     public function full(): array
     {
         /** @var GameDetail $data */
-        $data = $this->data()->get()->first(); 
+        $data = $this->data;
         $achievements = [];
 
         foreach ($this->achievements()->get() as $achievement) {
             $achievement_data = $achievement->data()->get()->first();
 
-            array_push($achievements, [
+            $achievements[] = [
                 "id" => $achievement->id,
                 "steam_id" => $achievement->steam_id,
                 "unlocked_at" => $achievement->unlocked_at,
                 "name" => $achievement_data->name,
                 "description" => $data->description,
                 "icon" => $achievement_data->icon,
-            ]);
+            ];
         }
 
         $tags = [];
 
         foreach ($data->tags as $tag) {
-            array_push($tags, $tag->name);
+            $tags[] = $tag->name;
         }
 
         return [
