@@ -30,6 +30,7 @@ fix:
 
 
 actions:
+	@cp .env.actions .env
 	@docker compose up -d
 	@docker compose exec -it php bash /app/docker/actions/init-php.sh
 	@docker compose exec -it node bash /app/docker/actions/init-node.sh
