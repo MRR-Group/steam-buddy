@@ -8,7 +8,7 @@ use App\Utilities\InputStream;
 describe("ImportTags", function (): void {
     it("should throw error if received data isn't valid csv", function (): void {
         $this->mock(InputStream::class, function ($mock): void {
-            $mock->shouldReceive("get")->once()->andReturn("tag1,tag2\n\ntag3,tag4");
+            $mock->shouldReceive("get")->once()->andReturn("0,tag1,\n1,tag2\n\n2,tag3\n3,tag4");
         });
 
         $this->artisan("app:import-tags")
@@ -20,7 +20,7 @@ describe("ImportTags", function (): void {
         Tag::factory()->name("tag1")->create();        
 
         $this->mock(InputStream::class, function ($mock): void {
-            $mock->shouldReceive("get")->once()->andReturn("tag1\ntag2\ntag3\ntag4");
+            $mock->shouldReceive("get")->once()->andReturn("0,tag1\n1,tag2\n2,tag3\n3,tag4");
         });
 
         $this->artisan("app:import-tags")
@@ -30,7 +30,7 @@ describe("ImportTags", function (): void {
 
     it("should load csv tags", function (): void {
         $this->mock(InputStream::class, function ($mock): void {
-            $mock->shouldReceive("get")->once()->andReturn("tag1\ntag2\ntag3\ntag4");
+            $mock->shouldReceive("get")->once()->andReturn("0,tag1\n1,tag2\n2,tag3\n3,tag4");
         });
 
         $this->artisan("app:import-tags")

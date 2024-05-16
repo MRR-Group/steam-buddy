@@ -52,7 +52,7 @@ class ImportTags extends Command
 
     protected function create_tag_constructor(array $line): array
     {
-        $name = strval($line[0]);
+        $name = strval($line[1]);
         $now = Carbon::now();
 
         return ["name" => $name, "created_at" => $now, "updated_at" => $now];

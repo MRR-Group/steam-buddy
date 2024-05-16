@@ -25,13 +25,18 @@ class SteamService
     public function fetch_games(User $user): Batch
     {
         $data = $this->api->get_games($user->steam_id);
+
         $jobs = [];
 
         foreach ($data as $game) {
             $jobs[] = new FetchSteamGame($game["appid"], $game["playtime_forever"], $user);
         }
 
-        return Bus::batch($jobs)->dispatch();
+        return Bus::batch($jobs)
+            ->then(function () use ($user): void {
+                $user->last_fetch = Carbon::now();
+                $user->save();
+            })->dispatch();
     }
 
     public function fetch_game(int $game_id, int $playtime, User $user): void

@@ -27,7 +27,6 @@ export const Fetch = ({ name = '', batch, status = '' }) => {
       }).then((data) => data.json());
 
       setProgress((json.done / json.all) * 100);
-      console.log(json);
 
       if (json.done == json.all) {
         router.visit(route('library'), { method: 'get' });

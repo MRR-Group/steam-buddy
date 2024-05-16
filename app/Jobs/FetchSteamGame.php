@@ -35,7 +35,7 @@ class FetchSteamGame implements ShouldQueue
      */
     public function handle(SteamService $steam): void
     {
-        if ($this->batch()->cancelled()) {
+        if ($this->batch()?->cancelled()) {
             return;
         }
 

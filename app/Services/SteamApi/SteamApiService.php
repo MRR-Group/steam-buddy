@@ -140,7 +140,7 @@ class SteamApiService
     {
         $response = Http::get($url);
 
-        if ($response->status() === HttpFoundationResponse::HTTP_BAD_REQUEST) {
+        if ($response->status() === HttpFoundationResponse::HTTP_UNAUTHORIZED) {
             throw new InvalidSteamTokenException();
         }
 

@@ -15,13 +15,13 @@ function fake_steam_response(string $url, array $response = [], int $code = 200,
 
 describe("StemAPI", function (): void {
     describe("fetch_json_or_throw_error", function (): void {
-        it("should throw error if steam returns BAD REQUEST response", function (): void {
+        it("should throw error if steam returns UNAUTHORIZED response", function (): void {
             $api = new SteamApiService("TOKEN");
 
             $class = new ReflectionClass($api);
             $method = $class->getMethod("fetch_json_or_throw_error");
 
-            Http::fake(["localhost/test-url" => Http::response([], 400)]);
+            Http::fake(["localhost/test-url" => Http::response([], 401)]);
 
             $method->invokeArgs($api, ["https://localhost/test-url", []]);
         })->throws(InvalidSteamTokenException::class);
