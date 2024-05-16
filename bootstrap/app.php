@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: "/up",
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->trustProxies(at: '*');
+        $middleware->trustProxies(at: "*");
 
         $middleware->web(append: [
             HandleInertiaRequests::class,
@@ -33,7 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->appendToGroup("steam", [
             EnsureSteamIsConnected::class,
-            // EnsureProfileDataAreFetched::class, TO-DO uncomment this line when fetching functionality will be ready
+            EnsureProfileDataAreFetched::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

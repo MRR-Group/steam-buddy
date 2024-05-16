@@ -1,11 +1,44 @@
 import PropTypes from 'prop-types';
 import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
-import { Head } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
+import { useEffect, useState } from 'react';
 
-export const Fetch = ({ name = '', status = '' }) => {
+export const Fetch = ({ name = '', batch, status = '' }) => {
   name = name.replace(/ /g, '\u00A0');
+
+  const { post, processing } = useForm();
+  const [progress, setProgress] = useState(0);
+
+  const submit = (e) => {
+    e.preventDefault();
+    post(route('steam.fetch'));
+  };
+
+  useEffect(() => {
+    if (!batch) {
+      return;
+    }
+
+    const update_progress = async () => {
+      const json = await fetch(route('steam.fetch.progress', { batch }), {
+        method: 'get',
+      }).then((data) => data.json());
+
+      setProgress((json.done / json.all) * 100);
+
+      if (json.done == json.all) {
+        router.visit(route('library'), { method: 'get' });
+
+        return;
+      }
+
+      setTimeout(update_progress, 1000);
+    };
+
+    update_progress();
+  }, [batch, setProgress]);
 
   return (
     <GuestLayout status={status}>
@@ -22,9 +55,13 @@ export const Fetch = ({ name = '', status = '' }) => {
         </div>
 
         <div>
-          <a href={route('steam.redirect')}>
-            <PrimaryButton>Fetch</PrimaryButton>
-          </a>
+          {!batch ? (
+            <form onSubmit={submit}>
+              <PrimaryButton disabled={processing}>Fetch</PrimaryButton>
+            </form>
+          ) : (
+            <div>Processing: {progress}%</div>
+          )}
 
           <TextInputOption
             left="You don't want to do it right now?"
@@ -42,6 +79,7 @@ export const Fetch = ({ name = '', status = '' }) => {
 };
 
 Fetch.propTypes = {
+  batch: PropTypes.string,
   name: PropTypes.string,
   status: PropTypes.string,
 };
