@@ -30,10 +30,14 @@ fix:
 
 
 actions:
-	@cp .env.actions .env
-	@docker compose up -d
-	@docker compose exec -it php bash /app/docker/actions/init-php.sh
-	@docker compose exec -it node bash /app/docker/actions/init-node.sh
+	@docker compose -f ./docker-compose.actions.yml up -d
+	@docker compose -f ./docker-compose.actions.yml exec -it action bash /app/docker/actions/init.sh
+
+actions-test-php:
+	@docker compose -f ./docker-compose.actions.yml exec -it action composer test
+
+actions-test-node:
+	@docker compose -f ./docker-compose.actions.yml exec -it action npm test
 
 prod:
 	@docker compose -f ./docker-compose.prod.yml up -d
