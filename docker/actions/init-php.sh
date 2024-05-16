@@ -4,9 +4,6 @@ chown -R www-data:www-data /app/storage
 
 composer install
 
-npm install
-npm run build
-
 php artisan key:generate
 php artisan migrate
 php artisan cache:clear
