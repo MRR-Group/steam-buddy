@@ -5,61 +5,54 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): Response
+    public function show(string $id)
     {
-        return Inertia::render("Profile/Edit", [
-            "mustVerifyEmail" => $request->user() instanceof MustVerifyEmail,
-            "status" => session("status"),
-        ]);
-    }
+        /** @var User $user */
+        $user = User::query()->where(["id" => $id])->first();
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty("email")) {
-            $request->user()->email_verified_at = null;
+        if ($user === null) {
+            throw new NotFoundHttpException();
         }
 
-        $request->user()->save();
-
-        return Redirect::route("profile.edit");
+        return Inertia::render("Profile/Show", [
+            "name" => $user->name, 
+            "email" => $user->email, 
+            "description" => $user->description, 
+            "image" => $user->image,
+        ]);
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
+    public function edit(Request $request): Response
     {
-        $request->validate([
-            "password" => ["required", "current_password"],
-        ]);
-
+        /** @var User $user */
         $user = $request->user();
 
-        Auth::logout();
+        return Inertia::render("Profile/Edit", [
+            "status" => session("status"),
+            "name" => $user->name,
+            "email" => $user->email,
+            "description" => $user->description,
+        ]);
+    }
 
-        $user->delete();
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $user->fill($request->validated());
+        $user->save();
 
-        return Redirect::to("/");
+        return Redirect::route("profile.show", ["id" => $user->id]);
     }
 }

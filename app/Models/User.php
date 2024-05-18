@@ -39,6 +39,8 @@ use Illuminate\Support\Collection;
     protected $fillable = [
         "email",
         "password",
+        "name",
+        "description",
     ];
 
     /**
