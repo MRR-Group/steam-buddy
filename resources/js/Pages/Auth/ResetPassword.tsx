@@ -1,12 +1,16 @@
-import PropTypes from 'prop-types';
-import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
-import { InputError } from '@/Components/InputError/InputError';
-import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
-import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
-import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
+import { useCleanup } from '../../Hooks/UseCleanup/UseCleanup';
+import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { TextInput } from '../../Components/TextInput/TextInput';
+import { InputError } from '../../Components/InputError/InputError';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 
-export const ResetPassword = ({ token, email }) => {
+type Props = {
+  token: string;
+  email: string;
+};
+
+export const ResetPassword = ({ token, email }: Props) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     token: token,
     email: email,
@@ -63,14 +67,9 @@ export const ResetPassword = ({ token, email }) => {
         </div>
 
         <div className="flex justify-center w-full">
-          <PrimaryButton disabled={processing}> Reset Password</PrimaryButton>
+          <PrimaryButton disabled={processing}>Reset Password</PrimaryButton>
         </div>
       </form>
     </GuestLayout>
   );
-};
-
-ResetPassword.propTypes = {
-  email: PropTypes.string,
-  token: PropTypes.string,
 };

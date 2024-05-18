@@ -1,13 +1,19 @@
-import { Fragment, useContext } from 'react';
-import { DropDownContext } from './Context';
+import { Fragment, PropsWithChildren, useContext } from 'react';
 import { Transition } from '@headlessui/react';
+import { DropDownContext } from './Context';
+
+type Props = PropsWithChildren<{
+  align?: 'left' | 'right';
+  small?: boolean;
+  contentClasses?: string;
+}>;
 
 export const Content = ({
   align = 'right',
   contentClasses = 'py-1 bg-white',
   small,
   children,
-}) => {
+}: Props) => {
   const { open, setOpen } = useContext(DropDownContext);
 
   let alignmentClasses = 'origin-top';
@@ -52,11 +58,4 @@ export const Content = ({
       </Transition>
     </>
   );
-};
-
-Content.propTypes = {
-  align: PropTypes.string,
-  small: PropTypes.bool,
-  contentClasses: PropTypes.string,
-  children: PropTypes.node,
 };

@@ -1,7 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
-import { expect, vitest } from 'vitest';
+import { describe, expect, it, vitest } from 'vitest';
 
-import React from 'react';
 import { TextInput } from './TextInput';
 
 describe('TextInput', () => {
@@ -76,15 +75,18 @@ describe('TextInput', () => {
 
   it(`should be focused via ref.focus when the isFocused prop is active and ref props is present`, async () => {
     const spy = vitest.fn();
-    vitest.spyOn(React, 'createRef').mockReturnValueOnce({
-      get current() {
-        return { focus: spy };
-      },
+    const createRef = vitest.fn(
+      () =>
+        new (class {
+          get current() {
+            return { focus: spy };
+          }
 
-      set current(_) {},
-    });
+          set current(_) {}
+        })(),
+    ) as unknown as () => React.RefObject<HTMLInputElement>;
 
-    const ref = React.createRef();
+    const ref = createRef();
     let isFocused = false;
 
     const { rerender } = render(

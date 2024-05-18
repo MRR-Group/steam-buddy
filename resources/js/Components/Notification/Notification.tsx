@@ -1,8 +1,11 @@
-import PropTyps from 'prop-types';
 import { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 
-export const Notification = ({ message = null }) => {
+type Prop = {
+  message?: string;
+};
+
+export const Notification = ({ message }: Prop) => {
   const [isHidden, setIsHidden] = useState(true);
   const hide = () => setIsHidden(true);
 
@@ -30,8 +33,4 @@ export const Notification = ({ message = null }) => {
       </div>
     </div>
   );
-};
-
-Notification.propTypes = {
-  message: PropTyps.string,
 };

@@ -1,8 +1,9 @@
-import { useContext } from 'react';
-import PropTypes from 'prop-types';
+import { PropsWithChildren, useContext } from 'react';
 import { DropDownContext } from './Context';
 
-export const Trigger = ({ children }) => {
+type Props = PropsWithChildren;
+
+export const Trigger = ({ children }: Props) => {
   const { open, setOpen, toggleOpen } = useContext(DropDownContext);
 
   return (
@@ -18,8 +19,4 @@ export const Trigger = ({ children }) => {
       )}
     </>
   );
-};
-
-Trigger.propTypes = {
-  children: PropTypes.node,
 };

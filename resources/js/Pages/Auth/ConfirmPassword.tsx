@@ -1,9 +1,9 @@
-import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
-import { InputError } from '@/Components/InputError/InputError';
-import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
-import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
-import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
+import { useCleanup } from '../../Hooks/UseCleanup/UseCleanup';
+import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { TextInput } from '../../Components/TextInput/TextInput';
+import { InputError } from '../../Components/InputError/InputError';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 
 export const ConfirmPassword = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -12,7 +12,7 @@ export const ConfirmPassword = () => {
 
   useCleanup(() => reset('password'));
 
-  const submit = (e) => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     post(route('password.confirm'));

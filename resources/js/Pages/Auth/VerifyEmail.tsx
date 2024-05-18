@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
-import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
-import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { Head, useForm } from '@inertiajs/react';
-import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
+import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
 
-export const VerifyEmail = ({ status }) => {
+type Props = {
+  status?: string;
+};
+
+export const VerifyEmail = ({ status }: Props) => {
   const { post, processing } = useForm({});
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,15 +48,9 @@ export const VerifyEmail = ({ status }) => {
             right={`to${'\u00A0'}Log${'\u00A0'}out.`}
             href={route('logout')}
             method="post"
-          >
-            Log Out
-          </TextInputOption>
+          />
         </div>
       </form>
     </GuestLayout>
   );
-};
-
-VerifyEmail.propTypes = {
-  status: PropTypes.string,
 };

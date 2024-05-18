@@ -1,17 +1,20 @@
-import PropTypes from 'prop-types';
-import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
-import { InputError } from '@/Components/InputError/InputError';
-import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
-import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
-import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
+import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { TextInput } from '../../Components/TextInput/TextInput';
+import { InputError } from '../../Components/InputError/InputError';
+import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 
-export const ForgotPassword = ({ status }) => {
+type Props = {
+  status?: string;
+};
+
+export const ForgotPassword = ({ status }: Props) => {
   const { data, setData, post, processing, errors } = useForm({
     email: '',
   });
 
-  const submit = (e) => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     post(route('password.email'));
@@ -57,8 +60,4 @@ export const ForgotPassword = ({ status }) => {
       </form>
     </GuestLayout>
   );
-};
-
-ForgotPassword.propTypes = {
-  status: PropTypes.node,
 };

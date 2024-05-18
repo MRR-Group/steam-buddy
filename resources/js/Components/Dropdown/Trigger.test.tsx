@@ -4,7 +4,7 @@ import { describe, expect, it, vitest } from 'vitest';
 import { Trigger } from './Trigger';
 import { DropDownContext } from './Context';
 
-const context = (value) => ({
+const context = (value: boolean) => ({
   open: value,
   setOpen: () => {},
   toggleOpen: () => {},

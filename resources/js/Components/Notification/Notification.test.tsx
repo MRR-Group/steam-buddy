@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { Notification } from './Notification';
 

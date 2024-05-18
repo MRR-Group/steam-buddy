@@ -1,79 +1,41 @@
 module.exports = {
   root: true,
-  parserOptions: {
-    ecmaVersion: 2023,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
+  env: { browser: true, es2020: true },
   settings: {
-    react: {
-      version: 'detect',
-    },
-    'import/resolver': {
-      alias: {
-        map: [['@', './resources/js']],
-        extensions: ['.ts', '.js', '.jsx', '.tsx', '.json'],
-      },
-    },
-  },
-  env: {
-    browser: true,
-    commonjs: true,
-    es6: true,
-    node: true,
-  },
-  globals: {
-    route: 'readonly',
+    "react": {
+      "version": "detect"
+    }
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
     'plugin:react-hooks/recommended',
-    'plugin:promise/recommended',
-    'plugin:tailwindcss/recommended',
-    'plugin:prettier/recommended',
-    'plugin:import/recommended',
+    'prettier',
   ],
-  plugins: ['react', 'promise', 'import', 'prettier'],
-  rules: {
-    quotes: [
-      'error',
-      'single',
-      { avoidEscape: true, allowTemplateLiterals: true },
-    ],
-    indent: ['error', 2],
-    'comma-dangle': ['error', 'always-multiline'],
-    'eol-last': ['error', 'always'],
-    'tailwindcss/classnames-order': 'off',
-    'tailwindcss/no-custom-classname': 'off',
-    'no-return-await': 'off',
-    'prettier/prettier': [
-      'error',
-      {},
-      {
-        usePrettierrc: true,
-      },
-    ],
-    'react/react-in-jsx-scope': 0,
-    'react/no-unescaped-entities': 0,
-    'react/function-component-definition': [
-      2,
-      {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
-      },
-    ],
-    'no-console': 1,
-    'import/no-default-export': 2,
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json'],
+    warnOnUnsupportedTypeScriptVersion: false,
+    tsconfigRootDir: __dirname,
   },
-  overrides: [
-    {
-      files: ['**/*.test.js', '**/*.test.jsx'],
-      env: {
-        jest: true,
-      },
-    },
-  ],
+  plugins: ['react', 'react-refresh'],
+  rules: {
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "react/no-unescaped-entities": "off",
+    "require-await": "off",
+    "@typescript-eslint/require-await": "off"
+  },
 };

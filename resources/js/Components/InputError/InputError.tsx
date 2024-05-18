@@ -1,14 +1,13 @@
-import PropTyps from 'prop-types';
+import { ParamHTMLAttributes } from 'react';
 
-export const InputError = ({ message, className = '', ...props }) => {
+type Props = ParamHTMLAttributes<HTMLParagraphElement> & {
+  message?: string;
+};
+
+export const InputError = ({ message, className = '', ...props }: Props) => {
   return message ? (
     <p {...props} className={`text-sm text-error font-bold ${className}`}>
       {message}
     </p>
   ) : null;
-};
-
-InputError.propTypes = {
-  message: PropTyps.string,
-  className: PropTyps.string,
 };

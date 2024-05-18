@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
-import { beforeEach, describe, expect, vitest } from 'vitest';
+import { Mock, beforeEach, describe, expect, it, vitest } from 'vitest';
 import { useCleanup } from './UseCleanup';
 
 describe('useCleanup', () => {
-  let cleanupFunction;
+  let cleanupFunction: Mock;
 
   beforeEach(() => {
     cleanupFunction = vitest.fn();

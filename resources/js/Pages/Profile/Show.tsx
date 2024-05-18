@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
 import { Head } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 
-type Props = {
+export type ShowPageProps = {
   name: string;
   email: string;
   description: string;
-}
+  image: string;
+};
 
-export const Show = ({ name, email, description, image }) => {
+export const Show = ({ name, email, description, image }: ShowPageProps) => {
   return (
     <AuthenticatedLayout
       user={{ name, email }}
@@ -25,11 +25,4 @@ export const Show = ({ name, email, description, image }) => {
       <img src={image} alt="" />
     </AuthenticatedLayout>
   );
-};
-
-Show.propTypes = {
-  name: PropTypes.string,
-  email: PropTypes.string,
-  description: PropTypes.string,
-  image: PropTypes.string,
 };

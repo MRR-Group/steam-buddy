@@ -1,15 +1,14 @@
-import PropTypes from 'prop-types';
-import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
-import { InputError } from '@/Components/InputError/InputError';
-import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
-import { TextInput } from '@/Components/TextInput/TextInput';
 import { Head, useForm } from '@inertiajs/react';
-import { useCleanup } from '@/Hooks/UseCleanup/UseCleanup';
-import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
+import { useCleanup } from '../../Hooks/UseCleanup/UseCleanup';
+import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { TextInput } from '../../Components/TextInput/TextInput';
+import { InputError } from '../../Components/InputError/InputError';
+import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 
 type Props = {
   status?: string;
-}
+};
 
 export const Login = ({ status }: Props) => {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -18,9 +17,9 @@ export const Login = ({ status }: Props) => {
     remember: false,
   });
 
-  useCleanup(() => () => reset('password'), []);
+  useCleanup(() => () => reset('password'));
 
-  const submit = (e) => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     post(route('login'));
@@ -84,8 +83,4 @@ export const Login = ({ status }: Props) => {
       </form>
     </GuestLayout>
   );
-};
-
-Login.propTypes = {
-  status: PropTypes.node,
 };

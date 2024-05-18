@@ -1,24 +1,42 @@
-import PropTypes from 'prop-types';
-import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import { AuthenticatedLayout } from '../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 
-export const Library = ({ auth, games }) => {
-  const getText = (html) => {
+type Props = {
+  auth: {
+    user: {
+      name: string;
+      email: string;
+    };
+  };
+  games: {
+    id: number;
+    cover: string;
+    description: string;
+    name: string;
+    play_time: number;
+    tags: string[];
+  }[];
+};
+
+type TextNode = ChildNode & { data: string };
+
+export const Library = ({ auth, games }: Props) => {
+  const getText = (html: string) => {
     const content = document.createElement('div');
     content.innerHTML = html;
 
     let text = ``;
 
-    for (let node of content.childNodes) {
+    for (const node of content.childNodes) {
       if (node.nodeType === Node.TEXT_NODE) {
-        text += node.data;
+        text += (node as TextNode).data;
       }
     }
 
     return text;
   };
 
-  const limitText = (text, limit) => {
+  const limitText = (text: string, limit: number) => {
     if (text.length <= limit) {
       return text;
     }
@@ -58,11 +76,4 @@ export const Library = ({ auth, games }) => {
       </div>
     </AuthenticatedLayout>
   );
-};
-
-Library.propTypes = {
-  auth: PropTypes.shape({
-    user: PropTypes.any,
-  }),
-  games: PropTypes.array,
 };

@@ -1,5 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
 
 export const Connect = () => {
   return (
@@ -25,15 +27,9 @@ export const Connect = () => {
             right={`to${'\u00A0'}Log${'\u00A0'}out.`}
             href={route('logout')}
             method="post"
-          >
-            Log Out
-          </TextInputOption>
+          />
         </div>
       </div>
     </GuestLayout>
   );
-};
-
-Connect.propTypes = {
-  status: PropTypes.string,
 };

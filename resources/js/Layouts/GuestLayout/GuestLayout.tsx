@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types';
+import { PropsWithChildren } from 'react';
+import { Notification } from '../../Components/Notification/Notification';
 import './GuestLayout.css';
-import { Notification } from '@/Components/Notification/Notification';
 
-export const GuestLayout = ({ children, status }) => {
+type Props = PropsWithChildren<{
+  status?: string;
+}>;
+
+export const GuestLayout = ({ children, status }: Props) => {
   return (
     <div className="GuestLayout__background min-h-screen p-2 flex flex-col justify-center items-center sm:p-1">
       <Notification message={status} />
@@ -12,9 +16,4 @@ export const GuestLayout = ({ children, status }) => {
       </div>
     </div>
   );
-};
-
-GuestLayout.propTypes = {
-  status: PropTypes.string,
-  children: PropTypes.node,
 };

@@ -1,5 +1,12 @@
-import { Fragment } from 'react';
+import { Fragment, PropsWithChildren } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+
+type Props = PropsWithChildren<{
+  show?: boolean;
+  maxWidth?: string;
+  closeable?: boolean;
+  onClose?: () => void;
+}>;
 
 export const Modal = ({
   children,
@@ -7,7 +14,7 @@ export const Modal = ({
   maxWidth = '2xl',
   closeable = true,
   onClose = () => {},
-}) => {
+}: Props) => {
   const close = () => {
     if (closeable) {
       onClose();
@@ -60,12 +67,4 @@ export const Modal = ({
       </Dialog>
     </Transition>
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.node,
-  show: PropTypes.bool,
-  maxWidth: PropTypes.string,
-  closeable: PropTypes.bool,
-  onClose: PropTypes.func,
 };

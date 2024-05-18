@@ -1,6 +1,19 @@
-import { forwardRef, useEffect, useMemo, useRef } from 'react';
+import {
+  InputHTMLAttributes,
+  MutableRefObject,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 
-export const TextInput = forwardRef(
+type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'value'> & {
+  isFocused?: boolean;
+  label?: string;
+  value?: string;
+};
+
+export const TextInput = forwardRef<HTMLInputElement, Props>(
   (
     {
       type = 'text',
@@ -13,12 +26,12 @@ export const TextInput = forwardRef(
     },
     ref,
   ) => {
-    const input = useRef();
+    const input = useRef<HTMLInputElement>(null);
     const empty = useMemo(() => value.length == 0, [value]);
 
     useEffect(() => {
       if (isFocused) {
-        (ref ?? input).current.focus();
+        ((ref as MutableRefObject<HTMLInputElement>) ?? input).current.focus();
       }
     }, [isFocused, input, ref]);
 
@@ -47,11 +60,3 @@ export const TextInput = forwardRef(
 );
 
 TextInput.displayName = 'TextInput';
-TextInput.propTypes = {
-  name: PropTypes.string,
-  label: PropTypes.string,
-  className: PropTypes.string,
-  isFocused: PropTypes.bool,
-  type: PropTypes.string,
-  value: PropTypes.string,
-};

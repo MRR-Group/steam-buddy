@@ -1,10 +1,15 @@
-import PropTypes from 'prop-types';
-import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
+import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 
-export const Edit = ({ name, email, description }) => {
+export type EditPageProps = {
+  name: string;
+  email: string;
+  description: string;
+};
+
+export const Edit = ({ name, email, description }: EditPageProps) => {
   const { data, setData, patch } = useForm({ name, description });
-  const submit = (e) => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     patch(route('profile.update'));
@@ -43,11 +48,4 @@ export const Edit = ({ name, email, description }) => {
       </div>
     </AuthenticatedLayout>
   );
-};
-
-Edit.propTypes = {
-  name: PropTypes.string,
-  email: PropTypes.string,
-  description: PropTypes.string,
-  status: PropTypes.string,
 };

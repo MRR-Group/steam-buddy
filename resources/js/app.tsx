@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import './bootstrap';
 import '../css/app.css';
 import '@fontsource/inter/100.css';
@@ -20,15 +26,14 @@ createInertiaApp({
   title: (title) => `${title} - ${appName}`,
   resolve: async (name) => {
     return (
-      await resolvePageComponent(
-        `./Pages/${name}.jsx`,
-        import.meta.glob('./Pages/**/*.jsx'),
+      await resolvePageComponent<any[]>(
+        `./Pages/${name}.tsx`,
+        import.meta.glob('./Pages/**/*.tsx') as any,
       )
-    )[name.split(['/']).at(-1)];
+    )[name.split('/').at(-1) as any];
   },
   setup({ el, App, props }) {
     const root = createRoot(el);
-
     root.render(<App {...props} />);
   },
   progress: {

@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Dropdown } from '@/Components/Dropdown/Dropdown';
-import { NavLink } from '@/Components/NavLink/NavLink';
-import { ResponsiveNavLink } from '@/Components/ResponsiveNavLink/ResponsiveNavLink';
+import { PropsWithChildren, useState } from 'react';
 import { Link } from '@inertiajs/react';
+import { NavLink } from '../../Components/NavLink/NavLink';
+import { Dropdown } from '../../Components/Dropdown/Dropdown';
+import { ResponsiveNavLink } from '../../Components/ResponsiveNavLink/ResponsiveNavLink';
 
-export const AuthenticatedLayout = ({ user, header, children }) => {
+type Props = PropsWithChildren<{
+  user: {
+    name: string;
+    email: string;
+  };
+  header: JSX.Element;
+}>;
+
+export const AuthenticatedLayout = ({ user, header, children }: Props) => {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
@@ -162,13 +169,4 @@ export const AuthenticatedLayout = ({ user, header, children }) => {
       <main>{children}</main>
     </div>
   );
-};
-
-AuthenticatedLayout.propTypes = {
-  children: PropTypes.node,
-  header: PropTypes.node,
-  user: PropTypes.shape({
-    email: PropTypes.string,
-    name: PropTypes.string,
-  }),
 };

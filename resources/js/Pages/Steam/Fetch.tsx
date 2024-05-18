@@ -1,11 +1,21 @@
-import PropTypes from 'prop-types';
-import { GuestLayout } from '@/Layouts/GuestLayout/GuestLayout';
-import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { Head, useForm, router } from '@inertiajs/react';
-import { TextInputOption } from '@/Components/TextInputOption/TextInputOption';
 import { useEffect, useState } from 'react';
+import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
 
-export const Fetch = ({ name = '', batch, status = '' }) => {
+type Props = {
+  name?: string;
+  batch?: string;
+  status?: string;
+};
+
+type Progress = {
+  done: number;
+  all: number;
+};
+
+export const Fetch = ({ name = '', batch, status = '' }: Props) => {
   name = name.replace(/ /g, '\u00A0');
 
   const { post, processing } = useForm();
@@ -24,7 +34,7 @@ export const Fetch = ({ name = '', batch, status = '' }) => {
     const update_progress = async () => {
       const json = await fetch(route('steam.fetch.progress', { batch }), {
         method: 'get',
-      }).then((data) => data.json());
+      }).then<Progress>((data) => data.json());
 
       setProgress((json.done / json.all) * 100);
 
@@ -69,17 +79,9 @@ export const Fetch = ({ name = '', batch, status = '' }) => {
             right={`to${'\u00A0'}Log${'\u00A0'}out.`}
             href={route('logout')}
             method="post"
-          >
-            Log Out
-          </TextInputOption>
+          />
         </div>
       </div>
     </GuestLayout>
   );
-};
-
-Fetch.propTypes = {
-  batch: PropTypes.string,
-  name: PropTypes.string,
-  status: PropTypes.string,
 };

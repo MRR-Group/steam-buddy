@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { DropDownContext } from './Context';
-import { Trigger } from './Trigger';
 import { Content } from './Content';
+import { Trigger } from './Trigger';
 import { DropdownLink } from './DropdownLink';
 
-export const Dropdown = ({ children }) => {
+type Props = PropsWithChildren;
+
+export const Dropdown = ({ children }: Props) => {
   const [open, setOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -16,10 +18,6 @@ export const Dropdown = ({ children }) => {
       <div className="relative">{children}</div>
     </DropDownContext.Provider>
   );
-};
-
-Dropdown.propTypes = {
-  children: PropTypes.node,
 };
 
 Dropdown.Trigger = Trigger;

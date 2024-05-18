@@ -1,10 +1,11 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vitest } from 'vitest';
+import { act } from 'react';
 
 import { Content } from './Content';
 import { DropDownContext } from './Context';
 
-const context = (value) => ({
+const context = (value: boolean) => ({
   open: value,
   setOpen: () => {},
   toggleOpen: () => {},
@@ -56,9 +57,11 @@ describe('Content', () => {
 
     expect(screen.getByText('test')).toBeInTheDocument();
 
-    act(() => (ctx.open = false));
+    act(() => {
+      ctx.open = false;
+    });
 
-    rerender();
+    rerender(null);
 
     expect(screen.queryByText('test')).not.toBeInTheDocument();
   });

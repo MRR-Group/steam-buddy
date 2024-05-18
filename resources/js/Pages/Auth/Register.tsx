@@ -1,6 +1,10 @@
 import { Head, useForm } from '@inertiajs/react';
 import { useCleanup } from '../../Hooks/UseCleanup/UseCleanup';
 import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
+import { TextInput } from '../../Components/TextInput/TextInput';
+import { InputError } from '../../Components/InputError/InputError';
+import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 
 export const Register = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
