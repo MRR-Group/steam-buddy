@@ -11,6 +11,11 @@ dev:
 	@docker compose up -d
 	@docker compose exec node npm run dev
 
+populate:
+	@docker compose exec php php artisan migrate:fresh
+	@docker compose exec php php artisan db:seed
+	@docker compose exec php sh -c 'php artisan app:import-tags < ./tags.csv'
+
 stop:
 	@docker compose stop
 
