@@ -28,7 +28,7 @@ export const Fetch = ({ name = '', batch, status = '' }) => {
 
       setProgress((json.done / json.all) * 100);
 
-      if (json.done == json.all) {
+      if (json.done === json.all) {
         router.visit(route('library'), { method: 'get' });
 
         return;
@@ -60,7 +60,7 @@ export const Fetch = ({ name = '', batch, status = '' }) => {
               <PrimaryButton disabled={processing}>Fetch</PrimaryButton>
             </form>
           ) : (
-            <div>Processing: {progress}%</div>
+            <div>Processing: {Math.floor(progress)}%</div>
           )}
 
           <TextInputOption
