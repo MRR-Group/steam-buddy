@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { AuthenticatedLayout } from '@/Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 
-export const Edit = ({ name, email, description, status }) => {
+export const Edit = ({ name, email, description }) => {
   const { data, setData, patch } = useForm({ name, description });
   const submit = (e) => {
     e.preventDefault();
