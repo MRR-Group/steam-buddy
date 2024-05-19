@@ -79,6 +79,7 @@ class Game extends Model
         foreach ($this->data->tags as $tag) {
             $tags[] = $tag->name;
         }
+
         return [
             "id" => $this->id,
             "name" => $this->data->name,
