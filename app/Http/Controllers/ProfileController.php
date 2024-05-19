@@ -24,11 +24,18 @@ class ProfileController extends Controller
             throw new NotFoundHttpException();
         }
 
+        $games = [];
+
+        foreach ($user->games()->get() as $game) {
+            $games[] = $game->with_tags();
+        }
+
         return Inertia::render("Profile/Show", [
-            "name" => $user->name, 
-            "email" => $user->email, 
-            "description" => $user->description, 
+            "name" => $user->name,
+            "email" => $user->email,
+            "description" => $user->description,
             "image" => $user->image,
+            "games" => $games,
         ]);
     }
 

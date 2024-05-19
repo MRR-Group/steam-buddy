@@ -49,7 +49,7 @@ class Game extends Model
                 "steam_id" => $achievement->steam_id,
                 "unlocked_at" => $achievement->unlocked_at,
                 "name" => $achievement->data->name,
-                "description" => $this->data->description,
+                "description" => $achievement->data->description,
                 "icon" => $achievement->data->icon,
             ];
         }
@@ -68,6 +68,22 @@ class Game extends Model
             "cover" => $this->data->cover,
             "description" => $this->data->description,
             "achievements" => $achievements,
+            "tags" => $tags,
+        ];
+    }
+
+    public function with_tags(): array
+    {
+        $tags = [];
+
+        foreach ($this->data->tags as $tag) {
+            $tags[] = $tag->name;
+        }
+
+        return [
+            "id" => $this->id,
+            "name" => $this->data->name,
+            "cover" => $this->data->cover,
             "tags" => $tags,
         ];
     }

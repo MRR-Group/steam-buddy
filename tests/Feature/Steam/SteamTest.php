@@ -252,7 +252,7 @@ describe("Steam", function (): void {
 
         it("should return null if game does not exist in steamDB or is private", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {
-                public function get_game_data(int $game_id): null
+                public function get_game_data(int $game_id)
                 {
                     return null;
                 }
