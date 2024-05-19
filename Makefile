@@ -16,6 +16,9 @@ populate:
 	@docker compose exec php php artisan db:seed
 	@docker compose exec php sh -c 'php artisan app:import-tags < ./tags.csv'
 
+queue:
+	@docker compose exec php php artisan queue:work
+
 stop:
 	@docker compose stop
 
