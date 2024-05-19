@@ -72,6 +72,21 @@ class Game extends Model
         ];
     }
 
+    public function with_tags(): array
+    {
+        $tags = [];
+
+        foreach ($this->data->tags as $tag) {
+            $tags[] = $tag->name;
+        }
+        return [
+            "id" => $this->id,
+            "name" => $this->data->name,
+            "cover" => $this->data->cover,
+            "tags" => $tags,
+        ];
+    }
+
     public static function get_by_steam_id(int $steam_id): ?self
     {
         return self::query()->where("steam_id", $steam_id)->first();
