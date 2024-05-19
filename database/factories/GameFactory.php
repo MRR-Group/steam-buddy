@@ -37,4 +37,22 @@ class GameFactory extends Factory
             "user_id" => User::factory(),
         ]);
     }
+
+    public function user(User $user, string $tag_name, string $tag1_name): static
+    {
+        $steam_id = fake()->randomNumber();
+        $tag = Tag::factory()->name($tag_name);
+        $tag1 = Tag::factory()->name($tag1_name);
+
+        $detail = GameDetail::factory()
+            ->steam_id($steam_id)
+            ->has($tag)
+            ->has($tag1);
+
+        return $this->state(fn(array $attributes) => [
+            "steam_id" => $steam_id,
+            "game_detail_id" => $detail,
+            "user_id" => $user->id,
+        ]);
+    }
 }
