@@ -4,6 +4,7 @@ import { AuthenticatedLayout } from '../Layouts/AuthenticatedLayout/Authenticate
 type Props = {
   auth: {
     user: {
+      id: number,
       name: string;
       email: string;
     };
@@ -47,11 +48,7 @@ export const Library = ({ auth, games }: Props) => {
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          Library
-        </h2>
-      }
+      title="Library"
     >
       <Head title="Library" />
 

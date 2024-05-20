@@ -7,6 +7,8 @@ import { expect, afterEach, vitest, Mock } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 
+import "../css/app.css";
+
 expect.extend(matchers);
 
 declare global {
