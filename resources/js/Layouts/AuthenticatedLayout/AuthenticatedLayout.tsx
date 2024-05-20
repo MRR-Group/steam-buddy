@@ -15,7 +15,7 @@ export const AuthenticatedLayout = ({ children, title, user }: Props) => {
   return (
     <div className="AuthenticatedLayout__background min-h-screen p-2 flex flex-col justify-center items-center sm:p-1">
       <div className="AuthenticatedLayout__top-panel" />
-      <div className="text-center flex justify-start items-center h-14 w-full relative p-4">
+      <div className="text-center flex justify-start items-center h-14 w-full relative mt-4 mb-4">
         <h1 className='text-text text-2xl w-full text-center'>{title}</h1>
         <Menu
           items={[

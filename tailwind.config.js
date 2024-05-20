@@ -11,6 +11,12 @@ export default {
   ],
 
   theme: {
+    extend: {
+      spacing: {
+        3.5: "0.85rem"
+      }
+    },
+
     colors: {
       transparent: 'transparent',
       'transparent-dark': 'rgba(31, 31, 31, 0.13)',
@@ -64,6 +70,5 @@ export default {
       md: '10px',
     },
   },
-
   plugins: [forms],
 };
