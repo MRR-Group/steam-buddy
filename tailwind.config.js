@@ -42,6 +42,7 @@ export default {
         900: '#3d3d3d',
         950: '#000000',
       },
+      dark: "#1B2838",
       text: '#ffffff',
       error: '#FF0000',
       gradient: {
