@@ -2,12 +2,13 @@ import { Head, useForm } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 
 export type EditPageProps = {
+  id: number;
   name: string;
   email: string;
   description: string;
 };
 
-export const Edit = ({ name, email, description }: EditPageProps) => {
+export const Edit = ({ id, name, email, description }: EditPageProps) => {
   const { data, setData, patch } = useForm({ name, description });
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,12 +17,8 @@ export const Edit = ({ name, email, description }: EditPageProps) => {
   };
   return (
     <AuthenticatedLayout
-      user={{ name, email }}
-      header={
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          Profile
-        </h2>
-      }
+      title='Edit Profile'
+      user={{ id, name, email }}
     >
       <Head title="Profile" />
 

@@ -25,6 +25,7 @@ class ProfileController extends Controller
         }
 
         return Inertia::render("Profile/Show", [
+            "id" => $user->id,
             "name" => $user->name, 
             "email" => $user->email, 
             "description" => $user->description, 
@@ -39,6 +40,7 @@ class ProfileController extends Controller
 
         return Inertia::render("Profile/Edit", [
             "status" => session("status"),
+            "id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
             "description" => $user->description,
