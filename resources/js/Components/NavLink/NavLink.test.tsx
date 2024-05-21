@@ -11,9 +11,9 @@ describe('NavLink', () => {
   });
 
   it("should accept inertiajs's Link props", () => {
-    render(<NavLink href="/link">test</NavLink>);
+    render(<NavLink as="div">test</NavLink>);
 
-    expect(screen.getByText('test')).toHaveAttribute('href', '/link');
+    expect(screen.getByText('test').tagName).toBe("DIV");
   });
 
   it('should add additional css class', () => {

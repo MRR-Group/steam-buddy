@@ -11,9 +11,9 @@ describe('ResponsiveNavLink', () => {
   });
 
   it("should accept inertiajs's Link props", () => {
-    render(<ResponsiveNavLink href="/link">test</ResponsiveNavLink>);
+    render(<ResponsiveNavLink as="div">test</ResponsiveNavLink>);
 
-    expect(screen.getByText('test')).toHaveAttribute('href', '/link');
+    expect(screen.getByText('test').tagName).toBe("DIV");
   });
 
   it('should add additional css class', () => {
