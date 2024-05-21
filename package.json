@@ -43,7 +43,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.2.1",
-    "typescript": "5.4.0",
+    "typescript": "^5.4.5",
     "vite": "^5.0",
     "vitest": "^1.4.0"
   },
@@ -51,6 +51,9 @@
     "@fontsource/inter": "^5.0.17",
     "axios": "^1.6.4",
     "eslint-plugin-tailwindcss": "^3.15.1",
-    "react-icons": "^5.0.1"
+    "gsap": "^3.12.5",
+    "react-horizontal-scrolling-menu": "^7.0.0",
+    "react-icons": "^5.2.1",
+    "usehooks-ts": "^3.1.0"
   }
 }

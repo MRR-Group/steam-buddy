@@ -1,13 +1,22 @@
 import { Head } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../Layouts/AuthenticatedLayout/AuthenticatedLayout';
+import { Tags } from '../Components/Tags/Tags';
+import { useMemo, useState } from 'react';
+import { TextInput } from '../Components/TextInput/TextInput';
+import { useDebounceCallback } from 'usehooks-ts';
 
 type Props = {
   auth: {
     user: {
+      id: number;
       name: string;
       email: string;
     };
   };
+  tags: {
+    name: string;
+    games: number;
+  }[],
   games: {
     id: number;
     cover: string;
@@ -18,59 +27,37 @@ type Props = {
   }[];
 };
 
-type TextNode = ChildNode & { data: string };
+export const Library = ({ auth, games, tags }: Props) => {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
+  
+  const search = useDebounceCallback(setSearchText);
+  const selectTag = (tag: string) => setSelectedTags(selected => [...selected, tag]);
+  const unselectTag = (tag: string) => setSelectedTags(selected => selected.filter(name => name !== tag));
 
-export const Library = ({ auth, games }: Props) => {
-  const getText = (html: string) => {
-    const content = document.createElement('div');
-    content.innerHTML = html;
-
-    let text = ``;
-
-    for (const node of content.childNodes) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        text += (node as TextNode).data;
-      }
-    }
-
-    return text;
-  };
-
-  const limitText = (text: string, limit: number) => {
-    if (text.length <= limit) {
-      return text;
-    }
-
-    return `${text.slice(0, limit)}...`;
-  };
+  const filteredGames = useMemo(() => games
+    .filter((game) => selectedTags.length === 0 || selectedTags.every(tag => game.tags.includes(tag)))
+    .filter((game) => searchText.length === 0 || game.name.toLowerCase().includes(searchText.trim().toLowerCase())),
+  [games, selectedTags, searchText]);
 
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          Library
-        </h2>
-      }
+      title="Library"
     >
       <Head title="Library" />
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div className="p-6 text-gray-900">You're logged in!</div>
-          </div>
+      <div className="w-full flex justify-center mb-10">
+        <div className="w-full 2xl:w-6/12 xl:w-7/12 lg:w-8/12 md:w-10/12 flex items-stretch flex-col media">
+          <Tags selected={selectedTags} tags={tags} onSelect={selectTag} onUnselect={unselectTag} />
+          <TextInput label='Search' className='mt-5' value={searchText} onInput={(e) => search(e.currentTarget.value)} />
         </div>
-      </div>
+      </div> 
 
       <div className="flex w-full justify-center flex-wrap items-start">
-        {games.map(({ id, cover, description, name, play_time, tags }) => (
-          <div key={id} className="w-60">
-            <h3>{name}</h3>
-            <img src={cover} className="w-60" />
-            <p>Playtime: {Math.floor(play_time / 60)}h</p>
-            <p>{limitText(getText(description), 500)}</p>
-            <p>TAGS: {tags.join(', ')}</p>
+        {filteredGames.map(({ id, cover }) => (
+          <div key={id} className="w-32 md:w-44 xl:w-60 p-2">
+            <img src={cover} className="w-60 rounded-2xl" />
           </div>
         ))}
       </div>

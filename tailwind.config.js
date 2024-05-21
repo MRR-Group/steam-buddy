@@ -11,6 +11,12 @@ export default {
   ],
 
   theme: {
+    extend: {
+      spacing: {
+        3.5: "0.85rem"
+      }
+    },
+
     colors: {
       transparent: 'transparent',
       'transparent-dark': 'rgba(31, 31, 31, 0.13)',
@@ -42,6 +48,7 @@ export default {
         900: '#3d3d3d',
         950: '#000000',
       },
+      dark: "#1B2838",
       text: '#ffffff',
       error: '#FF0000',
       gradient: {
@@ -63,6 +70,5 @@ export default {
       md: '10px',
     },
   },
-
   plugins: [forms],
 };
