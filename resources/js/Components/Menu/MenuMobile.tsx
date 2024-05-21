@@ -54,10 +54,11 @@ export const MenuMobile = ({ items = [] }: Props) => {
         >
           <nav className="pt-8 pb-2 bg-dark rounded-xl shadow-md w-full h-full">
             <div ref={content} className="w-full h-full opacity-0">
-              {items.map(([name, url]) => (
+              {items.map(([name, url, method="get"]) => (
                 <Link
                   href={url}
                   key={url}
+                  method={method}
                   className="block w-full h-9 pb-2 pt-2 text-xl text-text hover:text-gradient-light"
                 >
                   {name}

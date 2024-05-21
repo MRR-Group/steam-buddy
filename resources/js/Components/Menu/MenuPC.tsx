@@ -13,10 +13,11 @@ export const MenuPC = ({ items = [] }: Props) => {
     <>
       <div className="absolute p-px top-0 left-4 rounded-xl bg-gradient-to-r from-gradient-light via-gradient-medium to-gradient-dark h-14" style={{ width }}>
           <nav className="bg-dark rounded-xl shadow-md flex justify-evenly h-full items-center">
-            {items.slice(0, -1).map(([name, url]) => (
+            {items.slice(0, -1).map(([name, url, method = "get"]) => (
               <Link
                 href={url}
                 key={url}
+                method={method}
                 className="text-xl text-text hover:text-gradient-light"
               >
                 {name}
@@ -27,10 +28,11 @@ export const MenuPC = ({ items = [] }: Props) => {
 
         <div className="absolute p-px top-0 right-4 rounded-xl bg-gradient-to-r from-gradient-light via-gradient-medium to-gradient-dark w-28 h-14">
           <nav className="w-full h-full bg-dark rounded-xl shadow-md flex justify-center items-center">
-            {items.slice(-1).map(([name, url]) => (
+            {items.slice(-1).map(([name, url, method = "get"]) => (
               <Link
                 href={url}
                 key={url}
+                method={method}
                 className="block text-xl text-text hover:text-gradient-light"
               >
                 {name}

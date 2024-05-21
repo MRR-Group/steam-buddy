@@ -22,7 +22,7 @@ export const AuthenticatedLayout = ({ children, title, user }: Props) => {
               ["Games", route('library')],
               ["Profile", route('profile.show', { id: user.id })],
               ["Edit Profile", route('profile.edit')],
-              ["Log out", route('logout')]
+              ["Log out", route('logout'), "post"]
             ]}
           />
         </div>
