@@ -4,6 +4,7 @@ import { Tags } from '../Components/Tags/Tags';
 import { useMemo, useState } from 'react';
 import { TextInput } from '../Components/TextInput/TextInput';
 import { useDebounceCallback } from 'usehooks-ts';
+import { GameLink } from '../Components/GameLink/GameLink';
 
 type Props = {
   auth: {
@@ -55,10 +56,15 @@ export const Library = ({ auth, games, tags }: Props) => {
       </div> 
 
       <div className="flex w-full justify-center flex-wrap items-start">
-        {filteredGames.map(({ id, cover }) => (
-          <div key={id} className="w-32 md:w-44 xl:w-60 p-2">
-            <img src={cover} className="w-60 rounded-2xl" />
-          </div>
+        {filteredGames.map(({ id, cover, name }) => (
+          <GameLink 
+            key={id} 
+            game_cover={cover} 
+            game_name={name} 
+            game_id={id} 
+            user_id={auth.user.id}
+            user_name={auth.user.name}
+          />
         ))}
       </div>
     </AuthenticatedLayout>
