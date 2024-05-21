@@ -22,7 +22,8 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected static $MULTIPLAYER_TAGS = [
+    /** @property array<string> MULTIPLAYER_TAGS */
+    const MULTIPLAYER_TAGS = [
         "Local Co-Op",
         "Local Multiplayer",
         "4 Player Local",
@@ -50,7 +51,7 @@ class Tag extends Model
 
     public function is_multiplayer()
     {
-        return in_array($this->name, self::$MULTIPLAYER_TAGS, true);
+        return in_array($this->name, self::MULTIPLAYER_TAGS, true);
     }
 
     public static function get_by_name(string $name): ?self
