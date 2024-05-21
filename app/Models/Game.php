@@ -74,18 +74,23 @@ class Game extends Model
 
     public function with_tags(): array
     {
+        return [
+            "id" => $this->id,
+            "name" => $this->data->name,
+            "cover" => $this->data->cover,
+            "tags" => $this->tags_name(),
+        ];
+    }
+
+    public function tags_name(): array
+    {
         $tags = [];
 
         foreach ($this->data->tags as $tag) {
             $tags[] = $tag->name;
         }
 
-        return [
-            "id" => $this->id,
-            "name" => $this->data->name,
-            "cover" => $this->data->cover,
-            "tags" => $tags,
-        ];
+        return $tags;
     }
 
     public static function get_by_steam_id(int $steam_id): ?self
