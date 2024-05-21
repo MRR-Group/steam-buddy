@@ -6,7 +6,7 @@ import { MenuPC } from "./MenuPC";
  * [0] - name
  * [1] - url
  */
-export type MenuItem = [string, string];
+export type MenuItem = [string, string] | [string, string, "post" | "get" | "put" | "patch" | "delete"];
 
 type Props = {
   items?: MenuItem[];
