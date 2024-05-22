@@ -25,7 +25,7 @@ class GameController extends Controller
         /** @var GameDetail $data */
         $data = $game->data;
 
-        return Inertia::render("Game/ShowGame", [
+        return Inertia::render("Game/Show", [
             "user_id" => $user->id,
             "user_name" => $user->name,
             "user_email" => $user->email,
