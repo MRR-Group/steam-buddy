@@ -44,9 +44,19 @@ class LibraryController extends Controller
         
         rsort($tags_return);
 
+        $selected_tags = $request->query("tags");
+
+        if (is_null($selected_tags)) {
+            $selected_tags = [];
+        }
+        else if(!is_array($selected_tags)) {
+            $selected_tags = array($selected_tags);
+        }
+
         return Inertia::render("Library", [
             "games" => $games,
             "tags" => $tags_return,
+            "default_selected_tags" => $selected_tags,
             "status" => session("status"),
         ]);
     }

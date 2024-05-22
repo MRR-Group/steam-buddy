@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileController extends Controller
 {
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         /** @var User $user */
         $user = User::query()->where(["id" => $id])->first();
@@ -54,6 +54,15 @@ class ProfileController extends Controller
         
         rsort($tags_return);
 
+        $selected_tags = $request->query("tags");
+
+        if (is_null($selected_tags)) {
+            $selected_tags = [];
+        }
+        else if(!is_array($selected_tags)) {
+            $selected_tags = array($selected_tags);
+        }
+
         return Inertia::render("Profile/Show", [
             "id" => $user->id,
             "name" => $user->name,
@@ -62,6 +71,7 @@ class ProfileController extends Controller
             "image" => $user->image,
             "games" => $games,
             "tags" => $tags_return,
+            "default_selected_tags" => $selected_tags,
         ]);
     }
 
