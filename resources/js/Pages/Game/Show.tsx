@@ -1,4 +1,4 @@
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { useMemo } from 'react';
 import { Tags } from '../../Components/Tags/Tags';
@@ -8,6 +8,7 @@ export type ShowPageProps = {
   user_id: number;
   user_name: string;
   user_email: string;
+  game_id: number;
   game_name: string;
   game_description: string;
   game_cover: string;
@@ -17,7 +18,7 @@ export type ShowPageProps = {
 
 type TextNode = ChildNode & { data: string };
 
-export const Show = ({ user_id, user_name, user_email, game_name, game_description, game_cover, game_tags, is_owner }: ShowPageProps) => {
+export const Show = ({ user_id, user_name, user_email, game_id, game_name, game_description, game_cover, game_tags, is_owner }: ShowPageProps) => {
   const tags = useMemo(() => game_tags.map((tag) => ({ name: tag })), [game_tags]);
 
   const getText = (html: string) => {
@@ -60,11 +61,11 @@ export const Show = ({ user_id, user_name, user_email, game_name, game_descripti
       title="Game Details"
     >
       <Head title={game_name} />
-      
+
       <h1 className='text-text text-4xl w-full text-center mb-8'>{game_name}</h1>
       <div className='w-full flex flex-col md:flex-row'>
         <div className='flex justify-center mb-2'>
-          <img 
+          <img
             src={game_cover}
             className='w-10/12 rounded-xl'
             alt={`Cover image of the game "${game_name}"`}
@@ -73,11 +74,11 @@ export const Show = ({ user_id, user_name, user_email, game_name, game_descripti
 
         <div className='md:w-2/4 flex flex-col justify-between items-center'>
           <Tags
-            selected={game_tags} 
-            tags={tags} 
+            selected={game_tags}
+            tags={tags}
             tagRole='button'
             itemAriaLabel={({name}) => `Search games with ${name} tag`}
-            onUnselect={showGamesWithTag} 
+            onUnselect={showGamesWithTag}
           />
 
           <p className='text-justify text-text font-inter p-2'>
@@ -86,9 +87,11 @@ export const Show = ({ user_id, user_name, user_email, game_name, game_descripti
 
           {
             is_owner && (
-              <div className='p-2 pt-0 w-full md:max-w-80'>
-                <PrimaryButton>Find Mate</PrimaryButton>
-              </div>
+              <Link method='post' href={route('match.find', {game_id})}>
+                <div className='p-2 pt-0 w-full md:max-w-80'>
+                  <PrimaryButton type='submit'>Find Mate</PrimaryButton>
+                </div>
+              </Link>
             )
           }
         </div>
