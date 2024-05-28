@@ -62,7 +62,6 @@ describe("Steam fetch screen", function (): void {
                 fn(Assert $page) => $page
                     ->where("name", $user->name)
                     ->where("batch", "0")
-                    ->where("status", null),
             );
         });
     });
