@@ -3,6 +3,7 @@ import {
   MutableRefObject,
   forwardRef,
   useEffect,
+  useMemo,
   useRef,
 } from 'react';
 
@@ -27,6 +28,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
     ref,
   ) => {
     const ariaRef = useRef<HTMLTextAreaElement>(null);
+    const empty = useMemo(() => value.length == 0, [value]);
 
     useEffect(() => {
       if (isFocused) {
@@ -38,7 +40,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
       <div className={`group relative ${className}`}>
         <label
           htmlFor={name}
-          className={`absolute top-0 left-0 group-focus-within:font-bold group-focus-within:text-sm text-text group-hover:font-bold transition-all duration-300`}
+          className={`absolute ${empty ? 'top-[calc(100%-2.4rem)] text-xl' : 'top-0 text-sm'} left-0 group-focus-within:top-0 group-focus-within:font-bold group-focus-within:text-sm text-text group-hover:font-bold transition-all duration-300`}
         >
           {label}
         </label>

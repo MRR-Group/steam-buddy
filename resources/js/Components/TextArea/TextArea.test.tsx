@@ -1,7 +1,8 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vitest } from 'vitest';
 
 import { TextArea } from './TextArea';
+import { act } from 'react';
 
 describe('TextArea', () => {
   it('should render textarea', () => {
@@ -83,9 +84,21 @@ describe('TextArea', () => {
   });
 
   it(`should render label`, () => {
-    render(<TextArea name="input" label="Input" value="value" onChange={() => {}} />);
+    render(<TextArea name="text-area" label="TextArea" value="value" onChange={() => {}} />);
 
-    expect(screen.getByDisplayValue('value')).toHaveAttribute('id', 'input');
-    expect(screen.getByText('Input')).toHaveAttribute('for', 'input');
+    expect(screen.getByDisplayValue('value')).toHaveAttribute('id', 'text-area');
+    expect(screen.getByText('TextArea')).toHaveAttribute('for', 'text-area');
+  });
+
+  it(`should make label bigger if value is empty`, () => {
+    render(<TextArea name="text-area" label="TextArea" value="" onChange={() => {}} />);
+
+    expect(screen.getByText('TextArea')).toHaveClass('top-[calc(100%-2.4rem)] text-xl');
+  });
+
+  it(`should make label smaller if area contains value`, () => {
+    render(<TextArea name="text-area" label="TextArea" value="text" onChange={() => {}} />);
+
+    expect(screen.getByText('TextArea')).toHaveClass('top-0 text-sm');
   });
 });
