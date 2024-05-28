@@ -15,7 +15,7 @@ type Progress = {
   all: number;
 };
 
-export const Fetch = ({ name = '', batch, status = '' }: Props) => {
+export const Fetch = ({ name = '', batch, status }: Props) => {
   name = name.replace(/ /g, '\u00A0');
 
   const { post, processing } = useForm();
