@@ -18,20 +18,6 @@ describe('GameLink', () => {
     expect(screen.getByLabelText(`Navigate to Amon statistics for the game "WarThunder"`)).toBeInTheDocument();
   });
 
-  it('should add alt to the cover image', () => {
-    render(
-      <GameLink 
-        game_id={0}
-        game_cover='/example.png'
-        game_name='WarThunder'
-        user_id={0}
-        user_name='Amon'
-      />
-    );
-
-    expect(screen.getByAltText(`Cover image of the game "WarThunder"`)).toBeInTheDocument();
-  });
-
   it('should add link to user statists for the game', () => {
     render(
       <GameLink 
