@@ -123,17 +123,46 @@ class SteamApiService
 
     public function get_game_cover(int $game_id): string
     {
-        return "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/library_600x900_2x.jpg";
+        $url_2019 = "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/library_600x900_2x.jpg";
+
+        if ($this->does_image_exist($url_2019)) {
+            return $url_2019;
+        }
+
+        $url_2014 = "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/" . $game_id . "/hero_capsule.jpg";
+
+        if ($this->does_image_exist($url_2014)) {
+            return $url_2014;
+        }
+
+        // pre 2014
+        return "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/" . $game_id . "/capsule_231x87.jpg";
     }
 
     public function get_game_background(int $game_id): string
     {
-        return "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/library_hero.jpg";
+        $url = "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/library_hero.jpg";
+
+        if ($this->does_image_exist($url)) {
+            return $url;
+        }
+
+        return "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/" . $game_id . "/header.jpg";
     }
 
     public function get_game_logo(int $game_id): string
     {
-        return "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/logo.png";
+        $url = "https://steamcdn-a.akamaihd.net/steam/apps/" . $game_id . "/logo.png";
+
+        if ($this->does_image_exist($url)) {
+            return $url;
+        }
+        
+        return "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/" . $game_id . "/capsule_231x87.jpg";
+    }
+
+    protected function does_image_exist(string $url): bool {    
+        return Http::get($url)->status() === HttpFoundationResponse::HTTP_OK;
     }
 
     protected function fetch_json_or_throw_error(String $url, array $rules): array

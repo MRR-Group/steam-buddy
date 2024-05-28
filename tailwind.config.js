@@ -13,8 +13,10 @@ export default {
   theme: {
     extend: {
       spacing: {
-        3.5: "0.85rem"
-      }
+        3.5: "0.85rem",
+        41: "10.5rem",
+        90: "21rem",
+      },
     },
 
     colors: {

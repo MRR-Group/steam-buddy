@@ -28,7 +28,8 @@ export type ShowPageProps = {
 
 export const Show = ({user, mates}: ShowPageProps) => {
   const[mate, setMate] = useState(0)
-  const {id, name, image, game} = useMemo(()=> mates[mate], [mate])
+  const {id, name, image, game} = useMemo(()=> mates[mate], [mate, mates]);
+  
   const nextMate = ()=>{
     if(mate >= mates.length - 1)
       {
@@ -39,6 +40,7 @@ export const Show = ({user, mates}: ShowPageProps) => {
         setMate(mate + 1);
       }
   }
+
   return (
     <AuthenticatedLayout
       user = {user}
