@@ -87,7 +87,7 @@ export const Show = ({ user_id, user_name, user_email, game_id, game_name, game_
 
           {
             is_owner && (
-              <Link method='post' href={route('match.find', {game_id})}>
+              <Link method='post' href={route('match.find', {game_id})} className="w-full flex justify-center">
                 <div className='p-2 pt-0 w-full md:max-w-80'>
                   <PrimaryButton type='submit'>Find Mate</PrimaryButton>
                 </div>
