@@ -51,6 +51,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
           id={name}
           name={name}
           type={type}
+          value={value}
           className="absolute bottom-0 w-full text-center bg-transparent p-0 text-text border-transparent focus:border-transparent focus:ring-0"
           ref={ref ?? input}
         />
