@@ -27,7 +27,7 @@ class Achievement extends Model
 
     public function set_steam_id(int $game_id, string $name): void
     {
-        $this->steam_id = $this->create_achievement_id($game_id, $name);
+        $this->steam_id = $this::create_achievement_id($game_id, $name);
     }
 
     public function data(): BelongsTo
@@ -40,7 +40,7 @@ class Achievement extends Model
         return $this->belongsTo(Game::class);
     }
 
-    protected function create_achievement_id(int $game_id, string $achievement_steam_name): string
+    public static function create_achievement_id(int $game_id, string $achievement_steam_name): string
     {
         return str($game_id) . "/" . $achievement_steam_name;
     }

@@ -1,5 +1,6 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 
 export type EditPageProps = {
   id: number;
@@ -41,6 +42,10 @@ export const Edit = ({ id, name, email, description }: EditPageProps) => {
               <button type="submit">Change</button>
             </form>
           </div>
+
+          <Link method='get' href={route("steam.update")}>
+            <PrimaryButton>Update Steam Data</PrimaryButton>
+          </Link>
         </div>
       </div>
     </AuthenticatedLayout>

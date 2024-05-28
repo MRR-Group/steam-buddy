@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Steam;
 
 use App\Jobs\FetchSteamGame;
+use App\Jobs\UpdateSteamGame;
 use App\Models\Achievement;
 use App\Models\AchievementDetail;
 use App\Models\Game;
@@ -61,6 +62,37 @@ class SteamService
 
         $this->create_user_achievements($model, $user->steam_id);
     }
+
+    public function update_games(User $user): Batch {
+        $data = $this->api->get_games($user->steam_id);
+        $jobs = [];
+
+        foreach ($data as $game_data) {
+            $game = $user->games()->where("steam_id", "=", $game_data["appid"])->first();
+
+            if (is_null($game)) {
+                $jobs[] = new FetchSteamGame($game_data["appid"], $game_data["playtime_forever"], $user);
+            }
+            else {
+                $jobs[] = new UpdateSteamGame($game_data["playtime_forever"], $game, $user);
+            }
+        }
+
+        return Bus::batch($jobs)
+        ->then(function () use ($user): void {
+            $user->last_fetch = Carbon::now();
+            $user->save();
+        })->dispatch();
+    }
+
+ 
+    public function update_game(Game $game, User $user, int $playtime) {
+        $game->play_time = $playtime;
+        $game->save();
+
+        $this->update_user_achievements($game, $user);
+    }
+
 
     protected function is_game_multiplayer(int $game_id): bool
     {
@@ -159,6 +191,30 @@ class SteamService
         $achievements = $this->api->get_user_achievements_for_game($steam_id, $game->steam_id);
 
         foreach ($achievements as $json) {
+            $unlocked_at = $json["unlocktime"];
+            $model = new Achievement();
+
+            if ($unlocked_at <= 0) {
+                continue;
+            }
+
+            $model->unlocked_at = Carbon::createFromTimestamp($unlocked_at);
+            $model->set_steam_id($game->steam_id, $json["apiname"]);
+
+            $model->data()->associate(AchievementDetail::get_by_name($game->steam_id, $json["apiname"]));
+            $model->game()->associate(Game::get_by_steam_id($game->steam_id));
+            $model->save();
+        }
+    }
+
+    protected function update_user_achievements(Game $game, User $user) {
+        $achievements = $this->api->get_user_achievements_for_game($user->game, $game->steam_id);
+
+        foreach ($achievements as $json) {            
+            if (!is_null($game->achievements()->where("steam_id", "=", Achievement::create_achievement_id($game->steam_id, $json["apiname"]))->first())) {
+                continue;
+            } 
+
             $unlocked_at = $json["unlocktime"];
             $model = new Achievement();
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Steam\SteamConnectionController;
 use App\Http\Controllers\Steam\SteamDataFetcherController;
+use App\Http\Controllers\Steam\SteamDataUpdateController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(["auth", "verified", "steam.unconnected"])->group(function (): void {
@@ -16,4 +17,11 @@ Route::middleware(["auth", "verified", "steam.connected"])->group(function (): v
     Route::get("/steam/fetch", [SteamDataFetcherController::class, "show"])->name("steam.fetch");
     Route::post("/steam/fetch", [SteamDataFetcherController::class, "fetch"]);
     Route::get("/steam/fetch/progress", [SteamDataFetcherController::class, "progress"])->name("steam.fetch.progress");
+});
+
+
+Route::middleware(["steam"])->group(function (): void {
+    Route::get("/steam/update", [SteamDataUpdateController::class, "show"])->name("steam.update");
+    Route::post("/steam/update", [SteamDataUpdateController::class, "update"]);
+    Route::get("/steam/update/progress", [SteamDataUpdateController::class, "progress"])->name("steam.update.progress");
 });
