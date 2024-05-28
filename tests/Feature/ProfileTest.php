@@ -20,16 +20,24 @@ test("profile page is displayed", function (): void {
 
     $games = array(
         [
+            "achievements" => array(),
+            "cover" => $game->data->cover,
+            "description" => $game->data->description,
             "id" => $game->id,
             "name" => $game->data->name,
-            "cover" => $game->data->cover,
             "tags" => array('Swordplay', 'Harem'),
+            "play_time" => $game->play_time,
+            "steam_id" => $game->steam_id,
         ],
         [
+            "achievements" => array(),
+            "cover" => $game1->data->cover,
+            "description" => $game1->data->description,
             "id" => $game1->id,
             "name" => $game1->data->name,
-            "cover" => $game1->data->cover,
             "tags" => array('Music', 'Great Soundtrack'),
+            "play_time" => $game1->play_time,
+            "steam_id" => $game1->steam_id,
         ]
     );
 
