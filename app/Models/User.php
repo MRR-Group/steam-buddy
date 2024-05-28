@@ -57,8 +57,23 @@ use Illuminate\Support\Collection;
     {
         $this->steam_id = $steam_id;
         $this->name = $nickname;
-        $this->image = $avatar;
+        $this->image = $this->load_bigger_image($avatar);
         $this->save();
+    }
+
+    protected function load_bigger_image(string $image) {        
+        // 128x128
+        if (str_contains($image, "_full")) {
+            return $image;
+        }
+
+        // 64x64
+        if (str_contains($image, "_medium")) {
+            return str_replace("_medium", "_full", $image);
+        }
+
+        // 32x32
+        return str_replace(".jpg", "_full.jpg", $image);
     }
 
     public function games(): HasMany
