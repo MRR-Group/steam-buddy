@@ -63,6 +63,8 @@ class ProfileController extends Controller
             $selected_tags = array($selected_tags);
         }
 
+        $is_owner = $user->id === $request->user()->id;
+
         return Inertia::render("Profile/Show", [
             "id" => $user->id,
             "name" => $user->name,
@@ -72,6 +74,7 @@ class ProfileController extends Controller
             "games" => $games,
             "tags" => $tags_return,
             "default_selected_tags" => $selected_tags,
+            "is_owner" => $is_owner,
         ]);
     }
 
@@ -83,6 +86,7 @@ class ProfileController extends Controller
         return Inertia::render("Profile/Edit", [
             "status" => session("status"),
             "id" => $user->id,
+            "image" => $user->image,
             "name" => $user->name,
             "email" => $user->email,
             "description" => $user->description,

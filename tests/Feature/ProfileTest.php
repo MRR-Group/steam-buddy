@@ -48,6 +48,39 @@ test("profile page is displayed", function (): void {
             ->where("description", $user1->description)
             ->where("image", $user1->image)
             ->where("games", $games)
+            ->where("is_owner", false)
+    );
+});
+
+test("profile page should return is_owner: true if user is displaying it's own profile", function (): void {
+    $user = User::factory()->create();
+    $game = Game::factory()->user($user, "Swordplay", "Harem")->create();
+
+    $response = $this
+        ->actingAs($user)
+        ->get("/profile/" . $user->id );
+
+    $games = array(
+        [
+            "achievements" => array(),
+            "cover" => $game->data->cover,
+            "description" => $game->data->description,
+            "id" => $game->id,
+            "name" => $game->data->name,
+            "tags" => array('Swordplay', 'Harem'),
+            "play_time" => $game->play_time,
+            "steam_id" => $game->steam_id,
+        ],
+    );
+
+    $response->assertInertia(
+        fn(Assert $page) => $page
+            ->where("name", $user->name)
+            ->where("email", $user->email)
+            ->where("description", $user->description)
+            ->where("image", $user->image)
+            ->where("games", $games)
+            ->where("is_owner", true)
     );
 });
 
@@ -59,6 +92,7 @@ test("edit profile page is displayed", function (): void {
         fn(Assert $page) => $page
             ->where("name", $user->name)
             ->where("email", $user->email)
+            ->where("image", $user->image)
             ->where("description", $user->description),
     );
 });
