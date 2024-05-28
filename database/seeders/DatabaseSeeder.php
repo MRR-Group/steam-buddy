@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             "email" => "test@example.com",
             "password" => Hash::make("test@example.com"),
             "email_verified_at" => now(),
+            "description" => fake()->realText(500),
             "last_fetch" => null,
         ]);
     }
