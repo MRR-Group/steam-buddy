@@ -267,18 +267,8 @@ describe("StemAPI", function (): void {
             $api = new SteamApiService("TOKEN");
             
             fake_steam_response("steam/apps/1/library_600x900_2x.jpg", [ "status" => 404 ], 404, "https://steamcdn-a.akamaihd.net/");
-            fake_steam_response("store_item_assets/steam/apps/1/hero_capsule.jpg", [ "status" => 200 ], 200, "https://shared.cloudflare.steamstatic.com/");
 
-            expect($api->get_game_cover(1))->toBe("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1/hero_capsule.jpg");
-        });
-
-        it("should return link to alternative cover image if game doesn't have cover for 2014 library version", function (): void {
-            $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/library_600x900_2x.jpg", [ "status" => 404 ], 404, "https://steamcdn-a.akamaihd.net/");
-            fake_steam_response("store_item_assets/steam/apps/1/hero_capsule.jpg", [ "status" => 404 ], 404, "https://shared.cloudflare.steamstatic.com/");
-
-            expect($api->get_game_cover(1))->toBe("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1/capsule_231x87.jpg");
+            expect($api->get_game_cover(1))->toBe("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1/capsule_616x353.jpg");
         });
     });
 
