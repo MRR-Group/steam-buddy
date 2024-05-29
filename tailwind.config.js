@@ -12,6 +12,10 @@ export default {
 
   theme: {
     extend: {
+      screens: {
+        xs: "475px"
+      },
+
       spacing: {
         3.5: "0.85rem",
         41: "10.5rem",

@@ -10,8 +10,9 @@ type Props = Omit<InertiaLinkProps, 'href'> & {
 };
 
 export const GameLink = ({ user_id, user_name, game_id, game_name, game_cover, ...props }: Props) => (
-  <Link href={route("profile.games.show", [ user_id, game_id ])} aria-label={`Navigate to ${user_name} statistics for the game "${game_name}"`} {...props}>
+  <Link href={route("profile.games.show", [ user_id, game_id ])} aria-label={`Navigate to ${user_name} statistics for the game "${game_name}"`} className="" {...props}>
     <Game 
+      className="w-36 xs:w-44 xl:w-60 p-2"
       game_cover={game_cover}
       game_name={game_name}
     />
