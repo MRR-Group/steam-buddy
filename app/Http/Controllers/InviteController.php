@@ -16,7 +16,7 @@ class InviteController extends Controller
     public function send_invite(int $user_id, int $game_id, Request $request)
     {
         $target_user = User::query()->where(['id'=>$user_id])->first();
-        $game = GameDetail::query()->where(['id'=>$game_id])->first();
+        $game = GameDetail::query()->where(['steam_id'=>$game_id])->first();
 
         if(is_null($target_user))
         {

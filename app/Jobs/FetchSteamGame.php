@@ -12,6 +12,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class FetchSteamGame implements ShouldQueue
 {
@@ -39,6 +41,11 @@ class FetchSteamGame implements ShouldQueue
             return;
         }
 
-        $steam->fetch_game($this->game_id, $this->playtime, $this->user);
+        try {
+            $steam->fetch_game($this->game_id, $this->playtime, $this->user);
+        }
+        catch(Throwable $err) {
+            Log::error("Fetch Steam Game failed. Error: " . $err);
+        }
     }
 }

@@ -22,6 +22,7 @@ use Illuminate\Support\Collection;
  *
  * @property Collection<Game> $games;
  * @property Collection<Tag> $tags;
+ * @property Collection<AchievementDetail> $achievements;
  */
 class GameDetail extends Model
 {
@@ -32,6 +33,11 @@ class GameDetail extends Model
         return $this->hasMany(Game::class);
     }
 
+    public function achievements(): HasMany
+    {
+        return $this->hasMany(AchievementDetail::class);
+    }
+    
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);

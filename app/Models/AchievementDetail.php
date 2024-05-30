@@ -7,6 +7,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -19,8 +20,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property AchievementDetail $data
- * @property Game $game
+ * @property GameDetail $game
  * @property Collection<Achievement> $achievements
  */
 class AchievementDetail extends Model
@@ -35,6 +35,11 @@ class AchievementDetail extends Model
     public function achievements(): HasMany
     {
         return $this->hasMany(Achievement::class);
+    }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(GameDetail::class, "game_detail_id");
     }
 
     public static function get_by_name(int $game_id, string $achievement_steam_name): ?self

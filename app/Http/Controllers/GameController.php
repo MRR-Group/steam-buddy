@@ -20,20 +20,33 @@ class GameController extends Controller
         }
 
         $is_owner = $user->id === $request->user()->id;
+
+        /** @var Game $game */
         $game = Game::query()->where(["id" => $game_id, "user_id" => $user_id])->first();
 
         /** @var GameDetail $data */
         $data = $game->data;
 
+        $achievements = $game->with_achievements();
+        $similar_achievements = $is_owner ? null : $game->similar_achievements($request->user(), $achievements);
+
         return Inertia::render("Game/Show", [
-            "user_id" => $user->id,
-            "user_name" => $user->name,
-            "user_email" => $user->email,
-            "game_name" => $data->name,
-            "game_description" => $data->description,
-            "game_cover" => $data->cover,
-            "game_id" => $game->id,
-            "game_tags" => $game->tags_name(),
+            "user" => [
+                "id" => $user->id,
+                "name" => $user->name,
+                "email" => $user->email,
+            ],
+            "game" => [
+                "name" => $data->name,
+                "description" => $data->description,
+                "cover" => $data->cover,
+                "id" => $game->id,
+                "tags" => $game->tags_name(),
+                "play_time" => $game->play_time,
+                "game_completion" => $game->game_completion($achievements),
+                "similar_achievements" => $similar_achievements,
+                "achievements" => $achievements,
+            ],
             "is_owner" => $is_owner,
         ]);
     }
