@@ -20,6 +20,11 @@ class Invite extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "is_accepted",
+        "is_rejected",
+    ];
+
     function sender(): BelongsTo
     {
         return $this->belongsTo(User::class);
