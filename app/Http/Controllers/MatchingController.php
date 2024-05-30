@@ -63,6 +63,7 @@ class MatchingController extends Controller
             "user" => ['id'=>$user->id, 'email'=>$user->email, 'name'=>$user->name, 'description' => $user->description],
             "game" => [
                 "id" => $game_id,
+                "steam_id" => $data->steam_id,
                 "name" => $data->name,
                 "cover" => $data->cover,
                 "description" => $data->description,

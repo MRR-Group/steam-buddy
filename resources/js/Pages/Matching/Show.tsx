@@ -6,6 +6,7 @@ import { Statistics } from '../../Components/Statistics/Statistics';
 import { Achievements } from '../../Components/Achievements/Achievements';
 
 export type ShowPageProps = {
+  status?: string
   user:{
     id: number
     name: string
@@ -16,6 +17,7 @@ export type ShowPageProps = {
     id: number
     name: string
     cover: string
+    steam_id: string
   }
   candidates: {
     id: number
@@ -38,7 +40,7 @@ export type ShowPageProps = {
   }[]
 };
 
-export const Show = ({user, game, candidates}: ShowPageProps) => {
+export const Show = ({user, game, candidates, status}: ShowPageProps) => {
   const[candidate, setCandidate] = useState(0)
   const {id, name, image, description, statistics} = useMemo(()=> candidates[candidate] ?? {}, [candidate, candidates]);
     
@@ -77,6 +79,7 @@ export const Show = ({user, game, candidates}: ShowPageProps) => {
     <AuthenticatedLayout
       user = {user}
       title='Matching'
+      status = {status}
     >
       <Head title="Matching" />
 
@@ -121,6 +124,8 @@ export const Show = ({user, game, candidates}: ShowPageProps) => {
           <Link href={route("profile.games.show", { user_id: user.id, game_id: game.id })}  className="w-full max-w-md mt-2">
             <PrimaryButton className="max-w-md">Back</PrimaryButton>
           </Link>
+
+          <Link href={route('invite.send', {user_id: id, game_id: game.steam_id})} as='button' method='post'  className="w-full max-w-md mt-2"><PrimaryButton className="max-w-md">Send Invite</PrimaryButton></Link>
         </div>
       </div>
     </AuthenticatedLayout>
