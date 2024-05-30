@@ -4,27 +4,40 @@ import { useMemo } from 'react';
 import { Tags } from '../../Components/Tags/Tags';
 import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { Game } from '../../Components/Game/Game';
-
-// className='xl:h-auto lg:w-full lg:h-auto sm:w-6/12 xs:w-8/12 w-full h-auto'
-// blurredImgClassName='w-full h-full md:min-h-96 max-h-full'
-// imgClassName='max-h-full'
+import { Statistics } from '../../Components/Statistics/Statistics';
+import { Achievements } from '../../Components/Achievements/Achievements';
 
 export type ShowPageProps = {
-  user_id: number;
-  user_name: string;
-  user_email: string;
-  game_id: number;
-  game_name: string;
-  game_description: string;
-  game_cover: string;
-  game_tags: string[];
-  is_owner: boolean;
+  user: {
+    id: number
+    name: string
+    email: string
+  }
+  game: {
+    id: number
+    name: string
+    description: string
+    cover: string
+    play_time: number
+    game_completion: number
+    similar_achievements?: number
+    tags: string[]
+    achievements: {
+      id: number
+      name: string
+      steam_id: string
+      unlocked_at: number
+      description: string
+      icon: string
+    }[]
+  }
+  is_owner: boolean
 };
 
 type TextNode = ChildNode & { data: string };
 
-export const Show = ({ user_id, user_name, user_email, game_id, game_name, game_description, game_cover, game_tags, is_owner }: ShowPageProps) => {
-  const tags = useMemo(() => game_tags.map((tag) => ({ name: tag })), [game_tags]);
+export const Show = ({ user, game, is_owner }: ShowPageProps) => {
+  const tags = useMemo(() => game.tags.map((tag) => ({ name: tag })), [game]);
 
   const getText = (html: string) => {
     const content = document.createElement('div');
@@ -55,39 +68,38 @@ export const Show = ({ user_id, user_name, user_email, game_id, game_name, game_
     return `${text.slice(0, limit)}...`;
   }
 
-  const text = useMemo(() => limitText(getText(game_description), 1000), [game_description])
+  const text = useMemo(() => limitText(getText(game.description), 1000), [game])
 
   const showGamesWithTag = (tag: string) => {
     if (is_owner) {
       router.get(route("library", { _query: { tags: tag }}));
     }
     else {
-      router.get(route("profile.show", { id: user_id, _query: { tags: tag }}));
+      router.get(route("profile.show", { id: user.id, _query: { tags: tag }}));
     }
   }
 
   return (
     <AuthenticatedLayout
-      user={{ id: user_id, name: user_name, email: user_email }}
+      user={user}
       title="Game Details"
     >
-      <Head title={game_name} />
+      <Head title={game.name} />
 
-      <h1 className='text-text text-4xl w-full text-center mb-8'>{game_name}</h1>
+      <h1 className='text-text text-4xl w-full text-center mb-8'>{game.name}</h1>
       <Tags
-        selected={game_tags}
+        selected={game.tags}
         tags={tags}
         tagRole='button'
         itemAriaLabel={({name}) => `Search games with ${name} tag`}
         onUnselect={showGamesWithTag}
       />
 
-
-      <div className='w-full flex flex-col items-center lg:items-stretch lg:flex-row lg:justify-between lg:h-[calc(100%-13rem)] lg:min-h-[750px]'>
+      <div className='w-full flex flex-col items-center lg:items-stretch lg:flex-row lg:justify-between lg:h-[calc(100vh-14rem)] lg:min-h-[750px]'>
         <div className='flex items-center justify-center w-full xs:w-3/4  sm:w-1/2 md:w-1/2 lg:w-full h-full max-w-lg pr-5 pl-5 lg:pl-1'>
           <Game
-            game_cover={game_cover}
-            game_name={game_name}
+            game_cover={game.cover}
+            game_name={game.name}
           />
         </div>
 
@@ -98,7 +110,7 @@ export const Show = ({ user_id, user_name, user_email, game_id, game_name, game_
 
           {
             is_owner && (
-              <Link method='post' href={route('match.find', {game_id})} className="w-full flex justify-center">
+              <Link method='post' href={route('match.find', {game_id: game.id})} className="w-full flex justify-center">
                 <div className='p-5 pt-3 w-full md:max-w-80'>
                   <PrimaryButton type='submit'>Find Mate</PrimaryButton>
                 </div>
@@ -106,7 +118,23 @@ export const Show = ({ user_id, user_name, user_email, game_id, game_name, game_
             )
           }
         </div>
-    </div>
+      </div>
+
+      <div>
+          <section className='xs:h-[230px] h-[146px] bg-transparent-dark-300 md:bg-transparent-dark-100 rounded-2xl flex items-start text-text w-full mb-3'>
+            <Statistics
+              game_cover={game.cover}
+              game_name={game.name}
+              user_name={user.name}
+              statistics={game}
+              noIcon
+            />
+          </section>
+
+          <section className='w-full'>
+            <Achievements achievements={game.achievements} />
+          </section>
+      </div>
     </AuthenticatedLayout>
   );
 };

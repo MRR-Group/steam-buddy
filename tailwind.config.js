@@ -13,7 +13,8 @@ export default {
   theme: {
     extend: {
       screens: {
-        xs: "475px"
+        xs: "475px",
+        "3xl": "1750px",
       },
 
       spacing: {

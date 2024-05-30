@@ -17,8 +17,9 @@ Route::middleware(["auth", "verified", "steam"])->group(function (): void {
     Route::get("/profile/edit", [ProfileController::class, "edit"])->name("profile.edit");
     Route::patch("/profile", [ProfileController::class, "update"])->name("profile.update");
     Route::get("/profile/{id}", [ProfileController::class, "show"])->name("profile.show");
-    Route::get("/profile/{user_id}/games/{game_id}",[GameController::class, "show"])->name("profile.games.show");
-    Route::post("/match/{game_id}",[MatchingController::class, "find"])->name("match.find");
+    Route::get("/profile/{user_id}/games/{game_id}", [GameController::class, "show"])->name("profile.games.show");
+    Route::get("/match/{game_id}", [MatchingController::class, "show"]);
+    Route::post("/match/{game_id}", [MatchingController::class, "find"])->name("match.find");
 });
 
 require __DIR__ . "/auth.php";
