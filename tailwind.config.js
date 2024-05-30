@@ -25,7 +25,21 @@ export default {
 
     colors: {
       transparent: 'transparent',
-      'transparent-dark': 'rgba(31, 31, 31, 0.13)',
+      'transparent-dark': {
+        DEFAULT: 'rgba(31, 31, 31, 0.13)',
+        50: 'rgba(31, 31, 31, 0)',
+        100: 'rgba(31, 31, 31, 0.1)',
+        200: 'rgba(31, 31, 31, 0.2)',
+        300: 'rgba(31, 31, 31, 0.3)',
+        400: 'rgba(31, 31, 31, 0.4)',
+        500: 'rgba(31, 31, 31, 0.5)',
+        600: 'rgba(31, 31, 31, 0.6)',
+        700: 'rgba(31, 31, 31, 0.7)',
+        800: 'rgba(31, 31, 31, 0.8)',
+        900: 'rgba(31, 31, 31, 0.9)',
+        950: 'rgba(31, 31, 31, 1)',
+      },
+
       primary: {
         DEFAULT: '#07bcff',
         50: '#effaff',
