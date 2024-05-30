@@ -21,12 +21,12 @@ export const AuthenticatedLayout = ({ children, title, user }: Props) => {
             items={[
               ["Games", route('library')],
               ["Profile", route('profile.show', { id: user.id })],
-              ["Edit Profile", route('profile.edit')],
+              ["Invites", route('invite.show')],
               ["Log out", route('logout'), "post"]
             ]}
           />
         </div>
-        
+
         { children }
       </div>
     </div>

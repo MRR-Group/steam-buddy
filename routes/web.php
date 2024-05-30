@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MatchingController;
 use App\Http\Controllers\ProfileController;
@@ -19,6 +20,8 @@ Route::middleware(["auth", "verified", "steam"])->group(function (): void {
     Route::get("/profile/{id}", [ProfileController::class, "show"])->name("profile.show");
     Route::get("/profile/{user_id}/games/{game_id}",[GameController::class, "show"])->name("profile.games.show");
     Route::post("/match/{game_id}",[MatchingController::class, "find"])->name("match.find");
+    Route::post("/invite/{user_id}/{game_id}",[InviteController::class, "send_invite"])->name("invite.send");
+    Route::get("/invite",[InviteController::class, "show"])->name("invite.show");
 });
 
 require __DIR__ . "/auth.php";

@@ -22,15 +22,15 @@ class MatchingService
             throw new GameNotFoundException();
         }
 
-        $games = Game::query()->where('steam_id','=', $user_game->steam_id)->whereNot('id', '=', $game_id)->get()->toArray();
+        $games = Game::query()->where('steam_id','=', $user_game->steam_id)->whereNot('id', '=', $game_id)->get();
         $mates = [];
 
         for($i = 0; $i < count($games); $i++)
         {
             $mates[] = [
-                'delta_play_time'=>abs($games[$i]['play_time'] - $user_game->play_time),
-                'game_id'=>$games[$i]['id'],
-                'id'=>$games[$i]['user_id']
+                'delta_play_time'=>abs($games[$i]->play_time - $user_game->play_time),
+                'id'=>$games[$i]->user_id,
+                'game'=>$games[$i],
             ];
         }
 

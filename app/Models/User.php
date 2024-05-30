@@ -25,8 +25,11 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property Collection<Game> $games;
- */ class User extends Authenticatable implements MustVerifyEmail
+ * @property Collection<Game> $games
+ * @property Collection<Invite> $sent_invites
+ * @property Collection<Invite> $received_invites
+ */
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
@@ -61,7 +64,7 @@ use Illuminate\Support\Collection;
         $this->save();
     }
 
-    protected function load_bigger_image(string $image) {        
+    protected function load_bigger_image(string $image) {
         // 128x128
         if (str_contains($image, "_full")) {
             return $image;
@@ -79,6 +82,16 @@ use Illuminate\Support\Collection;
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
+    }
+
+    public function sent_invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, 'sender_id');
+    }
+
+    public function received_invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, 'receiver_id');
     }
 
     /**
