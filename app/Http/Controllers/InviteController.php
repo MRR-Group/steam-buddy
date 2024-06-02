@@ -74,7 +74,7 @@ class InviteController extends Controller
             }
             else if(!$invite->is_rejected)
             {
-                $sent_invites[] = $json;
+                $received_invites[] = $json;
             }
         }
 
@@ -111,7 +111,7 @@ class InviteController extends Controller
         return Redirect::route("invite.show")->with("status", $status . " invite from " . $invite->sender->name);
     }
 
-    public function remove(InviteUpdateRequest $request, int $id)
+    public function remove(int $id)
     {
         $invite = Invite::query()->where(['id' => $id])->first();
 
