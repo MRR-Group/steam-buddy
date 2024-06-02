@@ -1,10 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
-import { useMemo, useState } from 'react';
-import { useDebounceCallback } from 'usehooks-ts';
-import { Tags } from '../../Components/Tags/Tags';
-import { TextInput } from '../../Components/TextInput/TextInput';
-import { GameLink } from '../../Components/GameLink/GameLink';
 import { SmallButton } from '../../Components/SmallButton/SmallButton';
 
 type Invite = {
@@ -47,7 +42,7 @@ export const Show = ({user, sent, received, accepted}: ShowPageProps) => {
 
       <h1>Sent Invites</h1>
       {sent.map((invite) => (
-        <div>
+        <div key={invite.id}>
           <h3>{invite.receiver.name} - {invite.game.name}</h3>
           <p>Status: {invite.is_rejected ? "rejected" : invite.is_accepted ? "accepted" : "pending"}</p>
         </div>
@@ -55,7 +50,7 @@ export const Show = ({user, sent, received, accepted}: ShowPageProps) => {
 
       <h1>Received Invites</h1>
       {received.map((invite) => (
-        <div>
+        <div key={invite.id}>
           <h3>{invite.sender.name} - {invite.game.name}</h3>
           <Link href={route('invite.update', {id: invite.id})} as='button' method='patch' data={{is_accepted: true}}><SmallButton>Accept</SmallButton></Link>
           <Link href={route('invite.update', {id: invite.id})} as='button' method='patch' data={{is_rejected: true}}><SmallButton>Reject</SmallButton></Link>
@@ -64,7 +59,7 @@ export const Show = ({user, sent, received, accepted}: ShowPageProps) => {
 
       <h1>Accepted Invites</h1>
       {accepted.map((invite) => (
-        <div>
+        <div key={invite.id}>
           <h3>{invite.sender.name} - {invite.game.name}</h3>
           <p>https://steamcommunity.com/profiles/{invite.steam_id}/</p>
           <Link href={route('invite.remove', {id: invite.id})} as='button' method='delete'><SmallButton>Remove</SmallButton></Link>

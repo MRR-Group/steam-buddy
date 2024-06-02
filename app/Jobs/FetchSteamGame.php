@@ -43,8 +43,7 @@ class FetchSteamGame implements ShouldQueue
 
         try {
             $steam->fetch_game($this->game_id, $this->playtime, $this->user);
-        }
-        catch(Throwable $err) {
+        } catch (Throwable $err) {
             Log::error("Fetch Steam Game failed. Error: " . $err);
         }
     }

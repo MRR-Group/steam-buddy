@@ -64,7 +64,23 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->save();
     }
 
-    protected function load_bigger_image(string $image) {
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class);
+    }
+
+    public function sent_invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, "sender_id");
+    }
+
+    public function received_invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, "receiver_id");
+    }
+
+    protected function load_bigger_image(string $image)
+    {
         // 128x128
         if (str_contains($image, "_full")) {
             return $image;
@@ -77,21 +93,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // 32x32
         return str_replace(".jpg", "_full.jpg", $image);
-    }
-
-    public function games(): HasMany
-    {
-        return $this->hasMany(Game::class);
-    }
-
-    public function sent_invites(): HasMany
-    {
-        return $this->hasMany(Invite::class, 'sender_id');
-    }
-
-    public function received_invites(): HasMany
-    {
-        return $this->hasMany(Invite::class, 'receiver_id');
     }
 
     /**

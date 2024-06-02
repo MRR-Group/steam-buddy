@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '../../Components/TextInput/TextInput';

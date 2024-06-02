@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\GameDetail;
-use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

@@ -150,11 +150,12 @@ class SteamApiService
         if ($this->does_image_exist($url)) {
             return $url;
         }
-        
+
         return "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/" . $game_id . "/capsule_231x87.jpg";
     }
 
-    protected function does_image_exist(string $url): bool {    
+    protected function does_image_exist(string $url): bool
+    {
         return Http::get($url)->status() === HttpFoundationResponse::HTTP_OK;
     }
 

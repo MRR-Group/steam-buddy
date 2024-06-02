@@ -23,7 +23,7 @@ class Tag extends Model
     use HasFactory;
 
     /** @property array<string> MULTIPLAYER_TAGS */
-    const MULTIPLAYER_TAGS = [
+    public const MULTIPLAYER_TAGS = [
         "Local Co-Op",
         "Local Multiplayer",
         "4 Player Local",
@@ -42,6 +42,7 @@ class Tag extends Model
         "PvE",
         "PvP",
     ];
+
     protected $fillable = ["name"];
 
     public function games(): BelongsToMany

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,39 +27,39 @@ class Invite extends Model
         "is_rejected",
     ];
 
-    function sender(): BelongsTo
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    function receiver(): BelongsTo
+    public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    function game(): BelongsTo
+    public function game(): BelongsTo
     {
-        return $this->belongsTo(GameDetail::class, 'game_detail_id');
+        return $this->belongsTo(GameDetail::class, "game_detail_id");
     }
 
-    function json(): array
+    public function json(): array
     {
         return [
-            'id'=>$this->id,
-            'sender'=>[
-                'id'=>$this->sender->id,
-                'name'=>$this->sender->name,
+            "id" => $this->id,
+            "sender" => [
+                "id" => $this->sender->id,
+                "name" => $this->sender->name,
             ],
-            'receiver'=>[
-                'id'=>$this->receiver->id,
-                'name'=>$this->receiver->name,
+            "receiver" => [
+                "id" => $this->receiver->id,
+                "name" => $this->receiver->name,
             ],
-            'game'=>[
-                'id'=>$this->game->id,
-                'name'=>$this->game->name,
+            "game" => [
+                "id" => $this->game->id,
+                "name" => $this->game->name,
             ],
-            'is_accepted'=>$this->is_accepted,
-            'is_rejected'=>$this->is_rejected,
+            "is_accepted" => $this->is_accepted,
+            "is_rejected" => $this->is_rejected,
         ];
     }
 }

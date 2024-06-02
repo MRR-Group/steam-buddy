@@ -37,7 +37,7 @@ class GameDetail extends Model
     {
         return $this->hasMany(AchievementDetail::class);
     }
-    
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);

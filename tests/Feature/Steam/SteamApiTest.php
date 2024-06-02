@@ -257,16 +257,16 @@ describe("StemAPI", function (): void {
     describe("get_game_cover", function (): void {
         it("should return link to cover image for game with index 1", function (): void {
             $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/library_600x900_2x.jpg", [ "status" => 200 ], 200, "https://steamcdn-a.akamaihd.net/");
+
+            fake_steam_response("steam/apps/1/library_600x900_2x.jpg", ["status" => 200], 200, "https://steamcdn-a.akamaihd.net/");
 
             expect($api->get_game_cover(1))->toBe("https://steamcdn-a.akamaihd.net/steam/apps/1/library_600x900_2x.jpg");
         });
 
         it("should return link to alternative cover image if game doesn't have cover for 2019 library version", function (): void {
             $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/library_600x900_2x.jpg", [ "status" => 404 ], 404, "https://steamcdn-a.akamaihd.net/");
+
+            fake_steam_response("steam/apps/1/library_600x900_2x.jpg", ["status" => 404], 404, "https://steamcdn-a.akamaihd.net/");
 
             expect($api->get_game_cover(1))->toBe("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1/capsule_616x353.jpg");
         });
@@ -275,17 +275,17 @@ describe("StemAPI", function (): void {
     describe("get_game_background", function (): void {
         it("should return link to background image for game with index 1", function (): void {
             $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/library_hero.jpg", [ "status" => 200 ], 200, "https://steamcdn-a.akamaihd.net/");
+
+            fake_steam_response("steam/apps/1/library_hero.jpg", ["status" => 200], 200, "https://steamcdn-a.akamaihd.net/");
 
             expect($api->get_game_background(1))->toBe("https://steamcdn-a.akamaihd.net/steam/apps/1/library_hero.jpg");
         });
 
         it("should return link to alternative background image if game doesn't have background for 2019 library version", function (): void {
             $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/library_hero.jpg", [ "status" => 404 ], 404, "https://steamcdn-a.akamaihd.net/");
-            
+
+            fake_steam_response("steam/apps/1/library_hero.jpg", ["status" => 404], 404, "https://steamcdn-a.akamaihd.net/");
+
             expect($api->get_game_background(1))->toBe("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1/header.jpg");
         });
     });
@@ -293,17 +293,17 @@ describe("StemAPI", function (): void {
     describe("get_game_logo", function (): void {
         it("should return link to logo image for game with index 1", function (): void {
             $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/logo.png", [ "status" => 200 ], 200, "https://steamcdn-a.akamaihd.net/");
+
+            fake_steam_response("steam/apps/1/logo.png", ["status" => 200], 200, "https://steamcdn-a.akamaihd.net/");
 
             expect($api->get_game_logo(1))->toBe("https://steamcdn-a.akamaihd.net/steam/apps/1/logo.png");
         });
 
         it("should return link to alternative logo image if game doesn't have logo for 2019 library version", function (): void {
             $api = new SteamApiService("TOKEN");
-            
-            fake_steam_response("steam/apps/1/logo.png", [ "status" => 404 ], 404, "https://steamcdn-a.akamaihd.net/");
-            
+
+            fake_steam_response("steam/apps/1/logo.png", ["status" => 404], 404, "https://steamcdn-a.akamaihd.net/");
+
             expect($api->get_game_logo(1))->toBe("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1/capsule_231x87.jpg");
         });
     });

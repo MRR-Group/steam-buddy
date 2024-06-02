@@ -61,7 +61,7 @@ describe("Steam fetch screen", function (): void {
             $response->assertInertia(
                 fn(Assert $page) => $page
                     ->where("name", $user->name)
-                    ->where("batch", "0")
+                    ->where("batch", "0"),
             );
         });
     });

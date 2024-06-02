@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Game;
-use App\Models\GameDetail;
-use App\Models\Tag;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -18,28 +16,28 @@ test("profile page is displayed", function (): void {
         ->actingAs($user)
         ->get("/profile/" . $user1->id );
 
-    $games = array(
+    $games = [
         [
-            "achievements" => array(),
+            "achievements" => [],
             "cover" => $game->data->cover,
             "description" => $game->data->description,
             "id" => $game->id,
             "name" => $game->data->name,
-            "tags" => array('Swordplay', 'Harem'),
+            "tags" => ["Swordplay", "Harem"],
             "play_time" => $game->play_time,
             "steam_id" => $game->steam_id,
         ],
         [
-            "achievements" => array(),
+            "achievements" => [],
             "cover" => $game1->data->cover,
             "description" => $game1->data->description,
             "id" => $game1->id,
             "name" => $game1->data->name,
-            "tags" => array('Music', 'Great Soundtrack'),
+            "tags" => ["Music", "Great Soundtrack"],
             "play_time" => $game1->play_time,
             "steam_id" => $game1->steam_id,
-        ]
-    );
+        ],
+    ];
 
     $response->assertInertia(
         fn(Assert $page) => $page
@@ -48,7 +46,7 @@ test("profile page is displayed", function (): void {
             ->where("description", $user1->description)
             ->where("image", $user1->image)
             ->where("games", $games)
-            ->where("is_owner", false)
+            ->where("is_owner", false),
     );
 });
 
@@ -60,18 +58,18 @@ test("profile page should return is_owner: true if user is displaying it's own p
         ->actingAs($user)
         ->get("/profile/" . $user->id );
 
-    $games = array(
+    $games = [
         [
-            "achievements" => array(),
+            "achievements" => [],
             "cover" => $game->data->cover,
             "description" => $game->data->description,
             "id" => $game->id,
             "name" => $game->data->name,
-            "tags" => array('Swordplay', 'Harem'),
+            "tags" => ["Swordplay", "Harem"],
             "play_time" => $game->play_time,
             "steam_id" => $game->steam_id,
         ],
-    );
+    ];
 
     $response->assertInertia(
         fn(Assert $page) => $page
@@ -80,7 +78,7 @@ test("profile page should return is_owner: true if user is displaying it's own p
             ->where("description", $user->description)
             ->where("image", $user->image)
             ->where("games", $games)
-            ->where("is_owner", true)
+            ->where("is_owner", true),
     );
 });
 
