@@ -103,7 +103,7 @@ export const Show = ({user, game, candidates, status}: ShowPageProps) => {
             <Statistics 
               game_cover={game.cover}
               game_name={game.name}
-              user_name={user.name}
+              user_name={name}
               statistics={statistics}
             />
           </section>

@@ -22,7 +22,7 @@ class GameController extends Controller
         $is_owner = $user->id === $request->user()->id;
 
         /** @var Game $game */
-        $game = Game::query()->where(["id" => $game_id, "user_id" => $user_id])->first();
+        $game = Game::query()->where(["id" => $game_id])->first();
 
         /** @var GameDetail $data */
         $data = $game->data;

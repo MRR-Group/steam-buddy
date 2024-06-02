@@ -60,7 +60,12 @@ class MatchingController extends Controller
         $game = Game::query()->where(["id" => $game_id])->first();
 
         return Inertia::render("Matching/Show", [
-            "user" => ['id'=>$user->id, 'email'=>$user->email, 'name'=>$user->name, 'description' => $user->description],
+            "user" => [
+                'id'=>$user->id, 
+                'email'=>$user->email, 
+                'name'=>$user->name, 
+                'description' => $user->description
+            ],
             "game" => [
                 "id" => $game_id,
                 "steam_id" => $data->steam_id,

@@ -171,7 +171,7 @@ class SteamService
             $model->set_steam_id($game->steam_id, $json["apiname"]);
 
             $model->data()->associate(AchievementDetail::get_by_name($game->steam_id, $json["apiname"]));
-            $model->game()->associate(Game::get_by_steam_id($game->steam_id));
+            $model->game()->associate($game);
             $model->save();
         }
     }
