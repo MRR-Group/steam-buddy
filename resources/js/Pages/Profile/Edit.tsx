@@ -3,6 +3,7 @@ import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/Authentic
 import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 import { TextInput } from '../../Components/TextInput/TextInput';
 import { TextArea } from '../../Components/TextArea/TextArea';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 export type EditPageProps = {
   id: number;
@@ -14,6 +15,8 @@ export type EditPageProps = {
 
 export const Edit = ({ id, name, image, email, description }: EditPageProps) => {
   const { data, setData, patch } = useForm({ name, description });
+  const { t, Translate } = useTranslate("app");
+
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -22,24 +25,24 @@ export const Edit = ({ id, name, image, email, description }: EditPageProps) => 
   return (
     <AuthenticatedLayout
       user={{ id, name, email }}
-      title='Profile'
+      title={t("Profile")}
     >
-      <Head title="Profile" />
+      <Head title={t("Profile")} />
     
       <form onSubmit={submit}>
         <div className='flex w-full p-2 flex-col md:flex-row justify-center items-center mt-8'>
-          <img src={image} alt={`Profile image of ${name}`} className='h-52 md:mr-5' />
+          <img src={image} alt={t(`Profile image of user`, { name })} className='h-52 md:mr-5' />
           
           <div className='mt-5 md:mt-0 w-full h-full'>
             <TextInput
               name="name"
-              label="Name"
+              label={t("Name")}
               value={data.name}
               onChange={(e) => setData('name', e.target.value)}
             />
 
             <TextArea
-              label="Description"
+              label={t("Description")}
               name="description"
               className='min-h-60 md:min-h-36 mt-4'
               areaClassName='min-h-60 md:min-h-36'
@@ -51,7 +54,9 @@ export const Edit = ({ id, name, image, email, description }: EditPageProps) => 
     
         <div className='flex md:flex-row md:justify-between mt-2'>
           <div className='p-2 pt-0 w-full md:max-w-56'>
-            <PrimaryButton type='submit'>Save</PrimaryButton>
+            <PrimaryButton type='submit'>
+              <Translate>Save</Translate>
+            </PrimaryButton>
           </div>
         </div>
       </form>

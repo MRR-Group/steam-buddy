@@ -2,10 +2,10 @@ import { Fragment, PropsWithChildren } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 type Props = PropsWithChildren<{
-  show?: boolean;
-  maxWidth?: string;
-  closeable?: boolean;
-  onClose?: () => void;
+  show?: boolean,
+  maxWidth?: string,
+  closeable?: boolean,
+  onClose?: () => void,
 }>;
 
 export const Modal = ({

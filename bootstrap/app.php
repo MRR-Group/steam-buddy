@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Middleware\EnsureProfileDataAreFetched;
 use App\Http\Middleware\EnsureSteamIsConnected;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\Localization;
 use App\Http\Middleware\RedirectIfConnectedToSteam;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            Localization::class,
         ]);
 
         $middleware->alias([

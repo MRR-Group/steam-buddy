@@ -5,6 +5,7 @@ import { TextInput } from '../../Components/TextInput/TextInput';
 import { InputError } from '../../Components/InputError/InputError';
 import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
 import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 export const Register = () => {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +15,7 @@ export const Register = () => {
   });
 
   useCleanup(() => reset('password', 'password_confirmation'));
+  const { Translate, t } = useTranslate("auth-layout");
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,20 +25,22 @@ export const Register = () => {
 
   return (
     <GuestLayout>
-      <Head title="Register" />
+      <Head title={t("register title")} />
 
       <form
         onSubmit={submit}
         className="max-w-80 w-full"
         style={{ padding: 'calc(50% - 10rem) 0' }}
       >
-        <div className="text-center text-text text-3xl pb-6">Register</div>
+        <div className="text-center text-text text-3xl pb-6">
+          <Translate>register title</Translate>
+        </div>
 
         <div className="pb-6">
           <TextInput
             type="email"
             name="email"
-            label="Email"
+            label={t('email')}
             value={data.email}
             className="mt-1 block w-full"
             autoComplete="username"
@@ -47,9 +51,9 @@ export const Register = () => {
           <InputError message={errors.email} className="mt-2" />
 
           <TextInputOption
-            left="Do you have an account?"
-            linkText={`Click${'\u00A0'}here`}
-            right={`to${'\u00A0'}log in.`}
+            left={t(`Do you have an account?`)}
+            linkText={`${t('Click')}${'\u00A0'}${t('here')}`}
+            right={`${t('to')}${'\u00A0'}${t('to log in.')}`}
             href={route('login')}
           />
         </div>
@@ -58,7 +62,7 @@ export const Register = () => {
           <TextInput
             type="password"
             name="password"
-            label="Password"
+            label={t('password')}
             value={data.password}
             className="mt-1 block w-full"
             autoComplete="new-password"
@@ -73,7 +77,7 @@ export const Register = () => {
           <TextInput
             type="password"
             name="password_confirmation"
-            label="Confirm Password"
+            label={t('confirm password')}
             value={data.password_confirmation}
             className="mt-1 block w-full"
             autoComplete="new-password"
@@ -85,7 +89,9 @@ export const Register = () => {
         </div>
 
         <div className="flex justify-center w-full">
-          <PrimaryButton disabled={processing}>Register</PrimaryButton>
+          <PrimaryButton disabled={processing}>
+            <Translate>register</Translate>
+          </PrimaryButton>
         </div>
       </form>
     </GuestLayout>
