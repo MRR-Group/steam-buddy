@@ -42,21 +42,21 @@ class Invite extends Model
         return $this->belongsTo(GameDetail::class, "game_detail_id");
     }
 
-    public function json(): array
+    public function json(User $user): array
     {
+        $target = $user->id === $this->sender->id ? $this->receiver : $this->sender;
+
         return [
             "id" => $this->id,
-            "sender" => [
-                "id" => $this->sender->id,
-                "name" => $this->sender->name,
-            ],
-            "receiver" => [
-                "id" => $this->receiver->id,
-                "name" => $this->receiver->name,
+            "target" => [
+                "id" => $target->id,
+                "name" => $target->name,
+                "image" => $target->image,
             ],
             "game" => [
                 "id" => $this->game->id,
                 "name" => $this->game->name,
+                "image" => $this->game->image,
             ],
             "is_accepted" => $this->is_accepted,
             "is_rejected" => $this->is_rejected,

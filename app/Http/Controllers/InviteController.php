@@ -49,7 +49,7 @@ class InviteController extends Controller
         $accepted_invites = [];
 
         foreach ($user->sent_invites as $invite) {
-            $json = $invite->json();
+            $json = $invite->json($user);
 
             if ($invite->is_accepted) {
                 $json["steam_id"] = $invite->receiver->steam_id;
@@ -60,7 +60,7 @@ class InviteController extends Controller
         }
 
         foreach ($user->received_invites as $invite) {
-            $json = $invite->json();
+            $json = $invite->json($user);
 
             if ($invite->is_accepted) {
                 $json["steam_id"] = $invite->sender->steam_id;
