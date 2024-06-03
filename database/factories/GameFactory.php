@@ -47,11 +47,12 @@ class GameFactory extends Factory
         $detail = GameDetail::factory()
             ->steam_id($steam_id)
             ->has($tag)
-            ->has($tag1);
+            ->has($tag1)
+            ->create();
 
         return $this->state(fn(array $attributes) => [
             "steam_id" => $steam_id,
-            "game_detail_id" => $detail,
+            "game_detail_id" => $detail->id,
             "user_id" => $user->id,
         ]);
     }

@@ -92,9 +92,9 @@ describe("Steam", function (): void {
 
             $game = Game::factory()->steam_id(0)->create();
 
-            AchievementDetail::factory()->steam_id(0, "TANKMAN")->create();
-            AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create();
-
+            AchievementDetail::factory()->steam_id(0, "TANKMAN")->create(["game_detail_id" => $game->data->id]);
+            AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create(["game_detail_id" => $game->data->id]);
+            
             run_method($service, "create_user_achievements", [$game, "USER_ID"]);
 
             expect(count(Achievement::all()))->toBe(2)
@@ -121,8 +121,8 @@ describe("Steam", function (): void {
 
             $game = Game::factory()->steam_id(0)->create();
 
-            AchievementDetail::factory()->steam_id(0, "TANKMAN")->create();
-            AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create();
+            AchievementDetail::factory()->steam_id(0, "TANKMAN")->create(["game_detail_id" => $game->data->id]);
+            AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create(["game_detail_id" => $game->data->id]);
 
             run_method($service, "create_user_achievements", [$game, "USER_ID"]);
 
@@ -158,49 +158,51 @@ describe("Steam", function (): void {
     describe("create_achievement_if_not_exist", function (): void {
         it("should create a new achievement data and save it in database", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {});
-            GameDetail::factory()->steam_id(0)->create();
+            $game = GameDetail::factory()->steam_id(0)->create();
 
             run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
                 "description" => "Use tank in the battle",
-            ]]);
+            ], $game]);
 
             expect(AchievementDetail::query()->where(["steam_id" => "0/TANKMAN"])->count())->toBe(1);
         });
 
         it("should set description to an empty string if it not exist in json", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {});
-            GameDetail::factory()->steam_id(0)->create();
+            $game = GameDetail::factory()->steam_id(0)->create();
 
             run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
-            ]]);
+            ], $game]);
 
             expect(AchievementDetail::query()->first()->description)->toBe("");
         });
 
         it("should skip achievement if it exists", function (): void {
             $service = new SteamService(new class("TOKEN") extends SteamApiService {});
-            GameDetail::factory()->steam_id(0)->create();
-            AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create();
+            $gameFactory = GameDetail::factory()->steam_id(0);
+            AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->for($gameFactory, "game")->create();
+
+            $game = $gameFactory->create();
 
             run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANKMAN",
                 "displayName" => "Tankman",
                 "icon" => "localhost/icon.png",
                 "description" => "Use tank in the battle",
-            ]]);
+            ], $game]);
 
             run_method($service, "create_achievement_if_not_exist", [0, [
                 "name" => "TANK_DESTROYER",
                 "displayName" => "Tank destroyer",
                 "icon" => "localhost/icon.png",
                 "description" => "Use tank destroyer in the battle",
-            ]]);
+            ], $game]);
 
             expect(AchievementDetail::query()->count())->toBe(2);
         });
@@ -217,19 +219,19 @@ describe("Steam", function (): void {
                         "icon" => "localhost/icon.png",
                         "description" => "Use tank in the battle",
                     ],
-                        [
-                            "name" => "TANK_DESTROYER",
-                            "displayName" => "Tank destroyer",
-                            "icon" => "localhost/icon.png",
-                            "description" => "Use tank destroyer in the battle",
-                        ]];
+                    [
+                        "name" => "TANK_DESTROYER",
+                        "displayName" => "Tank destroyer",
+                        "icon" => "localhost/icon.png",
+                        "description" => "Use tank destroyer in the battle",
+                    ]];
                 }
             });
 
-            GameDetail::factory()->steam_id(0)->create();
-            AchievementDetail::factory()->steam_id(0, "TANKMAN")->create();
+            $game = GameDetail::factory()->steam_id(0);
+            AchievementDetail::factory()->steam_id(0, "TANKMAN")->for($game, "game")->create();
 
-            run_method($service, "update_achievements_data", [0]);
+            run_method($service, "update_achievements_data", [0, $game->create()]);
 
             expect(AchievementDetail::query()->count())->toBe(2);
         });
