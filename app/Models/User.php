@@ -64,16 +64,22 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->save();
     }
 
-    public function json_games()
-    {
+    public function json_games(): array {
         $games = [];
+        
+        foreach($this->games as $game) {
+            $games[] = $game->json();
+        }
+
+        return ["games" => $games, "tags" => $this->json_tags($games)];
+    }
+
+    public function json_tags(array $games): array
+    {
         $tags = [];
 
-        foreach ($this->games as $game) {
-            $data = $game->json();
-            $games[] = $data;
-
-            foreach ($data["tags"] as $tag) {
+        foreach ($games as $game) {
+            foreach ($game["tags"] as $tag) {
                 if (!array_key_exists($tag, $tags)) {
                     $tags[$tag] = ["name" => $tag, "games" => 1];
                 } else {
@@ -82,10 +88,7 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
 
-        return [
-            "games" => $games,
-            "tags" => $this->sort_tags($tags),
-        ];
+        return $this->sort_tags($tags);
     }
 
     public function games(): HasMany

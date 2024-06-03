@@ -22,9 +22,7 @@ type Props = {
   games: {
     id: number;
     cover: string;
-    description: string;
     name: string;
-    play_time: number;
     tags: string[];
   }[];
 };
