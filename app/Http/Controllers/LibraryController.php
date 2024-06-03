@@ -7,11 +7,14 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class LibraryController extends Controller
 {
+    const ONE_HOUR_IN_SECONDS = 3600;
+
     public function show(Request $request): Response
     {
         /** @var User $user */ 
@@ -24,7 +27,7 @@ class LibraryController extends Controller
             $selected_tags = [$selected_tags];
         }
         
-        ["games" => $games, "tags" => $tags] = $this->get_games($user);
+        ["games" => $games, "tags" => $tags] = Cache::remember('library-'.$user->id, $this::ONE_HOUR_IN_SECONDS, fn() => $this->get_games($user));
 
         return Inertia::render("Library", [
             "games" => $games,
