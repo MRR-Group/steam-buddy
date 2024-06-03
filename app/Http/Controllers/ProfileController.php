@@ -29,7 +29,7 @@ class ProfileController extends Controller
         $tags = [];
 
         foreach ($user->games as $game) {
-            $data = $game->full();
+            $data = $game->json();
             $games[] = $data;
 
             foreach ($data["tags"] as $tag) {

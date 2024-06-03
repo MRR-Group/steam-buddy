@@ -13,21 +13,21 @@ use Inertia\Response;
 
 class LibraryController extends Controller
 {
-    const ONE_HOUR_IN_SECONDS = 3600;
+    public const ONE_HOUR_IN_SECONDS = 3600;
 
     public function show(Request $request): Response
     {
         /** @var User $user */ 
         $user = $request->user();
         $selected_tags = $request->query("tags");
-        
+
         if ($selected_tags === null) {
             $selected_tags = [];
         } else if (!is_array($selected_tags)) {
             $selected_tags = [$selected_tags];
         }
-        
-        ["games" => $games, "tags" => $tags] = Cache::remember('library-'.$user->id, $this::ONE_HOUR_IN_SECONDS, fn() => $this->get_games($user));
+
+        ["games" => $games, "tags" => $tags] = Cache::remember("library-" . $user->id, $this::ONE_HOUR_IN_SECONDS, fn() => $this->get_games($user));
 
         return Inertia::render("Library", [
             "games" => $games,
@@ -37,12 +37,13 @@ class LibraryController extends Controller
         ]);
     }
 
-    protected function get_games(User $user): array {
+    protected function get_games(User $user): array
+    {
         $games = [];
         $tags = [];
 
         foreach ($user->games as $game) {
-            $data = $game->full();
+            $data = $game->json();
             $games[] = $data;
 
             foreach ($data["tags"] as $tag) {
@@ -56,11 +57,12 @@ class LibraryController extends Controller
 
         return [
             "games" => $games,
-            "tags" => $this->sort_tags($tags)
+            "tags" => $this->sort_tags($tags),
         ];
     }
 
-    protected function sort_tags(array $tags): array {
+    protected function sort_tags(array $tags): array
+    {
         foreach (Tag::MULTIPLAYER_TAGS as $tag) {
             unset($tags[$tag]);
         }

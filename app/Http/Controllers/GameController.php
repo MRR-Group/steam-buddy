@@ -29,7 +29,7 @@ class GameController extends Controller
         /** @var GameDetail $data */
         $data = $game->data;
 
-        $achievements = $game->with_achievements();
+        $achievements = $game->json_achievements();
         $similar_achievements = $is_owner ? null : $game->similar_achievements($request->user(), $achievements);
 
         return Inertia::render("Game/Show", [

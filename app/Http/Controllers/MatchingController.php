@@ -39,7 +39,7 @@ class MatchingController extends Controller
             $mate = User::query()->where(["id" => $candidates[$i]["id"]])->first();
             $game = $candidates[$i]["game"];
 
-            $achievements = $game->with_achievements();
+            $achievements = $game->json_achievements();
             $similar_achievements = $game->similar_achievements($request->user(), $achievements);    
 
             $candidates[$i] = [
