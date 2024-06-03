@@ -18,7 +18,6 @@ test("profile page is displayed", function (): void {
 
     $games = [
         [
-            "achievements" => [],
             "cover" => $game->data->cover,
             "description" => $game->data->description,
             "id" => $game->id,
@@ -28,7 +27,6 @@ test("profile page is displayed", function (): void {
             "steam_id" => $game->steam_id,
         ],
         [
-            "achievements" => [],
             "cover" => $game1->data->cover,
             "description" => $game1->data->description,
             "id" => $game1->id,
@@ -60,7 +58,6 @@ test("profile page should return is_owner: true if user is displaying it's own p
 
     $games = [
         [
-            "achievements" => [],
             "cover" => $game->data->cover,
             "description" => $game->data->description,
             "id" => $game->id,
