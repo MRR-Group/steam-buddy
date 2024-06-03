@@ -1,11 +1,12 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vitest } from 'vitest';
 
 import { TextInput } from './TextInput';
+import { act } from 'react';
 
 describe('TextInput', () => {
   it('should render input', () => {
-    render(<TextInput defaultValue="test" />);
+    render(<TextInput value="test" onChange={() => {}} />);
 
     expect(screen.getByDisplayValue('test')).toBeInTheDocument();
   });
@@ -13,8 +14,8 @@ describe('TextInput', () => {
   it('should change input type', () => {
     render(
       <div>
-        <TextInput defaultValue="test1" />
-        <TextInput type="password" defaultValue="test2" />
+        <TextInput value="test1" onChange={() => {}} />
+        <TextInput type="password" value="test2" onChange={() => {}} />
       </div>,
     );
 
@@ -37,8 +38,8 @@ describe('TextInput', () => {
   it('should add additional css class', () => {
     render(
       <div>
-        <TextInput defaultValue="test1" />
-        <TextInput defaultValue="test2" className="m-5" />
+        <TextInput value="test1" onChange={() => {}} />
+        <TextInput value="test2" onChange={() => {}} className="m-5" />
       </div>,
     );
 
@@ -47,7 +48,7 @@ describe('TextInput', () => {
   });
 
   it('should accept input props', () => {
-    render(<TextInput autoComplete="auto-test" defaultValue="test" />);
+    render(<TextInput autoComplete="auto-test" value="test" onChange={() => {}} />);
 
     expect(screen.getByDisplayValue('test')).toHaveAttribute(
       'autoComplete',
@@ -59,7 +60,7 @@ describe('TextInput', () => {
     let isFocused = false;
 
     const { rerender } = render(
-      <TextInput defaultValue="test" isFocused={isFocused} />,
+      <TextInput value="test" onChange={() => {}} isFocused={isFocused} />,
     );
 
     expect(screen.getByDisplayValue('test')).not.equals(document.activeElement);
@@ -68,7 +69,7 @@ describe('TextInput', () => {
       isFocused = true;
     });
 
-    rerender(<TextInput defaultValue="test" isFocused={isFocused} />);
+    rerender(<TextInput value="test" onChange={() => {}} isFocused={isFocused} />);
 
     expect(screen.getByDisplayValue('test')).equals(document.activeElement);
   });
@@ -90,7 +91,7 @@ describe('TextInput', () => {
     let isFocused = false;
 
     const { rerender } = render(
-      <TextInput defaultValue="test" isFocused={isFocused} ref={ref} />,
+      <TextInput value="test" onChange={() => {}} isFocused={isFocused} ref={ref} />,
     );
 
     expect(spy).toHaveBeenCalledTimes(0);
@@ -99,26 +100,26 @@ describe('TextInput', () => {
       isFocused = true;
     });
 
-    rerender(<TextInput defaultValue="test" isFocused={isFocused} ref={ref} />);
+    rerender(<TextInput value="test" onChange={() => {}} isFocused={isFocused} ref={ref} />);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it(`should render label`, () => {
-    render(<TextInput name="input" label="Input" defaultValue="value" />);
+    render(<TextInput name="input" label="Input" value="value" onChange={() => {}} />);
 
     expect(screen.getByDisplayValue('value')).toHaveAttribute('id', 'input');
     expect(screen.getByText('Input')).toHaveAttribute('for', 'input');
   });
 
   it(`should make label bigger if value is empty`, () => {
-    render(<TextInput name="input" label="Input" value="" />);
+    render(<TextInput name="input" label="Input" value="" onChange={() => {}} />);
 
     expect(screen.getByText('Input')).toHaveClass('top-3 text-xl');
   });
 
   it(`should make label smaller if input contains value`, () => {
-    render(<TextInput name="input" label="Input" value="text" />);
+    render(<TextInput name="input" label="Input" value="text" onChange={() => {}} />);
 
     expect(screen.getByText('Input')).toHaveClass('top-0 text-sm');
   });

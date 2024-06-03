@@ -14,7 +14,7 @@ return new class() extends Migration {
             $table->timestamps();
             $table->integer("steam_id");
             $table->string("name");
-            $table->longText("description");
+            $table->text("description");
             $table->string("cover");
         });
     }

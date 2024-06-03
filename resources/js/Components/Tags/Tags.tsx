@@ -7,17 +7,19 @@ import "./Tags.css";
 
 export type TagData = {
   name: string;
-  games: number;
+  games?: number;
 };
 
 type Props = {
   selected: string[];
   tags: TagData[];
+  tagRole: "button" | "checkbox";
   onSelect?: (tag: string) => void;
   onUnselect?: (tag: string) => void;
+  itemAriaLabel: (tag: TagData, selected: boolean) => string;
 }
 
-export const Tags = ({ tags, selected, onSelect, onUnselect}: Props) => {
+export const Tags = ({ tags, selected, tagRole, onSelect, onUnselect, itemAriaLabel}: Props) => {
   const handleClick = (tag: string) => () => {
     const selected = isTagSelected(tag);
 
@@ -36,8 +38,13 @@ export const Tags = ({ tags, selected, onSelect, onUnselect}: Props) => {
     <div className="w-full h-12 flex flex-col justify-center hide-scrollbar scroll-h-12">
       <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
         {tags.map(tag => (
-            <div key={tag.name} title={`${tag.games} games`}>
-              <TagButton onClick={handleClick(tag.name)} active={isTagSelected(tag.name)}>
+            <div key={tag.name} title={tag.games ? `${tag.games} games` : undefined}>
+              <TagButton 
+                onClick={handleClick(tag.name)} 
+                active={isTagSelected(tag.name)} 
+                role={tagRole}
+                label={itemAriaLabel(tag, isTagSelected(tag.name))}
+              >
                 {tag.name}
               </TagButton>
             </div>

@@ -11,9 +11,9 @@ describe('DropdownLink', () => {
   });
 
   it("should accept inertiajs's Link props", () => {
-    render(<DropdownLink href="/link">test</DropdownLink>);
+    render(<DropdownLink as="div">test</DropdownLink>);
 
-    expect(screen.getByText('test')).toHaveAttribute('href', '/link');
+    expect(screen.getByText('test').tagName).toBe("DIV");
   });
 
   it('should add additional css class', () => {

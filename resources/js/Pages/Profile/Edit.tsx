@@ -1,14 +1,18 @@
 import { Head, useForm } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
+import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { TextInput } from '../../Components/TextInput/TextInput';
+import { TextArea } from '../../Components/TextArea/TextArea';
 
 export type EditPageProps = {
   id: number;
+  image: string,
   name: string;
   email: string;
   description: string;
 };
 
-export const Edit = ({ id, name, email, description }: EditPageProps) => {
+export const Edit = ({ id, name, image, email, description }: EditPageProps) => {
   const { data, setData, patch } = useForm({ name, description });
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,32 +21,40 @@ export const Edit = ({ id, name, email, description }: EditPageProps) => {
   };
   return (
     <AuthenticatedLayout
-      title='Edit Profile'
       user={{ id, name, email }}
+      title='Profile'
     >
       <Head title="Profile" />
+    
+      <form onSubmit={submit}>
+        <div className='flex w-full p-2 flex-col md:flex-row justify-center items-center mt-8'>
+          <img src={image} alt={`Profile image of ${name}`} className='h-52 md:mr-5' />
+          
+          <div className='mt-5 md:mt-0 w-full h-full'>
+            <TextInput
+              name="name"
+              label="Name"
+              value={data.name}
+              onChange={(e) => setData('name', e.target.value)}
+            />
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-          <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <form onSubmit={submit}>
-              <input
-                type="text"
-                name="name"
-                value={data.name}
-                onChange={(e) => setData('name', e.target.value)}
-              />
-              <input
-                type="text"
-                name="description"
-                value={data.description}
-                onChange={(e) => setData('description', e.target.value)}
-              />
-              <button type="submit">Change</button>
-            </form>
+            <TextArea
+              label="Description"
+              name="description"
+              className='min-h-60 md:min-h-36 mt-4'
+              areaClassName='min-h-60 md:min-h-36'
+              value={data.description}
+              onChange={(e) => setData('description', e.target.value)}
+            />
           </div>
         </div>
-      </div>
+    
+        <div className='flex md:flex-row md:justify-between mt-2'>
+          <div className='p-2 pt-0 w-full md:max-w-56'>
+            <PrimaryButton type='submit'>Save</PrimaryButton>
+          </div>
+        </div>
+      </form>
     </AuthenticatedLayout>
   );
 };

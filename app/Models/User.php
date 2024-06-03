@@ -25,8 +25,11 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property Collection<Game> $games;
- */ class User extends Authenticatable implements MustVerifyEmail
+ * @property Collection<Game> $games
+ * @property Collection<Invite> $sent_invites
+ * @property Collection<Invite> $received_invites
+ */
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
@@ -57,13 +60,39 @@ use Illuminate\Support\Collection;
     {
         $this->steam_id = $steam_id;
         $this->name = $nickname;
-        $this->image = $avatar;
+        $this->image = $this->load_bigger_image($avatar);
         $this->save();
     }
 
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
+    }
+
+    public function sent_invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, "sender_id");
+    }
+
+    public function received_invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, "receiver_id");
+    }
+
+    protected function load_bigger_image(string $image)
+    {
+        // 128x128
+        if (str_contains($image, "_full")) {
+            return $image;
+        }
+
+        // 64x64
+        if (str_contains($image, "_medium")) {
+            return str_replace("_medium", "_full", $image);
+        }
+
+        // 32x32
+        return str_replace(".jpg", "_full.jpg", $image);
     }
 
     /**

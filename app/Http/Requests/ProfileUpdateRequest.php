@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             "name" => "required|max:255|string",
-            "description" => "required|max:255|string",
+            "description" => "required|max:2000|string",
         ];
     }
 }

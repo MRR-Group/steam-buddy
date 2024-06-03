@@ -112,22 +112,22 @@ class SteamService
         $model->cover = $this->api->get_game_cover($game_id);
         $model->save();
 
-        $this->update_achievements_data($game_id);
+        $this->update_achievements_data($game_id, $model);
         $this->add_tags($model);
 
         return $model;
     }
 
-    protected function update_achievements_data(int $game_id): void
+    protected function update_achievements_data(int $game_id, GameDetail $game_data): void
     {
         $achievements = $this->api->get_game_achievements($game_id);
 
         foreach ($achievements as $achievement) {
-            $this->create_achievement_if_not_exist($game_id, $achievement);
+            $this->create_achievement_if_not_exist($game_id, $achievement, $game_data);
         }
     }
 
-    protected function create_achievement_if_not_exist(int $game_id, array $json): void
+    protected function create_achievement_if_not_exist(int $game_id, array $json, GameDetail $game_data): void
     {
         if (AchievementDetail::exist($game_id, $json["name"])) {
             return;
@@ -142,6 +142,7 @@ class SteamService
         $model->description = $json["description"];
         $model->icon = $json["icon"];
         $model->set_steam_id($game_id, $json["name"]);
+        $model->game()->associate($game_data);
         $model->save();
     }
 
@@ -170,7 +171,7 @@ class SteamService
             $model->set_steam_id($game->steam_id, $json["apiname"]);
 
             $model->data()->associate(AchievementDetail::get_by_name($game->steam_id, $json["apiname"]));
-            $model->game()->associate(Game::get_by_steam_id($game->steam_id));
+            $model->game()->associate($game);
             $model->save();
         }
     }

@@ -44,13 +44,13 @@ export const MenuMobile = ({ items = [] }: Props) => {
           role="button"
           onClick={toggle}
           aria-description="Show/Hide navigation"
-          className="w-8 h-8 top-0 left-6 bg-no-repeat relative z-10 rounded-md border-gradient-dark bg-contain bg-center"
+          className="w-8 h-8 top-0 left-6 bg-no-repeat relative z-50 rounded-md border-gradient-dark bg-contain bg-center"
           style={{ backgroundImage: `url(${menuIcon})` }}
         />
         
         <div
           ref={nav}
-          className={`absolute p-px -top-2 left-3 rounded-xl bg-gradient-to-r from-gradient-light via-gradient-medium to-gradient-dark opacity-0 w-40 hidden`}
+          className={`absolute p-px z-40 -top-2 left-3 rounded-xl bg-gradient-to-r from-gradient-light via-gradient-medium to-gradient-dark opacity-0 w-40 hidden`}
         >
           <nav className="pt-8 pb-2 bg-dark rounded-xl shadow-md w-full h-full">
             <div ref={content} className="w-full h-full opacity-0">
