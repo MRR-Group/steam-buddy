@@ -4,9 +4,10 @@ import { MenuPC } from "./MenuPC";
 
 /**
  * [0] - name
- * [1] - url
+ * [1] - url | onClick callback
+ * [2] - method
  */
-export type MenuItem = [string, string] | [string, string, "post" | "get" | "put" | "patch" | "delete"];
+export type MenuItem = [string, string] | [string, string, "post" | "get" | "put" | "patch" | "delete"] | [string, () => void];
 
 type Props = {
   items?: MenuItem[];

@@ -8,6 +8,10 @@ type Props = {
   items?: MenuItem[];
 };
 
+function isFunction(text: unknown): text is () => void {
+  return typeof text === 'function';
+}
+
 export const MenuMobile = ({ items = [] }: Props) => {
   const [show, setShow] = useState(false);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
@@ -54,16 +58,27 @@ export const MenuMobile = ({ items = [] }: Props) => {
         >
           <nav className="pt-8 pb-2 bg-dark rounded-xl shadow-md w-full h-full">
             <div ref={content} className="w-full h-full opacity-0">
-              {items.map(([name, url, method="get"]) => (
-                <Link
-                  href={url}
-                  key={url}
-                  method={method}
-                  className="block w-full h-9 pb-2 pt-2 text-xl text-text hover:text-gradient-light"
-                >
-                  {name}
-                </Link>
-              ))}
+              {items.map(([name, urlOrCallback, method="get"]) => isFunction(urlOrCallback)
+                ? (
+                  <button
+                    key={name}
+                    onClick={urlOrCallback}
+                    className="block w-full h-9 pb-2 pt-2 text-xl text-text hover:text-gradient-light"
+                  >
+                    {name}
+                  </button>
+                )
+                : (
+                    <Link
+                      href={urlOrCallback}
+                      key={urlOrCallback}
+                      method={method}
+                      className="block w-full h-9 pb-2 pt-2 text-xl text-text hover:text-gradient-light"
+                    >
+                      {name}
+                    </Link>
+                  )
+                )}
             </div>
           </nav>
         </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { GuestLayout } from '../../Layouts/GuestLayout/GuestLayout';
 import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
 import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 type Props = {
   name?: string;
@@ -16,6 +17,7 @@ type Progress = {
 };
 
 export const Fetch = ({ name = '', batch }: Props) => {
+  const { Translate, t } = useTranslate("auth-layout");
   name = name.replace(/ /g, '\u00A0');
 
   const { post, processing } = useForm();
@@ -52,31 +54,32 @@ export const Fetch = ({ name = '', batch }: Props) => {
 
   return (
     <GuestLayout>
-      <Head title="Connect Steam" />
+      <Head title={t("connect steam")} />
 
       <div
         className="max-w-80 w-full"
         style={{ padding: 'calc(50% - 10rem) 0' }}
       >
         <div className="text-center text-text text-xl pb-10">
-          This is the last step {name}. Now we need to download from steam
-          information about all your achievements and games. It may take a
-          while.
+          <Translate>this is the last step</Translate> {name}.<br/>
+          <Translate>fetch message</Translate>
         </div>
 
         <div>
           {!batch ? (
             <form onSubmit={submit}>
-              <PrimaryButton disabled={processing}>Fetch</PrimaryButton>
+              <PrimaryButton disabled={processing}>
+                <Translate>fetch</Translate>
+              </PrimaryButton>
             </form>
           ) : (
-            <div>Processing: {Math.floor(progress)}%</div>
+            <div><Translate>processing</Translate>: {Math.floor(progress)}%</div>
           )}
 
           <TextInputOption
-            left="You don't want to do it right now?"
-            linkText={`Click${'\u00A0'}here`}
-            right={`to${'\u00A0'}Log${'\u00A0'}out.`}
+            left={t("You don't want to do it right now?")}
+            linkText={`${t('Click')}${'\u00A0'}${t('here')}`}
+            right={`${t('to')}${'\u00A0'}${t('to log out.')}`}
             href={route('logout')}
             method="post"
           />
