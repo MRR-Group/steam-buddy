@@ -29,19 +29,6 @@ class Game extends Model
 
     public function json(): array
     {
-        $achievements = [];
-
-        foreach ($this->achievements as $achievement) {
-            $achievements[] = [
-                "id" => $achievement->id,
-                "steam_id" => $achievement->steam_id,
-                "unlocked_at" => $achievement->unlocked_at,
-                "name" => $achievement->data->name,
-                "description" => $achievement->data->description,
-                "icon" => $achievement->data->icon,
-            ];
-        }
-
         $tags = [];
 
         foreach ($this->data->tags as $tag) {
@@ -55,7 +42,6 @@ class Game extends Model
             "name" => $this->data->name,
             "cover" => $this->data->cover,
             "description" => $this->data->description,
-            "achievements" => $achievements,
             "tags" => $tags,
         ];
     }
