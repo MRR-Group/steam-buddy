@@ -64,6 +64,30 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->save();
     }
 
+    public function json_games()
+    {
+        $games = [];
+        $tags = [];
+
+        foreach ($this->games as $game) {
+            $data = $game->json();
+            $games[] = $data;
+
+            foreach ($data["tags"] as $tag) {
+                if (!array_key_exists($tag, $tags)) {
+                    $tags[$tag] = ["name" => $tag, "games" => 1];
+                } else {
+                    ++$tags[$tag]["games"];
+                }
+            }
+        }
+
+        return [
+            "games" => $games,
+            "tags" => $this->sort_tags($tags),
+        ];
+    }
+
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
@@ -77,6 +101,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function received_invites(): HasMany
     {
         return $this->hasMany(Invite::class, "receiver_id");
+    }
+
+    protected function sort_tags(array $tags): array
+    {
+        foreach (Tag::MULTIPLAYER_TAGS as $tag) {
+            unset($tags[$tag]);
+        }
+
+        sort($tags);
+        $result = [];
+
+        foreach ($tags as $tag) {
+            $result[] = $tag;
+        }
+
+        return $result;
     }
 
     protected function load_bigger_image(string $image)
