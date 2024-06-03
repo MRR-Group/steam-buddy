@@ -94,7 +94,7 @@ describe("Steam", function (): void {
 
             AchievementDetail::factory()->steam_id(0, "TANKMAN")->create(["game_detail_id" => $game->data->id]);
             AchievementDetail::factory()->steam_id(0, "TANK_DESTROYER")->create(["game_detail_id" => $game->data->id]);
-            
+
             run_method($service, "create_user_achievements", [$game, "USER_ID"]);
 
             expect(count(Achievement::all()))->toBe(2)
@@ -219,12 +219,12 @@ describe("Steam", function (): void {
                         "icon" => "localhost/icon.png",
                         "description" => "Use tank in the battle",
                     ],
-                    [
-                        "name" => "TANK_DESTROYER",
-                        "displayName" => "Tank destroyer",
-                        "icon" => "localhost/icon.png",
-                        "description" => "Use tank destroyer in the battle",
-                    ]];
+                        [
+                            "name" => "TANK_DESTROYER",
+                            "displayName" => "Tank destroyer",
+                            "icon" => "localhost/icon.png",
+                            "description" => "Use tank destroyer in the battle",
+                        ]];
                 }
             });
 

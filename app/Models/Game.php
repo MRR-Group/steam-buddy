@@ -27,19 +27,7 @@ class Game extends Model
 {
     use HasFactory;
 
-    public function with_data(): array
-    {
-        return [
-            "id" => $this->id,
-            "steam_id" => $this->steam_id,
-            "play_time" => $this->play_time,
-            "name" => $this->data->name,
-            "cover" => $this->data->cover,
-            "description" => $this->data->description,
-        ];
-    }
-
-    public function full(): array
+    public function json(): array
     {
         $achievements = [];
 
@@ -72,7 +60,7 @@ class Game extends Model
         ];
     }
 
-    public function with_achievements(): array
+    public function json_achievements(): array
     {
         $achievements = [];
 
@@ -97,7 +85,7 @@ class Game extends Model
         $all_achievements = $this->data->achievements;
 
         if ($achievements === null) {
-            $achievements = $this->with_achievements();
+            $achievements = $this->json_achievements();
         }
 
         if (count($all_achievements) === 0) {
@@ -110,7 +98,7 @@ class Game extends Model
     public function similar_achievements(User $user, ?array $my_achievements = null): float
     {
         if ($my_achievements === null) {
-            $my_achievements = $this->with_achievements();
+            $my_achievements = $this->json_achievements();
         }
 
         $game = $user->games()->where(["steam_id" => $this->steam_id])->first();
@@ -120,7 +108,7 @@ class Game extends Model
             return 0;
         }
 
-        $user_achievements = $game->with_achievements();
+        $user_achievements = $game->json_achievements();
 
         $my_achievements_set = array_flip(array_column($my_achievements, "id"));
         $user_achievements_set = array_flip(array_column($user_achievements, "id"));
@@ -133,16 +121,6 @@ class Game extends Model
         }
 
         return count($common_achievements) / count($total_unique_achievements);
-    }
-
-    public function with_tags(): array
-    {
-        return [
-            "id" => $this->id,
-            "name" => $this->data->name,
-            "cover" => $this->data->cover,
-            "tags" => $this->tags_name(),
-        ];
     }
 
     public function tags_name(): array
@@ -158,7 +136,7 @@ class Game extends Model
 
     public static function get_by_steam_id(int $steam_id): ?self
     {
-        return self::query()->where("steam_id", $steam_id)->first();
+        return self::query()->where("steam_id", "=", $steam_id)->first();
     }
 
     public function data(): BelongsTo

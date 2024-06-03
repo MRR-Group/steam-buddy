@@ -4,45 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class LibraryController extends Controller
 {
-    public function show(Request $request)
+    public const ONE_HOUR_IN_SECONDS = 3600;
+
+    public function show(Request $request): Response
     {
         /** @var User $user */ 
         $user = $request->user();
-        $games = [];
-        $tags = [];
-
-        foreach ($user->games as $game) {
-            $data = $game->full();
-            $games[] = $data;
-
-            foreach ($data["tags"] as $tag) {
-                if (!array_key_exists($tag, $tags)) {
-                    $tags[$tag] = ["games" => 1, "name" => $tag];
-                } else {
-                    ++$tags[$tag]["games"];
-                }
-            }
-        }
-
-        foreach (Tag::MULTIPLAYER_TAGS as $tag) {
-            unset($tags[$tag]);
-        }
-
-        $tags_return = [];
-
-        foreach ($tags as $tag) {
-            $tags_return[] = $tag;
-        }
-
-        rsort($tags_return);
-
         $selected_tags = $request->query("tags");
 
         if ($selected_tags === null) {
@@ -51,9 +26,11 @@ class LibraryController extends Controller
             $selected_tags = [$selected_tags];
         }
 
+        ["games" => $games, "tags" => $tags] = Cache::remember("library-" . $user->id, $this::ONE_HOUR_IN_SECONDS, fn() => $user->json_games());
+
         return Inertia::render("Library", [
             "games" => $games,
-            "tags" => $tags_return,
+            "tags" => $tags,
             "default_selected_tags" => $selected_tags,
             "status" => session("status"),
         ]);
