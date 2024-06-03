@@ -64,10 +64,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->save();
     }
 
-    public function json_games(): array {
+    public function json_games(): array
+    {
         $games = [];
-        
-        foreach($this->games as $game) {
+
+        foreach ($this->games as $game) {
             $games[] = $game->json();
         }
 
