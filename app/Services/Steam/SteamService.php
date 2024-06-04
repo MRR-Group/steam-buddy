@@ -16,6 +16,7 @@ use App\Services\SteamApi\SteamApiService;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SteamService
@@ -35,10 +36,14 @@ class SteamService
         }
 
         return Bus::batch($jobs)
+            ->before(function () use ($user): void {
+                Log::channel('steam')->info('Start fetching steam data for ' . $user->email);
+            })
             ->then(function () use ($user): void {
                 $user->last_fetch = Carbon::now();
                 $user->save();
 
+                Log::channel('steam')->info('Done fetching steam data for ' . $user->email);
                 Mail::to($user->email)->send(new SteamFetchedNotification($user));
             })->dispatch();
     }

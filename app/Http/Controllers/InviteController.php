@@ -15,6 +15,7 @@ use App\Models\GameDetail;
 use App\Models\Invite;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -41,6 +42,7 @@ class InviteController extends Controller
         $invite->save();
 
         Mail::to($invite->receiver->email)->send(new InviteReceivedNotification($invite));
+        Log::channel('invites')->info('Sent invite from user ' . $invite->sender->id . ' to ' . $invite->receiver->id . '. Game: ' . $game->name);
 
         return Redirect::route("invite.show")->with("status", "Request sent to " . $target_user->name);
     }
@@ -102,6 +104,7 @@ class InviteController extends Controller
         $invite->save();
 
         $status = $invite->is_accepted ? "accepted" : "rejected";
+        Log::channel('invites')->info('Updated invite from user ' . $invite->sender->id . ' to ' . $invite->receiver->id . ' game: ' . $invite->game->name . ' status: ' . $status);
 
         if ($invite->is_accepted) {
             Mail::to($invite->sender->email)->send(new InviteAcceptedNotification($invite));
@@ -118,7 +121,9 @@ class InviteController extends Controller
             throw new InviteNotFoundException();
         }
 
+        Log::channel('invites')->info('Deleted invite from user ' . $invite->sender->id . ' to ' . $invite->receiver->id . ' game: ' . $invite->game->name);
         $invite->delete();
+        
 
         return Redirect::route("invite.show")->with("status", "Deleted invite from " . $invite->sender->name);
     }

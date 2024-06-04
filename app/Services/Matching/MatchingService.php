@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Matching;
 
 use App\Models\Game;
+use Illuminate\Support\Facades\Log;
 
 class MatchingService
 {
@@ -22,6 +23,7 @@ class MatchingService
         }
 
         usort($mates, fn($a, $b) => $a["delta_play_time"] - $b["delta_play_time"]);
+        Log::channel('invites')->info('Searching players for game ' . $user_game->id . ' found: ' . count($mates) . ' candidates');
 
         return $mates;
     }
