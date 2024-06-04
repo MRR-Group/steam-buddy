@@ -1,7 +1,8 @@
 <?php
 
-return [
+declare(strict_types=1);
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Password Reset Language Lines
@@ -13,10 +14,9 @@ return [
     |
     */
 
-    'reset' => 'Twoje hasło zostało zresetowane.',
-    'sent' => 'Link do formularza resetującego hasło został wysłany na twoją skrzynkę pocztową.',
-    'throttled' => 'Zaczekaj chwilę przed ponowną próbą.',
-    'token' => 'Token resetujący hasło utracił ważność.',
-    'user' => "Użytkownik z takim adresem email nie istnieje.",
-
+    "reset" => "Twoje hasło zostało zresetowane.",
+    "sent" => "Link do formularza resetującego hasło został wysłany na twoją skrzynkę pocztową.",
+    "throttled" => "Zaczekaj chwilę przed ponowną próbą.",
+    "token" => "Token resetujący hasło utracił ważność.",
+    "user" => "Użytkownik z takim adresem email nie istnieje.",
 ];

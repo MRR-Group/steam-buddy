@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\User;
@@ -11,25 +13,27 @@ use Illuminate\Queue\SerializesModels;
 
 class SteamFetchedNotification extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
-    public function __construct(private User $user) { }
+    public function __construct(
+        private User $user,
+    ) {}
 
-   
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Steam Buddy Ready to Roll!',
+            subject: "Steam Buddy Ready to Roll!",
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.steam-fetched',
+            view: "emails.steam-fetched",
             with: [
-                'name' => $this->user->name,
-            ]
+                "name" => $this->user->name,
+            ],
         );
     }
 

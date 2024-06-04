@@ -38,7 +38,7 @@ class SteamService
             ->then(function () use ($user): void {
                 $user->last_fetch = Carbon::now();
                 $user->save();
-                
+
                 Mail::to($user->email)->send(new SteamFetchedNotification($user));
             })->dispatch();
     }

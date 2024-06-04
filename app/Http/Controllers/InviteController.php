@@ -97,7 +97,7 @@ class InviteController extends Controller
         if ($request->validated("is_accepted") && $request->validated("is_rejected")) {
             throw new InvalidInviteDataException();
         }
-        
+
         $invite->fill($data);
         $invite->save();
 

@@ -1,7 +1,8 @@
 <?php
 
-return [
+declare(strict_types=1);
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
@@ -13,7 +14,7 @@ return [
     |
     */
 
-    'failed' => 'Wprowadzone dane uwierzytelniające nie są zgodne z danymi zapisanymi w naszym systemie.',
-    'password' => 'Podane hasło jest niepoprawne',
-    'throttle' => 'Za dużo prób logowania. Proszę, zaczekaj :seconds sekund.',
+    "failed" => "Wprowadzone dane uwierzytelniające nie są zgodne z danymi zapisanymi w naszym systemie.",
+    "password" => "Podane hasło jest niepoprawne",
+    "throttle" => "Za dużo prób logowania. Proszę, zaczekaj :seconds sekund.",
 ];

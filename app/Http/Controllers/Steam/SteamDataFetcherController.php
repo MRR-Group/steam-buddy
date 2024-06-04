@@ -26,7 +26,7 @@ class SteamDataFetcherController extends Controller
     {
         $user = $request->user();
         Cache::forget("library-" . $user->id);
-        
+
         $batch = $steam->fetch_games($user);
 
         return Inertia::render("Steam/Fetch", [
