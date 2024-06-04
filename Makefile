@@ -11,6 +11,14 @@ dev:
 	@docker compose up -d
 	@docker compose exec node npm run dev
 
+populate:
+	@docker compose exec php php artisan migrate:fresh
+	@docker compose exec php php artisan db:seed
+	@docker compose exec php sh -c 'php artisan app:import-tags < ./tags.csv'
+
+queue:
+	@docker compose exec php php artisan queue:work
+
 stop:
 	@docker compose stop
 
@@ -27,11 +35,6 @@ test:
 fix:
 	@docker compose exec -t php composer csf
 	@docker compose exec -t node npm run lintf
-
-
-actions:
-	@docker compose -f ./docker-compose.actions.yml up -d
-	@docker compose -f ./docker-compose.actions.yml exec -it action bash /app/docker/actions/init.sh
 
 prod:
 	@docker compose -f ./docker-compose.prod.yml up -d

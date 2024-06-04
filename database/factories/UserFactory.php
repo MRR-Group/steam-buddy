@@ -27,7 +27,7 @@ class UserFactory extends Factory
             "name" => fake()->name(),
             "email" => fake()->unique()->safeEmail(),
             "email_verified_at" => now(),
-            "description" => Str::random(100),
+            "description" => fake()->text(),
             "image" => fake()->imageUrl(),
             "steam_id" => Str::random(10),
             "last_fetch" => now(),

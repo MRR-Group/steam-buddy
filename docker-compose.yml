@@ -1,4 +1,3 @@
-version: '3.8'
 services:
     web:
         image: nginx:1.25.3-alpine
@@ -28,6 +27,8 @@ services:
         depends_on:
             database:
                 condition: service_healthy
+            database-test:
+                condition: service_healthy
             redis:
                 condition: service_healthy
 
@@ -36,9 +37,10 @@ services:
         working_dir: /app
         image: postgres:16.1-alpine3.19
         environment:
-            POSTGRES_DB:  ${DB_DATABASE}
+            POSTGRES_DB: ${DB_DATABASE}
             POSTGRES_USER: ${DB_USERNAME}
             POSTGRES_PASSWORD: ${DB_PASSWORD}
+            PGPORT: ${DB_PORT}
         volumes:
             - db_data:/var/lib/postgresql/data
         networks:
@@ -48,6 +50,38 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
+
+    database-test:
+        container_name: sb-database-test
+        working_dir: /app
+        image: postgres:16.1-alpine3.19
+        environment:
+            POSTGRES_DB:  ${DB_TEST_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            PGPORT: ${DB_TEST_PORT}
+        volumes:
+            - db_test_data:/var/lib/postgresql/data
+        networks:
+            - app-net
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: sb-pgadmin
+        ports:
+            - "8888:80"
+        networks:
+            - app-net
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
 
     redis:
         image: redis:7.2.3-alpine
@@ -85,4 +119,6 @@ networks:
 
 volumes:
     db_data:
+    db_test_data:
     redis_data:
+    pgadmin_data:

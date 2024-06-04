@@ -10,7 +10,7 @@ export default defineConfig(() => {
       globals: true,
       environment: 'jsdom',
       css: true,
-      setupFiles: './resources/js/test-setup.js',
+      setupFiles: './resources/js/test-setup.ts',
       include: './resources/js/**/*.test.?(c|m)[jt]s?(x)',
     },
     resolve: {

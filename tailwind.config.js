@@ -7,13 +7,40 @@ export default {
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
-    './resources/js/**/*.jsx',
+    './resources/js/**/*.tsx',
   ],
 
   theme: {
+    extend: {
+      screens: {
+        xs: "475px",
+        "3xl": "1750px",
+      },
+
+      spacing: {
+        3.5: "0.85rem",
+        41: "10.5rem",
+        90: "21rem",
+      },
+    },
+
     colors: {
       transparent: 'transparent',
-      'transparent-dark': 'rgba(31, 31, 31, 0.13)',
+      'transparent-dark': {
+        DEFAULT: 'rgba(31, 31, 31, 0.13)',
+        50: 'rgba(31, 31, 31, 0)',
+        100: 'rgba(31, 31, 31, 0.1)',
+        200: 'rgba(31, 31, 31, 0.2)',
+        300: 'rgba(31, 31, 31, 0.3)',
+        400: 'rgba(31, 31, 31, 0.4)',
+        500: 'rgba(31, 31, 31, 0.5)',
+        600: 'rgba(31, 31, 31, 0.6)',
+        700: 'rgba(31, 31, 31, 0.7)',
+        800: 'rgba(31, 31, 31, 0.8)',
+        900: 'rgba(31, 31, 31, 0.9)',
+        950: 'rgba(31, 31, 31, 1)',
+      },
+
       primary: {
         DEFAULT: '#07bcff',
         50: '#effaff',
@@ -42,6 +69,7 @@ export default {
         900: '#3d3d3d',
         950: '#000000',
       },
+      dark: "#1B2838",
       text: '#ffffff',
       error: '#FF0000',
       gradient: {
@@ -63,6 +91,5 @@ export default {
       md: '10px',
     },
   },
-
   plugins: [forms],
 };

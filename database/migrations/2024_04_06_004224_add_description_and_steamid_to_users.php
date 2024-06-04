@@ -11,7 +11,7 @@ return new class() extends Migration {
     {
         Schema::table("users", function (Blueprint $table): void {
             $table->string("image")->nullable();
-            $table->string("description")->nullable();
+            $table->text("description")->nullable();
             $table->string("steam_id")->nullable();
         });
     }
