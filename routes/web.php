@@ -32,3 +32,4 @@ Route::post("/lang/{locale}", [LangController::class, "set"])->name("lang.set");
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/steam.php";
+require __DIR__ . "/api.php";
