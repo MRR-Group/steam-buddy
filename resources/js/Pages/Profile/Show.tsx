@@ -1,7 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { AuthenticatedLayout } from '../../Layouts/AuthenticatedLayout/AuthenticatedLayout';
 import { useMemo, useState } from 'react';
-import { useDebounceCallback } from 'usehooks-ts';
 import { Tags } from '../../Components/Tags/Tags';
 import { TextInput } from '../../Components/TextInput/TextInput';
 import { GameLink } from '../../Components/GameLink/GameLink';
@@ -31,7 +30,7 @@ export const Show = ({ id, name, description, email, image, games, tags, default
   const [selectedTags, setSelectedTags] = useState<string[]>(default_selected_tags);
   const [searchText, setSearchText] = useState<string>("");
 
-  const search = useDebounceCallback(setSearchText);
+  const search = setSearchText;
   const selectTag = (tag: string) => setSelectedTags(selected => [...selected, tag]);
   const unselectTag = (tag: string) => setSelectedTags(selected => selected.filter(name => name !== tag));
 
