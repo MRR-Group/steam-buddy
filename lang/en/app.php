@@ -53,4 +53,5 @@ return [
     "games" => "games",
     "Left" => "Left",
     "Right" => "Right",
+    "Matching" => "Matching",
 ];

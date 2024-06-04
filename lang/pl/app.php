@@ -55,5 +55,6 @@ return [
     "games" => "gier",
     "Left" => "Lewo",
     "Right" => "Prawo",
+    "Matching" => "Dopasowywanie",
 ];
 
