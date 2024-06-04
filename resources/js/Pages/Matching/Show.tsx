@@ -125,8 +125,8 @@ export const Show = ({user, game, candidates, status}: ShowPageProps) => {
             </PrimaryButton>
           </Link>
           
-          {candidate < candidates.length-1 && <PrimaryButton className="max-w-md" onClick={nextCandidate}><Translate>Next</Translate></PrimaryButton>}
-          {candidate > 0 && <PrimaryButton className="max-w-md" onClick={previousCandidate}><Translate>Previous</Translate></PrimaryButton>}
+          {candidate < candidates.length-1 && <PrimaryButton className="max-w-md mt-2" onClick={nextCandidate}><Translate>Next</Translate></PrimaryButton>}
+          {candidate > 0 && <PrimaryButton className="max-w-md mt-2" onClick={previousCandidate}><Translate>Previous</Translate></PrimaryButton>}
 
           <Link href={route("profile.games.show", { user_id: user.id, game_id: game.id })}  className="w-full max-w-md mt-2">
             <PrimaryButton className="max-w-md"><Translate>Back</Translate></PrimaryButton>
