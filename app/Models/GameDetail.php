@@ -20,8 +20,8 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property Collection<Game> $games;
- * @property Collection<Tag> $tags;
+ * @property Collection<Game> $games
+ * @property Collection<Tag> $tags
  * @property Collection<AchievementDetail> $achievements;
  */
 class GameDetail extends Model
