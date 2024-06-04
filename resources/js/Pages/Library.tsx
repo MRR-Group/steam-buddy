@@ -3,7 +3,6 @@ import { AuthenticatedLayout } from '../Layouts/AuthenticatedLayout/Authenticate
 import { Tags } from '../Components/Tags/Tags';
 import { useMemo, useState } from 'react';
 import { TextInput } from '../Components/TextInput/TextInput';
-import { useDebounceCallback } from 'usehooks-ts';
 import { GameLink } from '../Components/GameLink/GameLink';
 
 type Props = {
@@ -31,7 +30,6 @@ export const Library = ({ auth, games, tags, default_selected_tags }: Props) => 
   const [selectedTags, setSelectedTags] = useState<string[]>(default_selected_tags);
   const [searchText, setSearchText] = useState<string>("");
   
-  const search = useDebounceCallback(setSearchText);
   const selectTag = (tag: string) => setSelectedTags(selected => [...selected, tag]);
   const unselectTag = (tag: string) => setSelectedTags(selected => selected.filter(name => name !== tag));
   
@@ -63,7 +61,7 @@ export const Library = ({ auth, games, tags, default_selected_tags }: Props) => 
             label='Search game' 
             className='mt-5' 
             value={searchText} 
-            onInput={(e) => search(e.currentTarget.value)}
+            onInput={(e) => setSearchText(e.currentTarget.value)}
           />
         </div>
       </div> 
