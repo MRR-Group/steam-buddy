@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Steam;
 
 use App\Jobs\FetchSteamGame;
+use App\Mail\SteamFetchedNotification;
 use App\Models\Achievement;
 use App\Models\AchievementDetail;
 use App\Models\Game;
@@ -15,6 +16,7 @@ use App\Services\SteamApi\SteamApiService;
 use Carbon\Carbon;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Mail;
 
 class SteamService
 {
@@ -36,6 +38,8 @@ class SteamService
             ->then(function () use ($user): void {
                 $user->last_fetch = Carbon::now();
                 $user->save();
+                
+                Mail::to($user->email)->send(new SteamFetchedNotification($user));
             })->dispatch();
     }
 

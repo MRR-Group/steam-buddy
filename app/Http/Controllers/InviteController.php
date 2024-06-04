@@ -9,10 +9,13 @@ use App\Exceptions\InvalidInviteDataException;
 use App\Exceptions\InviteNotFoundException;
 use App\Exceptions\UserNotFoundException;
 use App\Http\Requests\InviteUpdateRequest;
+use App\Mail\InviteAcceptedNotification;
+use App\Mail\InviteReceivedNotification;
 use App\Models\GameDetail;
 use App\Models\Invite;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -36,6 +39,8 @@ class InviteController extends Controller
         $invite->sender()->associate($request->user());
         $invite->receiver()->associate($target_user);
         $invite->save();
+
+        Mail::to($invite->receiver->email)->send(new InviteReceivedNotification($invite));
 
         return Redirect::route("invite.show")->with("status", "Request sent to " . $target_user->name);
     }
@@ -92,11 +97,15 @@ class InviteController extends Controller
         if ($request->validated("is_accepted") && $request->validated("is_rejected")) {
             throw new InvalidInviteDataException();
         }
-
+        
         $invite->fill($data);
         $invite->save();
 
         $status = $invite->is_accepted ? "accepted" : "rejected";
+
+        if ($invite->is_accepted) {
+            Mail::to($invite->sender->email)->send(new InviteAcceptedNotification($invite));
+        }
 
         return Redirect::route("invite.show")->with("status", $status . " invite from " . $invite->sender->name);
     }
