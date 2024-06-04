@@ -126,5 +126,17 @@ return [
         "emergency" => [
             "path" => storage_path("logs/laravel.log"),
         ],
+
+        "invites" => [
+            'driver' => 'single',
+            'path' => storage_path('logs/invites.log'),
+            'level' => 'debug'
+        ],
+
+        "steam" => [
+            'driver' => 'single',
+            'path' => storage_path('logs/steam.log'),
+            'level' => 'debug'
+        ],
     ],
 ];

@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property int $id
@@ -62,6 +63,8 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->name = $nickname;
         $this->image = $this->load_bigger_image($avatar);
         $this->save();
+
+        Log::channel('steam')->info('Connected steam_id ' . $steam_id . ' with user ' . $this->id);
     }
 
     public function json_games(): array

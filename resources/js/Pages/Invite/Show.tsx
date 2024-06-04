@@ -30,6 +30,8 @@ export type ShowPageProps = {
 };
 
 export const Show = ({user, sent, received, accepted}: ShowPageProps) => {
+  console.log(received, sent, accepted);
+
   const { t, Translate } = useTranslate("app");
 
   return (
