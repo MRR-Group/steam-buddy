@@ -39,6 +39,7 @@ fix:
 prod:
 	@docker compose -f ./docker-compose.prod.yml up -d
 	@docker compose -f ./docker-compose.prod.yml exec -it php bash /app/docker/production/php/init.sh
+	@docker compose -f ./docker-compose.prod.yml exec -it node bash /app/docker/production/node/init.sh
 	@docker compose -f ./docker-compose.prod.yml exec -it php bash
 
 prod-down:
