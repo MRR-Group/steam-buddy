@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     "log in" => "Log in",
     "log in title" => "Log in",
@@ -33,5 +35,5 @@ return [
     "email verification message" => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
     "resend verification email" => "Resend Verification Email",
     "this is the last step" => "This is the last step",
-    "fetch message" => "Now we need to download from steam information about all your achievements and games. It may take a while."
+    "fetch message" => "Now we need to download from steam information about all your achievements and games. It may take a while.",
 ];

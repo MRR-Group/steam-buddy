@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     "log in" => "Zaloguj",
     "log in title" => "Logowanie",

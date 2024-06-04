@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -7,21 +9,21 @@ use App\Models\Achievement;
 use App\Models\Game;
 use App\Models\GameDetail;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class StatisticController extends Controller
 {
-    public function users() {
+    public function users()
+    {
         $hours_played = 0;
         $common_games = 0;
 
-        foreach(GameDetail::all() as $game) {
+        foreach (GameDetail::all() as $game) {
             if (count($game->games) >= 2) {
-                $common_games += 1;
+                ++$common_games;
             }
         }
 
-        foreach(Game::all() as $game) {
+        foreach (Game::all() as $game) {
             $hours_played += $game->play_time / 60;
         }
 
@@ -36,7 +38,8 @@ class StatisticController extends Controller
         ], 200);
     }
 
-    public function games() {
+    public function games()
+    {
         $most_completed = null;
         $most_completed_result = 0;
 
@@ -50,7 +53,7 @@ class StatisticController extends Controller
             return response()->json(["message" => "Cannot load statistics for empty library"], 404);
         }
 
-        foreach(Game::all() as $game) {
+        foreach (Game::all() as $game) {
             $achievements = $game->achievements;
             $completion = $game->game_completion();
 
