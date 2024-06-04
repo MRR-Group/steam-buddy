@@ -1,7 +1,7 @@
 import { ParamHTMLAttributes } from 'react';
 
 type Props = ParamHTMLAttributes<HTMLParagraphElement> & {
-  message?: string;
+  message?: string,
 };
 
 export const InputError = ({ message, className = '', ...props }: Props) => {

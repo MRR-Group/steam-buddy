@@ -8,10 +8,10 @@ import {
 } from 'react';
 
 type Props = Omit<InputHTMLAttributes<HTMLTextAreaElement>, 'value'> & {
-  isFocused?: boolean;
-  label?: string;
-  value?: string;
-  areaClassName?: string
+  isFocused?: boolean,
+  label?: string,
+  value?: string,
+  areaClassName?: string,
 };
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>(

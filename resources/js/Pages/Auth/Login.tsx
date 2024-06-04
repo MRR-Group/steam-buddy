@@ -5,6 +5,7 @@ import { TextInput } from '../../Components/TextInput/TextInput';
 import { InputError } from '../../Components/InputError/InputError';
 import { TextInputOption } from '../../Components/TextInputOption/TextInputOption';
 import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 type Props = {
   status?: string;
@@ -25,22 +26,26 @@ export const Login = ({ status }: Props) => {
     post(route('login'));
   };
 
+  const { Translate, t } = useTranslate("auth-layout");
+
   return (
     <GuestLayout status={status}>
-      <Head title="Log in" />
+      <Head title={t("log in title")} />
 
       <form
         onSubmit={submit}
         className="max-w-80 w-full"
         style={{ padding: 'calc(50% - 10rem) 0' }}
       >
-        <div className="text-center text-text text-3xl pb-6">Log in</div>
+        <div className="text-center text-text text-3xl pb-6">
+          <Translate>log in title</Translate>
+        </div>
 
         <div className="pb-6">
           <TextInput
             type="email"
             name="email"
-            label="Email"
+            label={t('email')}
             value={data.email}
             autoComplete="username"
             isFocused={true}
@@ -50,9 +55,9 @@ export const Login = ({ status }: Props) => {
           <InputError message={errors.email} className="mt-2" />
 
           <TextInputOption
-            left="You don't have an account?"
-            linkText={`Click${'\u00A0'}here`}
-            right={`to${'\u00A0'}register`}
+            left={t(`You don't have an account?`)}
+            linkText={`${t('Click')}${'\u00A0'}${t('here')}`}
+            right={`${t('to')}${'\u00A0'}${t('to register')}`}
             href={route('register')}
           />
         </div>
@@ -61,7 +66,7 @@ export const Login = ({ status }: Props) => {
           <TextInput
             type="password"
             name="password"
-            label="Password"
+            label={t('password')}
             value={data.password}
             autoComplete="current-password"
             onChange={(e) => setData('password', e.target.value)}
@@ -70,15 +75,17 @@ export const Login = ({ status }: Props) => {
           <InputError message={errors.password} className="mt-2" />
 
           <TextInputOption
-            left="You don't remember?"
-            linkText={`Click${'\u00A0'}here`}
-            right={`to${'\u00A0'}reset it.`}
+            left={t(`You don't remember?`)}
+            linkText={`${t('Click')}${'\u00A0'}${t('here')}`}
+            right={`${t('to')}${'\u00A0'}${t('to reset it.')}`}
             href={route('password.request')}
           />
         </div>
 
         <div className="flex justify-center w-full">
-          <PrimaryButton disabled={processing}>Log in</PrimaryButton>
+          <PrimaryButton disabled={processing}>
+            <Translate>log in</Translate>
+          </PrimaryButton>
         </div>
       </form>
     </GuestLayout>

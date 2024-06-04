@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vitest } from 'vitest';
+import { MockInstance, afterAll, beforeAll, describe, expect, it, vitest } from 'vitest';
 
 import { TagData, Tags } from './Tags';
+import * as i18n from 'laravel-react-i18n';
+import ContextInterface from 'laravel-react-i18n/dist/interfaces/context';
 
 describe('Tags', () => {
   const tags: TagData[] = [
@@ -13,13 +15,23 @@ describe('Tags', () => {
     { name: "tag6", games: 60},
   ];
   
+  let spy: MockInstance<[], ContextInterface<string>>;
+
+  beforeAll(() => {
+    spy = vitest.spyOn(i18n, "useLaravelReactI18n").mockImplementation((() => ({ t: (name: string) => name.replace("app.", "") }) as ContextInterface<string>));
+  })
+
+  afterAll(() => {
+    spy.mockRestore();
+  })
+
   it('should render tags', () => {
     render(
       <Tags
         tagRole='button'
         itemAriaLabel={(tag) => `test label for ${tag.name}`}
         selected={["tag1", "tag3"]}
-        tags={tags} 
+        tags={tags}
       />
     );
 

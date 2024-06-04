@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes } from 'react';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
-  disabled?: boolean;
+  disabled?: boolean,
 };
 
 export const PrimaryButton = ({

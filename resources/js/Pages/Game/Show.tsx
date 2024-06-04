@@ -6,6 +6,7 @@ import { PrimaryButton } from '@/Components/PrimaryButton/PrimaryButton';
 import { Game } from '../../Components/Game/Game';
 import { Statistics } from '../../Components/Statistics/Statistics';
 import { Achievements } from '../../Components/Achievements/Achievements';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 export type ShowPageProps = {
   user: {
@@ -38,6 +39,7 @@ type TextNode = ChildNode & { data: string };
 
 export const Show = ({ user, game, is_owner }: ShowPageProps) => {
   const tags = useMemo(() => game.tags.map((tag) => ({ name: tag })), [game]);
+  const { t, Translate } = useTranslate("app");
 
   const getText = (html: string) => {
     const content = document.createElement('div');
@@ -82,16 +84,16 @@ export const Show = ({ user, game, is_owner }: ShowPageProps) => {
   return (
     <AuthenticatedLayout
       user={user}
-      title="Game Details"
+      title={t("Game Details")}
     >
       <Head title={game.name} />
 
-      <h1 className='text-text text-4xl w-full text-center mb-8'>{game.name}</h1>
+      <h2 className='text-text text-4xl w-full text-center mb-8'>{game.name}</h2>
       <Tags
         selected={game.tags}
         tags={tags}
         tagRole='button'
-        itemAriaLabel={({name}) => `Search games with ${name} tag`}
+        itemAriaLabel={({name}) => t(`Search games with tag`, { name })}
         onUnselect={showGamesWithTag}
       />
 
@@ -112,7 +114,9 @@ export const Show = ({ user, game, is_owner }: ShowPageProps) => {
             is_owner && (
               <Link method='post' href={route('match.find', {game_id: game.id})} className="w-full flex justify-center">
                 <div className='p-5 pt-3 w-full md:max-w-80'>
-                  <PrimaryButton type='submit'>Find Mate</PrimaryButton>
+                  <PrimaryButton type='submit'>
+                    <Translate>Find Mate</Translate>
+                    </PrimaryButton>
                 </div>
               </Link>
             )

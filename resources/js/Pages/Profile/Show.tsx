@@ -6,6 +6,7 @@ import { Tags } from '../../Components/Tags/Tags';
 import { TextInput } from '../../Components/TextInput/TextInput';
 import { GameLink } from '../../Components/GameLink/GameLink';
 import { PrimaryButton } from '../../Components/PrimaryButton/PrimaryButton';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 export type ShowPageProps = {
   id: number;
@@ -30,6 +31,7 @@ export type ShowPageProps = {
 export const Show = ({ id, name, description, email, image, games, tags, default_selected_tags, is_owner }: ShowPageProps) => {
   const [selectedTags, setSelectedTags] = useState<string[]>(default_selected_tags);
   const [searchText, setSearchText] = useState<string>("");
+  const { t, Translate } = useTranslate("app");
 
   const search = useDebounceCallback(setSearchText);
   const selectTag = (tag: string) => setSelectedTags(selected => [...selected, tag]);
@@ -43,17 +45,17 @@ export const Show = ({ id, name, description, email, image, games, tags, default
   return (
     <AuthenticatedLayout
       user={{ id, name, email }}
-      title='Profile'
+      title={t('Profile')}
     >
-      <Head title="Profile" />
+      <Head title={t('Profile')} />
 
       <section className='flex w-full p-2 flex-col md:flex-row justify-center items-center mt-8'>
-        <img src={image} alt={`Profile image of ${name}`} className='h-52 md:mr-5' />
+        <img src={image} alt={t(`Profile image of user`, { name })} className='h-52 md:mr-5' />
         
           <div className='mt-5 md:mt-0'>
-            <h1 className='text-text text-xl font-bold text-left'>
+            <h2 className='text-text text-xl font-bold text-left'>
               {name}
-            </h1>
+            </h2>
 
             <div className='text-text '>
               {description}
@@ -66,7 +68,9 @@ export const Show = ({ id, name, description, email, image, games, tags, default
           <div className='flex md:flex-row md:justify-between mt-2'>
             <Link href={route('profile.edit')} className="w-full md:max-w-56">
               <div className='p-2 pt-0 w-full md:max-w-80'>
-                <PrimaryButton type='submit'>Edit</PrimaryButton>
+                <PrimaryButton type='submit'>
+                  <Translate>Edit</Translate>
+                </PrimaryButton>
               </div>
             </Link>
           </div>
@@ -74,9 +78,9 @@ export const Show = ({ id, name, description, email, image, games, tags, default
       }
 
       <section className='mt-10'>
-        <h1 className='text-text text-3xl w-full text-center mb-4'>
-          Games
-        </h1>
+        <h2 className='text-text text-3xl w-full text-center mb-4'>
+          <Translate>Games</Translate>
+        </h2>
 
         <div className="w-full flex justify-center mb-10">
           <div className="w-full 2xl:w-6/12 xl:w-7/12 lg:w-8/12 md:w-10/12 flex items-stretch flex-col media">
@@ -86,10 +90,10 @@ export const Show = ({ id, name, description, email, image, games, tags, default
               tagRole="checkbox"
               onSelect={selectTag}
               onUnselect={unselectTag}
-              itemAriaLabel={(tag, selected) => `${selected ? "Remove" : "Add"} ${tag.name} tag ${selected ? "from" : "to"} the search query`}
+              itemAriaLabel={(tag, selected) => t(`${selected ? "Remove" : "Add"} tag - search query`, { name: tag.name })}
             />
 
-            <TextInput label='Search' className='mt-5' value={searchText} onInput={(e) => search(e.currentTarget.value)} />
+            <TextInput label={t("Search")} className='mt-5' value={searchText} onInput={(e) => search(e.currentTarget.value)} />
           </div>
         </div> 
 

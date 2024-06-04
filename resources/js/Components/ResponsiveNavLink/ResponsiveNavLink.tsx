@@ -1,8 +1,8 @@
 import { InertiaLinkProps, Link } from '@inertiajs/react';
 
 type Props = Omit<InertiaLinkProps, 'href'> & {
-  href?: string;
-  active?: boolean;
+  href?: string,
+  active?: boolean,
 };
 
 export const ResponsiveNavLink = ({

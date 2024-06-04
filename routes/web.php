@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\LangController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MatchingController;
 use App\Http\Controllers\ProfileController;
@@ -26,6 +27,8 @@ Route::middleware(["auth", "verified", "steam"])->group(function (): void {
     Route::patch("/invite/{id}", [InviteController::class, "update"])->name("invite.update");
     Route::delete("/invite/{id}", [InviteController::class, "remove"])->name("invite.remove");
 });
+
+Route::post("/lang/{locale}", [LangController::class, "set"])->name("lang.set");
 
 require __DIR__ . "/auth.php";
 require __DIR__ . "/steam.php";

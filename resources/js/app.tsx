@@ -19,8 +19,12 @@ import '@fontsource/inter/900.css';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { LaravelReactI18nProvider } from 'laravel-react-i18n';
+import axios from 'axios';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Steam Buddy';
+const locale = localStorage.getItem('lang') ?? "en";
+axios.post(route('lang.set', { locale }));
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
@@ -34,7 +38,15 @@ createInertiaApp({
   },
   setup({ el, App, props }) {
     const root = createRoot(el);
-    root.render(<App {...props} />);
+    root.render(
+      <LaravelReactI18nProvider
+        locale={locale}
+        fallbackLocale="en"
+        files={import.meta.glob('/lang/php_*.json')}
+      >
+        <App {...props} />
+      </LaravelReactI18nProvider>
+    );
   },
   progress: {
     color: '#4B5563',

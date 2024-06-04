@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
+import { useTranslate } from '../../Hooks/Translate/Translate';
 
 type Prop = {
-  message?: string;
+  message?: string,
 };
 
 export const Notification = ({ message }: Prop) => {
   const [isHidden, setIsHidden] = useState(true);
   const hide = () => setIsHidden(true);
+  const { t } = useTranslate("app");
 
   useEffect(() => {
     if (message) {
@@ -24,7 +26,7 @@ export const Notification = ({ message }: Prop) => {
         {message}
         <div
           role="button"
-          aria-label="Close"
+          aria-label={t("Close")}
           className="absolute right-2 cursor-pointer"
           onClick={hide}
         >
