@@ -1,0 +1,116 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{hyperref}
+
+\title{Steam Buddy}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Cel projektu}
+Celem projektu było stworzenie aplikacji, ułatwiającej użytkownikom znalezienie partnera do wspólnej rozgrywki w gry wideo.
+
+\section*{Opis funkcjonalny systemu}
+\begin{enumerate}
+    \item System potrafi pobierać dane gier ze Steam.
+    \item Aplikacja generuje logi najważniejszych systemów (Steam, Invite).
+    \item System generuje statystyki.
+    \item Rejestracja użytkownika.
+    \item Łączenie się użytkownika z kontem Steam (aplikacja potrafi uzyskać z API \textit{steam\_id} użytkownika).
+    \item Pobieranie danych użytkownika ze Steam.
+    \item Wyświetlanie biblioteki gier użytkownika.
+    \item Sortowanie gier po nazwie oraz tagach.
+    \item Wyświetlanie okładki oraz opisu gry.
+    \item Wyświetlanie statystyk i osiągnięć gracza w danej grze.
+    \item Wyszukiwanie graczy o podobnych osiągnięciach jak i czasie gry.
+    \item System wysyłania próśb o wspólną grę do dopasowanych wcześniej użytkowników (prośby można przyjąć lub odrzucić).
+    \item Powiadomienia mailowe o otrzymanych prośbach.
+    \item Powiadomienia mailowe o aktualizacji statusu wysłanych próśb.
+    \item Udostępnianie linka do profilu Steam użytkownika, jeżeli wyraził on chęć wspólnej gry.
+\end{enumerate}
+
+\section*{Opis technologiczny}
+Część backendowa projektu została napisana w PHP z użyciem frameworka Laravel. Frontend powstał z użyciem Tailwind CSS, Reacta i TypeScriptu. Całość została spięta za pomocą biblioteki Inertia.js. Dane aplikacji przechowywane są w bazie danych PostgreSQL. Środowisko developerskie oraz produkcyjne zostało wykonane z użyciem Dockera i Nginx. Do obsługi cache wykorzystana została baza danych Redis.
+
+\section*{Wyspecyfikowane wdrożone zagadnienia kwalifikacyjne}
+\begin{enumerate}
+    \item Framework MVC — Projekt został przygotowany z użyciem Laravel’a i klasycznego dla niego wzorca MVC.
+    \item Framework CSS — W celu przyspieszenia developmentu użyliśmy frameworka Tailwind.css dostosowanego do potrzeb naszego designu poprzez modyfikacje pliku (tailwind.config.js).
+    \item Baza danych — Projekt korzysta z bazy danych PostgreSQL.
+    \item Cache — W celu redukcji ilości wykonywanych zapytań do bazy, został użyty wbudowany w Laravela mechanizm cache połączony z bazą danych Redis.
+    \item Dependency Manager — Projekt korzysta z dwóch dependency managerów: Composera dla PHP i npm dla JavaScriptu.
+    \item HTML — Realizowany przy użyciu biblioteki React.
+    \item CSS — Aplikacja została ostylowana za pomocą CSS.
+    \item JavaScript — Frontend został napisany w tym języku, powstały w nim niektóre animacje oraz elementy interaktywne.
+    \item Routing — Aplikacja korzysta z routingu dostarczonego przez Laravela.
+    \item ORM — Nasz projekt korzysta z Eloquent ORM w celu ułatwienia pracy z bazą danych.
+    \item Lokalizacja — Steam Buddy został stworzony w dwóch wersjach językowych, Polskiej i Angielskiej. Wykorzystany został do tego mechanizm lokalizacji połączony z Reactem za pomocą biblioteki \textit{laravel-react-i18n}.
+    \item Mailing — System wysyła powiadomienia o zmianie statusu wysłanych zaproszeń jak i o zakończonej synchronizacji ze Steam poprzez wiadomości e-mail. Wykorzystany został do tego celu mechanizm dostarczany przez Laravela, spięty z usługą MailTrap w środowisku developerskim i PostMark w produkcyjnym.
+    \item Formularze — Do procesu uwierzytelniania jak i późniejszej aktualizacji profilu użytkownika wykorzystane zostały formularze.
+    \item Asynchroniczne interakcje — Do pobierania informacji o postępie czasochłonnego procesu pobierania informacji o grach ze Steam wykorzystane zostało JavaScriptowe Fetch API, za którego pomocą wysyłane jest żądanie HTTP pobierające postęp importu danych na podstawie którego jest aktualizowany interfejs użytkownika.
+    \item Konsumpcja API — Do pobierania danych o grach i osiągnięciach użytkownika wykorzystane zostało zewnętrzne API udostępnione przez Steam.
+    \item Publikacja API — Aplikacja udostępnia wybrane statystyki serwisu (najpopularniejsze gry, łączna liczba przegranych godzin itp.) za pomocą wystawianego przez nią API.
+    \item RWD — Aplikacja jest responsywna, dzięki użyciu \textit{media query} i jednostek relatywnych wspiera zarówno urządzenia mobilne, tablety, jak i komputery osobiste.
+    \item Logger — Dane o pobieranych danych ze Steam i aktualizacje statusów zaproszeń użytkowników są zapisywane w logach aplikacji z wykorzystaniem wbudowanego w Laravela loggera.
+    \item Deployment — Aplikacja została skonteneryzowana, dzięki czemu ułatwiony został proces deploymentu. Dodatkowo został napisany skrypt GitHub Actions, który buduje automatycznie obrazy projektu i zapisuje je w pliku \textit{image.tar}.
+\end{enumerate}
+
+\section*{Instrukcja lokalnego i zdalnego uruchomienia systemu}
+\subsection*{Środowisko developerskie}
+\begin{enumerate}
+    \item Zainstaluj na swojej ulubionej dystrybucji Linuxa Dockera, Docker-compose i Make.
+    \item Sklonuj repozytorium git:
+    \begin{verbatim}
+    git clone https://github.com/MRR-Group/steam-buddy.git
+    \end{verbatim}
+    \item Otwórz terminal i przejdź do katalogu, w którym znajduje się plik \textit{docker-compose.yml}.
+    \item Stwórz plik .env i dostosuj jego konfigurację:
+    \begin{verbatim}
+    cp .env.example .env
+    \end{verbatim}
+    \item Przygotuj aplikację do pracy:
+    \begin{verbatim}
+    make init
+    \end{verbatim}
+    \item Uruchom projekt:
+    \begin{verbatim}
+    make dev
+    \end{verbatim}
+    \item Po zakończeniu procesu uruchamiania projekt będzie dostępny pod adresem \url{http://localhost}.
+\end{enumerate}
+
+\subsection*{Środowisko produkcyjne}
+\begin{enumerate}
+    \item Zainstaluj na swojej ulubionej dystrybucji Linuxa Dockera, Docker-compose i Make.
+    \item Sklonuj repozytorium git:
+    \begin{verbatim}
+    git clone https://github.com/MRR-Group/steam-buddy.git
+    git branch -f production origin/production
+    git checkout production
+    \end{verbatim}
+    \item Otwórz terminal i przejdź do katalogu, w którym znajduje się plik \textit{docker-compose.yml}.
+    \item Stwórz plik .env i dostosuj jego konfigurację:
+    \begin{verbatim}
+    cp .env.example .env
+    \end{verbatim}
+    \item Pobierz spakowane obrazy docker projektu:
+    \begin{verbatim}
+    gh release download WERSJA
+    \end{verbatim}
+    \item Wczytaj pobrane obrazy:
+    \begin{verbatim}
+    docker load < image.tar
+    \end{verbatim}
+    \item Uruchom projekt:
+    \begin{verbatim}
+    make prod
+    \end{verbatim}
+\end{enumerate}
+
+\section*{Wnioski projektowe}
+Podczas pisania projektu zetknięcie się z tak dużym frameworkiem było dla nas trudne. Praktycznie cały czas, do samego końca posiłkowaliśmy się dokumentacją, która jednak okazała się naprawdę dobrym i przystępnym źródłem wiedzy. Zdecydowaliśmy się, zupełnie niepotrzebnie, na aktualizację Laravela do wersji 11, co znacznie utrudniło nam korzystanie z poradników i bibliotek. W przyszłości będziemy ostrożniej podejmować takie decyzje. Praca w środowisku dokerowym okazała się zaletą i wadą, przyspieszyła ona znacząco postawienie środowiska developerskiego oraz uprościła wprowadzanie w nim zmian, jednak jednocześnie podniosła ona próg wejścia do projektu. Większość z nas nie była zaznajomiona wcześniej ani z dokerem, ani z Linuxem. Dodatkowo 2/3 uczestników pracowało na Windowsie, co jeszcze bardziej utrudniło pracę. Podczas pisania tego projektu zmieniło się również nasze postrzeganie PHP, dał się on poznać jako nowoczesne i wygodne narzędzie. Także wzrosła nasza sprawność w posługiwaniu się systemem wersji git i samym Laravel'em.
+\end{document}
